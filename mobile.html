@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+<title>低空飞行业务管理平台 - 移动申请端</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:"Microsoft YaHei","PingFang SC",sans-serif;background:#0b1428;color:#e8f1fb;min-height:100vh;padding-bottom:70px;-webkit-tap-highlight-color:transparent}
+:root{--blue:#0082D9;--cyan:#2de2f0;--red:#C8102E;--bg:#0b1428;--card:#11203d;--input:#0d1c35;--label:#6b87a8;--radius:14px}
+
+/* 顶栏 */
+.header{position:sticky;top:0;z-index:50;background:linear-gradient(135deg,#071021,#0d1f3c);border-bottom:1px solid rgba(56,189,248,.15);padding:14px 16px;display:flex;align-items:center;gap:10px}
+.header .logo{width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,#0082D9,#2de2f0);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.header .title{font-size:16px;font-weight:700;letter-spacing:.5px}
+.header .sub{font-size:11px;color:#5a7a9a;margin-top:2px}
+
+/* 标签切换 */
+.tabs{display:flex;background:var(--card);border-bottom:1px solid rgba(56,189,248,.1)}
+.tab{flex:1;padding:13px 4px;text-align:center;font-size:12.5px;color:#6b87a8;cursor:pointer;transition:all .25s;border-bottom:2.5px solid transparent;white-space:nowrap}
+.tab.active{color:var(--cyan);border-bottom-color:var(--cyan);font-weight:600}
+.tab:active{background:rgba(45,226,240,.06)}
+
+/* 表单容器 */
+.form-page{display:none;padding:14px}
+.form-page.active{display:block;animation:fadeIn .3s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+
+/* 表单标题 */
+.fp-title{font-size:15px;font-weight:700;color:#e8f1fb;margin-bottom:4px;padding-left:10px;border-left:4px solid var(--cyan)}
+.fp-desc{font-size:11.5px;color:#5a7a9a;margin:0 0 16px 14px;line-height:1.5}
+
+/* 表单卡片 */
+.f-card{background:var(--card);border:1px solid rgba(56,189,248,.12);border-radius:var(--radius);padding:18px 16px;margin-bottom:14px}
+.f-card h3{font-size:13px;color:var(--cyan);margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid rgba(56,189,248,.08)}
+
+/* 表单字段 */
+.fg{margin-bottom:16px}
+.fg:last-child{margin-bottom:0}
+.fg label{display:block;font-size:12.5px;color:var(--label);margin-bottom:6px}
+.fg label .req{color:var(--red)}
+.fg input,.fg select,.fg textarea{width:100%;background:var(--input);border:1px solid rgba(56,189,248,.15);border-radius:10px;padding:11px 13px;font-size:13px;color:#e8f1fb;outline:none;transition:border-color .2s;font-family:inherit}
+.fg input:focus,.fg select:focus,.fg textarea:focus{border-color:var(--cyan)}
+.fg input::placeholder,.fg textarea::placeholder{color:#3a5a7a}
+.fg textarea{resize:vertical;min-height:72px}
+.fg select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%236b87a8' d='M6 8L0 0h12z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 13px center;padding-right:36px}
+.fg-hint{font-size:11px;color:#4a6a8a;margin-top:4px}
+
+/* 双列 */
+.fg-row{display:flex;gap:12px}
+.fg-row .fg{flex:1}
+
+/* 提交按钮 */
+.btn-submit{width:100%;padding:14px;border:none;border-radius:12px;font-size:14px;font-weight:700;letter-spacing:1px;cursor:pointer;transition:all .2s;font-family:inherit;margin-top:4px}
+.btn-primary{background:linear-gradient(135deg,#0082D9,#2de2f0);color:#fff}
+.btn-primary:active{transform:scale(.97);box-shadow:0 0 20px rgba(45,226,240,.4)}
+.btn-secondary{background:var(--input);border:1px solid rgba(56,189,248,.2);color:#8aa0bb;margin-top:10px}
+.btn-secondary:active{background:rgba(56,189,248,.08)}
+
+/* 提示弹窗 */
+.toast{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:rgba(10,30,60,.95);border:1px solid rgba(45,226,240,.4);border-radius:14px;padding:20px 30px;text-align:center;z-index:200;display:none;animation:toastIn .3s ease;max-width:80%}
+.toast.show{display:block}
+.toast .icon{font-size:36px;margin-bottom:8px}
+.toast .msg{font-size:14px;color:#e8f1fb;line-height:1.5}
+@keyframes toastIn{from{opacity:0;transform:translate(-50%,-40%) scale(.9)}to{opacity:1;transform:translate(-50%,-50%) scale(1)}}
+
+/* 底部导航 */
+.bottom-nav{position:fixed;bottom:0;left:0;right:0;background:linear-gradient(180deg,rgba(11,20,40,.98),rgba(7,16,33,.98));border-top:1px solid rgba(56,189,248,.12);display:flex;z-index:50}
+.bn-item{flex:1;padding:8px 2px;text-align:center;cursor:pointer;transition:all .2s}
+.bn-item.active{color:var(--cyan)}
+.bn-item .bn-icon{font-size:20px;margin-bottom:2px;display:block}
+.bn-item .bn-label{font-size:10px;color:#5a7a9a}
+.bn-item.active .bn-label{color:var(--cyan)}
+
+/* 状态标签 */
+.st-tag{display:inline-block;padding:2px 10px;border-radius:10px;font-size:11px;font-weight:600}
+.st-ok{background:rgba(45,226,240,.12);color:var(--cyan);border:1px solid rgba(45,226,240,.3)}
+.st-warn{background:rgba(248,113,113,.12);color:#f87171;border:1px solid rgba(248,113,113,.3)}
+
+/* 上传区域 */
+.upload-area{border:2px dashed rgba(56,189,248,.2);border-radius:12px;padding:20px;text-align:center;cursor:pointer;transition:all .2s}
+.upload-area:active{border-color:var(--cyan);background:rgba(45,226,240,.04)}
+.upload-area .up-icon{font-size:28px;color:#4a6a8a;margin-bottom:6px}
+.upload-area .up-text{font-size:12px;color:#5a7a9a}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="logo">✈</div>
+  <div>
+    <div class="title">低空飞行业务管理平台</div>
+    <div class="sub">移动端业务申请</div>
+  </div>
+</div>
+
+<!-- 标签切换 -->
+<div class="tabs">
+  <div class="tab active" onclick="switchForm('airspace')">空域申请</div>
+  <div class="tab" onclick="switchForm('pilot')">飞手注册</div>
+  <div class="tab" onclick="switchForm('aircraft')">飞行器注册</div>
+  <div class="tab" onclick="switchForm('user')">用户注册</div>
+</div>
+
+<!-- ========== 空域申请 ========== -->
+<div class="form-page active" id="form-airspace">
+  <div class="fp-title">空域飞行申请</div>
+  <div class="fp-desc">填写空域使用申请信息，提交后进入县市省三级审批流程</div>
+
+  <div class="f-card">
+    <h3>申请信息</h3>
+    <div class="fg">
+      <label>申请类型 <span class="req">*</span></label>
+      <select id="as_type">
+        <option value="">请选择申请类型</option>
+        <option value="适飞空域">适飞空域申请</option>
+        <option value="非适飞空域">非适飞空域申请</option>
+        <option value="临时空域">临时空域申请</option>
+      </select>
+    </div>
+    <div class="fg">
+      <label>申请单位 <span class="req">*</span></label>
+      <input type="text" id="as_unit" placeholder="如：高邮市自规局">
+    </div>
+    <div class="fg-row">
+      <div class="fg">
+        <label>所属片区 <span class="req">*</span></label>
+        <select id="as_area">
+          <option value="">请选择片区</option>
+          <option>高邮市区</option><option>送桥镇</option><option>三垛镇</option>
+          <option>高邮镇</option><option>界首镇</option><option>临泽镇</option>
+        </select>
+      </div>
+      <div class="fg">
+        <label>申请空域 <span class="req">*</span></label>
+        <input type="text" id="as_airspace" placeholder="如：高邮市区-送桥">
+      </div>
+    </div>
+    <div class="fg-row">
+      <div class="fg">
+        <label>飞行高度 <span class="req">*</span></label>
+        <input type="text" id="as_height" placeholder="如：120m">
+      </div>
+      <div class="fg">
+        <label>飞行时长 <span class="req">*</span></label>
+        <input type="text" id="as_duration" placeholder="如：2.5h">
+      </div>
+    </div>
+    <div class="fg">
+      <label>申请时段</label>
+      <input type="text" id="as_period" placeholder="如：09:00-12:00（临时空域填写）">
+    </div>
+    <div class="fg">
+      <label>任务用途 <span class="req">*</span></label>
+      <select id="as_purpose">
+        <option value="">请选择用途</option>
+        <option>自然资源巡查</option><option>水利巡查</option><option>电力巡检</option>
+        <option>农业植保</option><option>物流配送</option><option>航拍测绘</option>
+        <option>应急巡查</option><option>文旅宣传</option><option>环境监测</option><option>城管巡查</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="f-card">
+    <h3>操作员信息</h3>
+    <div class="fg-row">
+      <div class="fg">
+        <label>操作员姓名 <span class="req">*</span></label>
+        <input type="text" id="as_opname" placeholder="如：张明">
+      </div>
+      <div class="fg">
+        <label>证件编号 <span class="req">*</span></label>
+        <input type="text" id="as_oplicense" placeholder="如：UA-2026-0012">
+      </div>
+    </div>
+    <div class="fg">
+      <label>联系电话</label>
+      <input type="tel" id="as_opphone" placeholder="如：138****1234">
+    </div>
+  </div>
+
+  <div class="f-card">
+    <h3>飞行器信息</h3>
+    <div class="fg-row">
+      <div class="fg">
+        <label>飞行器编号 <span class="req">*</span></label>
+        <input type="text" id="as_acid" placeholder="如：UAV-021">
+      </div>
+      <div class="fg">
+        <label>机型 <span class="req">*</span></label>
+        <select id="as_acmodel">
+          <option value="">请选择机型</option>
+          <option>大疆 M300</option><option>大疆 M30T</option><option>极飞 V40</option>
+          <option>亿航 EH216</option><option>其他机型</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <button class="btn-submit btn-primary" onclick="submitForm('airspace')">提交申请</button>
+</div>
+
+<!-- ========== 飞手注册 ========== -->
+<div class="form-page" id="form-pilot">
+  <div class="fp-title">飞手注册</div>
+  <div class="fp-desc">注册无人机操作员信息，提交后进入资质核验初审流程</div>
+
+  <div class="f-card">
+    <h3>基本信息</h3>
+    <div class="fg">
+      <label>姓名 <span class="req">*</span></label>
+      <input type="text" id="pl_name" placeholder="请输入真实姓名">
+    </div>
+    <div class="fg-row">
+      <div class="fg">
+        <label>身份证号 <span class="req">*</span></label>
+        <input type="text" id="pl_idcard" placeholder="18位身份证号" maxlength="18">
+      </div>
+      <div class="fg">
+        <label>联系电话 <span class="req">*</span></label>
+        <input type="tel" id="pl_phone" placeholder="手机号码" maxlength="11">
+      </div>
+    </div>
+    <div class="fg">
+      <label>所属单位 <span class="req">*</span></label>
+      <select id="pl_unit">
+        <option value="">请选择单位</option>
+        <option>高邮市自规局</option><option>高邮水利局</option><option>高邮供电局</option>
+        <option>高邮物流公司</option><option>高邮航拍队</option><option>高邮应急局</option>
+        <option>高邮文旅局</option><option>高邮农服中心</option><option>高邮海事局</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="f-card">
+    <h3>资质信息</h3>
+    <div class="fg">
+      <label>证件类型 <span class="req">*</span></label>
+      <select id="pl_type">
+        <option value="">请选择证件类型</option>
+        <option value="CAAC-III">CAAC-III（小型无人机）</option>
+        <option value="CAAC-IV">CAAC-IV（大型无人机）</option>
+        <option value="CAAC-V">CAAC-V（载人无人机）</option>
+      </select>
+    </div>
+    <div class="fg">
+      <label>证件编号 <span class="req">*</span></label>
+      <input type="text" id="pl_license" placeholder="如：UA-2026-0012">
+    </div>
+    <div class="fg-row">
+      <div class="fg">
+        <label>核验类型 <span class="req">*</span></label>
+        <select id="pl_verifytype">
+          <option value="">请选择</option>
+          <option>首次取证</option><option>执照复审</option><option>增驾机型</option><option>首次申请</option>
+        </select>
+      </div>
+      <div class="fg">
+        <label>提交时间</label>
+        <input type="text" id="pl_time" readonly placeholder="自动获取当前时间">
+      </div>
+    </div>
+  </div>
+
+  <div class="f-card">
+    <h3>证件上传</h3>
+    <div class="fg">
+      <label>身份证照片</label>
+      <div class="upload-area" onclick="toast('证件上传功能待接入','info')">
+        <div class="up-icon">📷</div>
+        <div class="up-text">点击上传身份证正反面</div>
+      </div>
+    </div>
+    <div class="fg">
+      <label>飞行执照照片</label>
+      <div class="upload-area" onclick="toast('证件上传功能待接入','info')">
+        <div class="up-icon">📷</div>
+        <div class="up-text">点击上传飞行执照</div>
+      </div>
+    </div>
+  </div>
+
+  <button class="btn-submit btn-primary" onclick="submitForm('pilot')">提交注册</button>
+</div>
+
+<!-- ========== 飞行器注册 ========== -->
+<div class="form-page" id="form-aircraft">
+  <div class="fp-title">飞行器注册</div>
+  <div class="fp-desc">登记飞行器信息，提交后进入注册初审流程</div>
+
+  <div class="f-card">
+    <h3>飞行器信息</h3>
+    <div class="fg-row">
+      <div class="fg">
+        <label>飞行器编号 <span class="req">*</span></label>
+        <input type="text" id="ac_id" placeholder="如：UAV-071">
+      </div>
+      <div class="fg">
+        <label>机型 <span class="req">*</span></label>
+        <select id="ac_model">
+          <option value="">请选择机型</option>
+          <option>大疆 M300</option><option>大疆 M30T</option><option>极飞 V40</option>
+          <option>亿航 EH216</option><option>其他机型</option>
+        </select>
+      </div>
+    </div>
+    <div class="fg">
+      <label>型号/序列号 <span class="req">*</span></label>
+      <input type="text" id="ac_serial" placeholder="设备序列号或出厂编号">
+    </div>
+    <div class="fg">
+      <label>所属单位 <span class="req">*</span></label>
+      <select id="ac_unit">
+        <option value="">请选择单位</option>
+        <option>高邮市自规局</option><option>高邮水利局</option><option>高邮供电局</option>
+        <option>高邮物流公司</option><option>高邮航拍队</option><option>高邮应急局</option>
+        <option>高邮文旅局</option><option>高邮农服中心</option><option>高邮海事局</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="f-card">
+    <h3>适航与年检</h3>
+    <div class="fg-row">
+      <div class="fg">
+        <label>适航状态 <span class="req">*</span></label>
+        <select id="ac_airworthy">
+          <option value="">请选择</option>
+          <option value="适航">适航</option>
+          <option value="待检">待检</option>
+          <option value="不适航">不适航</option>
+        </select>
+      </div>
+      <div class="fg">
+        <label>年检到期日 <span class="req">*</span></label>
+        <input type="date" id="ac_expire">
+      </div>
+    </div>
+    <div class="fg">
+      <label>登记时间</label>
+      <input type="text" id="ac_regtime" readonly placeholder="自动获取当前时间">
+    </div>
+  </div>
+
+  <div class="f-card">
+    <h3>技术参数</h3>
+    <div class="fg-row">
+      <div class="fg">
+        <label>最大起飞重量</label>
+        <input type="text" id="ac_weight" placeholder="如：3.5kg">
+      </div>
+      <div class="fg">
+        <label>最大飞行高度</label>
+        <input type="text" id="ac_maxheight" placeholder="如：500m">
+      </div>
+    </div>
+    <div class="fg-row">
+      <div class="fg">
+        <label>续航时间</label>
+        <input type="text" id="ac_endurance" placeholder="如：45min">
+      </div>
+      <div class="fg">
+        <label>通信频率</label>
+        <input type="text" id="ac_freq" placeholder="如：2.4GHz">
+      </div>
+    </div>
+  </div>
+
+  <button class="btn-submit btn-primary" onclick="submitForm('aircraft')">提交注册</button>
+</div>
+
+<!-- ========== 用户注册 ========== -->
+<div class="form-page" id="form-user">
+  <div class="fp-title">用户注册</div>
+  <div class="fp-desc">注册平台账号，用于登录低空飞行业务管理平台</div>
+
+  <div class="f-card">
+    <h3>账号信息</h3>
+    <div class="fg">
+      <label>用户名 <span class="req">*</span></label>
+      <input type="text" id="ur_name" placeholder="4-20位字符">
+    </div>
+    <div class="fg-row">
+      <div class="fg">
+        <label>手机号 <span class="req">*</span></label>
+        <input type="tel" id="ur_phone" placeholder="11位手机号" maxlength="11">
+      </div>
+      <div class="fg" style="flex:.7">
+        <label>验证码 <span class="req">*</span></label>
+        <div style="display:flex;gap:8px">
+          <input type="text" id="ur_code" placeholder="6位" maxlength="6" style="flex:1">
+          <button onclick="sendCode(this)" style="white-space:nowrap;padding:11px 10px;border:1px solid rgba(45,226,240,.3);border-radius:10px;background:transparent;color:var(--cyan);font-size:11px;cursor:pointer;font-family:inherit">获取</button>
+        </div>
+      </div>
+    </div>
+    <div class="fg-row">
+      <div class="fg">
+        <label>密码 <span class="req">*</span></label>
+        <input type="password" id="ur_pwd" placeholder="8-20位含数字字母">
+      </div>
+      <div class="fg">
+        <label>确认密码 <span class="req">*</span></label>
+        <input type="password" id="ur_pwd2" placeholder="再次输入密码">
+      </div>
+    </div>
+  </div>
+
+  <div class="f-card">
+    <h3>单位与角色</h3>
+    <div class="fg">
+      <label>所属单位 <span class="req">*</span></label>
+      <select id="ur_unit">
+        <option value="">请选择单位</option>
+        <option>高邮市指挥中心</option><option>高邮市自规局</option><option>高邮水利局</option>
+        <option>高邮供电局</option><option>高邮物流公司</option><option>高邮航拍队</option>
+        <option>高邮应急局</option><option>高邮文旅局</option><option>高邮农服中心</option>
+        <option>高邮海事局</option><option>高邮环保局</option>
+      </select>
+    </div>
+    <div class="fg">
+      <label>申请角色 <span class="req">*</span></label>
+      <select id="ur_role">
+        <option value="">请选择角色</option>
+        <option value="管理员">管理员（全权限）</option>
+        <option value="审批员">审批员（审批管理权限）</option>
+        <option value="操作员">操作员（申请提交权限）</option>
+      </select>
+    </div>
+    <div class="fg">
+      <label>所属片区</label>
+      <select id="ur_area">
+        <option value="">请选择片区</option>
+        <option>高邮市区</option><option>送桥镇</option><option>三垛镇</option>
+        <option>高邮镇</option><option>界首镇</option><option>临泽镇</option>
+        <option>市级</option><option>省级</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="f-card">
+    <h3>安全设置</h3>
+    <div class="fg">
+      <label>安全邮箱</label>
+      <input type="email" id="ur_email" placeholder="用于密码找回">
+    </div>
+    <div class="fg">
+      <label>应急联系人</label>
+      <input type="text" id="ur_contact" placeholder="姓名+电话">
+    </div>
+  </div>
+
+  <button class="btn-submit btn-primary" onclick="submitForm('user')">注册账号</button>
+  <button class="btn-submit btn-secondary" onclick="toast('已有账号？请使用PC端登录','info')">已有账号？PC端登录</button>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast">
+  <div class="icon" id="toastIcon">✅</div>
+  <div class="msg" id="toastMsg"></div>
+</div>
+
+<script>
+// 标签切换
+function switchForm(key){
+  document.querySelectorAll('.tab').forEach(function(t){t.classList.remove('active')});
+  document.querySelectorAll('.form-page').forEach(function(p){p.classList.remove('active')});
+  var tabMap={'airspace':0,'pilot':1,'aircraft':2,'user':3};
+  document.querySelectorAll('.tab')[tabMap[key]].classList.add('active');
+  document.getElementById('form-'+key).classList.add('active');
+  window.scrollTo(0,0);
+}
+
+// 提示弹窗
+function toast(msg,type){
+  var t=document.getElementById('toast');
+  var i=document.getElementById('toastIcon');
+  var m=document.getElementById('toastMsg');
+  if(type==='info'){i.textContent='ℹ️'}
+  else if(type==='error'){i.textContent='❌'}
+  else{i.textContent='✅'}
+  m.textContent=msg;
+  t.classList.add('show');
+  setTimeout(function(){t.classList.remove('show')},2200);
+}
+
+// 发送验证码
+var codeCount=0;
+function sendCode(btn){
+  var phone=document.getElementById('ur_phone').value;
+  if(!phone||phone.length!==11||!/^1\d{10}$/.test(phone)){toast('请输入正确的手机号','error');return}
+  codeCount=60;
+  btn.disabled=true;
+  btn.style.opacity='.5';
+  var timer=setInterval(function(){
+    codeCount--;
+    btn.textContent=codeCount+'s';
+    if(codeCount<=0){clearInterval(timer);btn.disabled=false;btn.style.opacity='1';btn.textContent='获取'}
+  },1000);
+  toast('验证码已发送至 '+phone,'info');
+}
+
+// 表单提交
+function submitForm(type){
+  var fields={
+    airspace:['as_type','as_unit','as_area','as_airspace','as_height','as_duration','as_purpose','as_opname','as_oplicense','as_acid','as_acmodel'],
+    pilot:['pl_name','pl_idcard','pl_phone','pl_unit','pl_type','pl_license','pl_verifytype'],
+    aircraft:['ac_id','ac_model','ac_serial','ac_unit','ac_airworthy','ac_expire'],
+    user:['ur_name','ur_phone','ur_code','ur_pwd','ur_pwd2','ur_unit','ur_role']
+  };
+  var labels={
+    as_type:'申请类型',as_unit:'申请单位',as_area:'所属片区',as_airspace:'申请空域',as_height:'飞行高度',as_duration:'飞行时长',as_purpose:'任务用途',as_opname:'操作员姓名',as_oplicense:'证件编号',as_acid:'飞行器编号',as_acmodel:'机型',
+    pl_name:'姓名',pl_idcard:'身份证号',pl_phone:'联系电话',pl_unit:'所属单位',pl_type:'证件类型',pl_license:'证件编号',pl_verifytype:'核验类型',
+    ac_id:'飞行器编号',ac_model:'机型',ac_serial:'序列号',ac_unit:'所属单位',ac_airworthy:'适航状态',ac_expire:'年检到期日',
+    ur_name:'用户名',ur_phone:'手机号',ur_code:'验证码',ur_pwd:'密码',ur_pwd2:'确认密码',ur_unit:'所属单位',ur_role:'申请角色'
+  };
+  var ids=fields[type];
+  for(var i=0;i<ids.length;i++){
+    var el=document.getElementById(ids[i]);
+    if(!el.value||!el.value.trim()){
+      toast('请填写'+labels[ids[i]],'error');
+      el.focus();
+      return;
+    }
+  }
+  // 密码确认
+  if(type==='user'){
+    if(document.getElementById('ur_pwd').value!==document.getElementById('ur_pwd2').value){
+      toast('两次密码不一致','error');return;
+    }
+    if(document.getElementById('ur_pwd').value.length<8){
+      toast('密码至少8位','error');return;
+    }
+  }
+  // 身份证校验
+  if(type==='pilot'){
+    if(document.getElementById('pl_idcard').value.length!==18){
+      toast('身份证号需18位','error');return;
+    }
+  }
+  var msgs={
+    airspace:'空域申请已提交，进入县市省三级审批流程',
+    pilot:'飞手注册已提交，等待资质核验初审',
+    aircraft:'飞行器注册已提交，等待注册初审',
+    user:'用户注册成功，请等待管理员审核激活'
+  };
+  toast(msgs[type],'success');
+  // 清空表单
+  setTimeout(function(){
+    ids.forEach(function(id){document.getElementById(id).value=''});
+  },2400);
+}
+
+// 自动填充当前时间
+function fillTime(){
+  var now=new Date();
+  var str=now.getFullYear()+'-'+String(now.getMonth()+1).padStart(2,'0')+'-'+String(now.getDate()).padStart(2,'0')+' '+String(now.getHours()).padStart(2,'0')+':'+String(now.getMinutes()).padStart(2,'0');
+  ['pl_time','ac_regtime'].forEach(function(id){
+    var el=document.getElementById(id);
+    if(el)el.value=str;
+  });
+}
+fillTime();
+</script>
+</body>
+</html>
