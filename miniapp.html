@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+<title>低空飞行业务管理平台</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--blue:#0082D9;--cyan:#2de2f0;--red:#C8102E;--green:#34d399;--amber:#fbbf24;--purple:#a78bfa;--bg:#f5f7fa;--card:#fff;--text:#1a2b42;--sub:#8aa0bb;--line:#eef2f7;--radius:12px}
+body{font-family:"Microsoft YaHei","PingFang SC",sans-serif;background:var(--bg);color:var(--text);min-height:100vh;-webkit-tap-highlight-color:transparent;padding-bottom:62px}
+.page{display:none;min-height:100vh}.page.active{display:block}
+.page-slide{animation:slideIn .28s ease}
+@keyframes slideIn{from{opacity:0;transform:translateX(12px)}to{opacity:1;transform:translateX(0)}}
+
+/* === 顶部状态栏 === */
+.statusbar{height:44px;background:linear-gradient(135deg,#0a1f3c,#103258);display:flex;align-items:center;justify-content:center;color:#e8f1fb;font-size:14px;font-weight:600;position:sticky;top:0;z-index:50}
+.statusbar .back{position:absolute;left:16px;font-size:18px;cursor:pointer;color:#8aa0bb}
+
+/* === 登录/注册页 === */
+#page-login{background:linear-gradient(180deg,#0a1f3c 0%,#103258 40%,#f5f7fa 100%);min-height:100vh}
+.login-wrap{padding:60px 28px 20px}
+.login-logo{width:64px;height:64px;border-radius:18px;background:linear-gradient(135deg,#0082D9,#2de2f0);display:flex;align-items:center;justify-content:center;font-size:32px;margin:0 auto 16px;box-shadow:0 4px 20px rgba(0,130,217,.3)}
+.login-title{text-align:center;font-size:20px;font-weight:700;color:#e8f1fb;margin-bottom:4px}
+.login-sub{text-align:center;font-size:12px;color:#6b87a8;margin-bottom:36px}
+.login-card{background:var(--card);border-radius:18px;padding:24px 20px;box-shadow:0 8px 30px rgba(10,31,60,.08)}
+.lc-tab{display:flex;margin-bottom:20px;border-bottom:2px solid var(--line)}
+.lc-tab div{flex:1;text-align:center;padding:10px 0;font-size:14px;color:var(--sub);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-2px}
+.lc-tab div.active{color:var(--blue);border-bottom-color:var(--blue);font-weight:600}
+.lc-field{margin-bottom:16px}
+.lc-field label{display:block;font-size:12px;color:var(--sub);margin-bottom:6px}
+.lc-field input{width:100%;border:1px solid var(--line);border-radius:10px;padding:12px 14px;font-size:14px;color:var(--text);outline:none;transition:border-color .2s}
+.lc-field input:focus{border-color:var(--blue)}
+.lc-code{display:flex;gap:10px}
+.lc-code input{flex:1}
+.lc-code button{white-space:nowrap;padding:0 14px;border:1px solid var(--blue);border-radius:10px;background:transparent;color:var(--blue);font-size:12px;cursor:pointer}
+.lc-code button:disabled{opacity:.5}
+.lc-btn{width:100%;padding:13px;border:none;border-radius:12px;font-size:15px;font-weight:700;cursor:pointer;background:linear-gradient(135deg,#0082D9,#2de2f0);color:#fff;margin-top:8px}
+.lc-btn:active{transform:scale(.97)}
+.lc-hint{text-align:center;font-size:11px;color:var(--sub);margin-top:14px}
+
+/* === 首页 === */
+.home-header{background:linear-gradient(135deg,#0a1f3c,#103258);padding:20px 18px 50px;position:relative}
+.home-header .user{display:flex;align-items:center;gap:10px;margin-bottom:16px}
+.home-header .avatar{width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#0082D9,#2de2f0);display:flex;align-items:center;justify-content:center;font-size:18px;color:#fff}
+.home-header .uname{color:#e8f1fb;font-size:15px;font-weight:600}
+.home-header .urole{color:#6b87a8;font-size:11px}
+.home-header .h-title{color:#e8f1fb;font-size:17px;font-weight:700}
+.home-stats{position:absolute;left:14px;right:14px;bottom:-30px;display:flex;gap:10px}
+.hs-card{flex:1;background:var(--card);border-radius:14px;padding:14px 10px;text-align:center;box-shadow:0 4px 16px rgba(10,31,60,.06)}
+.hs-val{font-size:22px;font-weight:800;color:var(--blue)}
+.hs-label{font-size:11px;color:var(--sub);margin-top:2px}
+
+.home-body{padding:42px 14px 14px}
+.sec-title{font-size:14px;font-weight:700;margin:16px 0 10px;display:flex;align-items:center;gap:6px}
+.sec-title::before{content:'';width:4px;height:14px;background:var(--blue);border-radius:2px}
+.sec-title .more{margin-left:auto;font-size:11px;color:var(--sub);font-weight:400;cursor:pointer}
+
+/* 公告 */
+.notice-list .nl-item{background:var(--card);border-radius:10px;padding:12px 14px;margin-bottom:8px;display:flex;gap:10px;align-items:flex-start;cursor:pointer}
+.nl-item:active{background:#f0f4fa}
+.nl-tag{flex-shrink:0;font-size:10px;padding:2px 8px;border-radius:4px;font-weight:600;margin-top:1px}
+.nl-tag.red{background:#fdeaea;color:var(--red)}
+.nl-tag.blue{background:#e6f2ff;color:var(--blue)}
+.nl-tag.green{background:#e8f9ee;color:var(--green)}
+.nl-text{flex:1}
+.nl-title{font-size:13px;font-weight:600;line-height:1.4}
+.nl-date{font-size:11px;color:var(--sub);margin-top:3px}
+
+/* 功能入口网格 */
+.func-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:8px 0}
+.fg-item{background:var(--card);border-radius:14px;padding:16px 6px;text-align:center;cursor:pointer;transition:transform .15s}
+.fg-item:active{transform:scale(.93)}
+.fg-icon{width:42px;height:42px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px;margin:0 auto 6px}
+.fg-icon.blue{background:#e6f2ff;color:var(--blue)}
+.fg-icon.cyan{background:#e0fbff;color:#0891b5}
+.fg-icon.green{background:#e8f9ee;color:var(--green)}
+.fg-icon.amber{background:#fff8e6;color:var(--amber)}
+.fg-icon.purple{background:#f0ebff;color:var(--purple)}
+.fg-icon.red{background:#fdeaea;color:var(--red)}
+.fg-label{font-size:11px;color:var(--text);font-weight:600}
+.fg-badge{font-size:9px;color:var(--red);background:#fdeaea;padding:1px 5px;border-radius:8px;margin-left:2px}
+
+/* === 通用列表页 === */
+.list-header{background:linear-gradient(135deg,#0a1f3c,#103258);padding:16px 18px;color:#e8f1fb}
+.list-header h2{font-size:17px;font-weight:700}
+.list-header .sub{font-size:11px;color:#6b87a8;margin-top:2px}
+.list-tabs{display:flex;background:var(--card);border-bottom:1px solid var(--line);position:sticky;top:44px;z-index:40}
+.list-tab{flex:1;padding:11px 0;text-align:center;font-size:12.5px;color:var(--sub);cursor:pointer;border-bottom:2.5px solid transparent}
+.list-tab.active{color:var(--blue);border-bottom-color:var(--blue);font-weight:600}
+
+.list-body{padding:12px 14px}
+.li-card{background:var(--card);border-radius:12px;padding:14px;margin-bottom:10px;cursor:pointer;transition:transform .12s;box-shadow:0 1px 6px rgba(10,31,60,.04)}
+.li-card:active{transform:scale(.98)}
+.li-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.li-id{font-size:13px;font-weight:700;color:var(--text)}
+.li-status{font-size:11px;padding:2px 10px;border-radius:10px;font-weight:600}
+.st-orange{background:#fff3e6;color:#e07b00}
+.st-green{background:#e8f9ee;color:#1f9d55}
+.st-blue{background:#e6f2ff;color:#0077d9}
+.st-red{background:#fdeaea;color:#d63031}
+.st-gray{background:#f0f2f5;color:#7a8aa0}
+.st-purple{background:#f0ebff;color:#6c4fd6}
+.li-row{display:flex;font-size:12px;margin-bottom:4px}
+.li-row .lr-label{color:var(--sub);width:72px;flex-shrink:0}
+.li-row .lr-val{color:var(--text);font-weight:500;flex:1}
+.li-prog{margin-top:8px;display:flex;align-items:center;gap:4px}
+.li-prog-bar{flex:1;height:5px;background:#eef2f7;border-radius:3px;overflow:hidden}
+.li-prog-fill{height:100%;border-radius:3px;background:linear-gradient(90deg,var(--blue),var(--cyan))}
+.li-prog-text{font-size:10px;color:var(--sub);white-space:nowrap}
+
+/* === 详情页 === */
+.detail-body{padding:12px 14px}
+.dl-card{background:var(--card);border-radius:14px;padding:16px;margin-bottom:12px}
+.dl-card h3{font-size:14px;font-weight:700;margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:6px}
+.dl-card h3::before{content:'';width:4px;height:14px;background:var(--blue);border-radius:2px}
+.dl-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px 12px}
+.dl-item{display:flex;align-items:center;gap:6px;font-size:12.5px}
+.dl-item .dl-label{color:var(--sub);flex-shrink:0}
+.dl-item .dl-val{color:var(--text);font-weight:600}
+
+/* 进度时间线 */
+.timeline{padding:4px 0 0 4px}
+.tl-node{display:flex;gap:12px;padding-bottom:16px;position:relative}
+.tl-node:last-child{padding-bottom:0}
+.tl-dot{width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;flex-shrink:0;z-index:1}
+.tl-dot.done{background:#e8f9ee;color:var(--green);border:2px solid var(--green)}
+.tl-dot.cur{background:#e6f2ff;color:var(--blue);border:2px solid var(--blue);animation:tlPulse 1.8s infinite}
+.tl-dot.wait{background:#f0f2f5;color:#aab;border:2px solid #ccd}
+@keyframes tlPulse{0%,100%{box-shadow:0 0 0 0 rgba(0,130,217,.3)}50%{box-shadow:0 0 0 6px rgba(0,130,217,0)}}
+.tl-line{position:absolute;left:11px;top:22px;bottom:0;width:2px;background:#eef2f7}
+.tl-node.done+.tl-line,.tl-node:last-child .tl-line{display:none}
+.tl-node.done .tl-line{background:var(--green)}
+.tl-content{flex:1;padding-top:1px}
+.tl-name{font-size:13px;font-weight:700}
+.tl-time{font-size:11px;color:var(--sub);margin-top:2px}
+.tl-status{font-size:11px;margin-top:3px}
+.tl-status.done{color:var(--green)}
+.tl-status.cur{color:var(--blue)}
+.tl-status.wait{color:#aab}
+
+/* === 底部导航 === */
+.tabbar{position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px solid var(--line);display:flex;z-index:99;height:62px}
+.tb-item{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;padding-top:6px}
+.tb-icon{font-size:21px;margin-bottom:2px;color:#aab;transition:color .2s}
+.tb-label{font-size:10px;color:#aab}
+.tb-item.active .tb-icon,.tb-item.active .tb-label{color:var(--blue)}
+
+/* === 浮动新增按钮 === */
+.fab{position:fixed;right:20px;bottom:78px;width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,#0082D9,#2de2f0);display:flex;align-items:center;justify-content:center;font-size:24px;color:#fff;cursor:pointer;box-shadow:0 4px 16px rgba(0,130,217,.35);z-index:80;transition:transform .15s}
+.fab:active{transform:scale(.9)}
+
+/* === Toast === */
+.toast{position:fixed;top:45%;left:50%;transform:translate(-50%,-50%);background:rgba(10,30,60,.92);border-radius:14px;padding:16px 28px;text-align:center;z-index:200;display:none;max-width:75%}
+.toast.show{display:block;animation:fadeIn .25s}
+.toast .ti{font-size:32px;margin-bottom:6px}
+.toast .tm{font-size:13px;color:#e8f1fb;line-height:1.5}
+@keyframes fadeIn{from{opacity:0;transform:translate(-50%,-40%) scale(.9)}to{opacity:1;transform:translate(-50%,-50%) scale(1)}}
+
+/* === 申请表单弹窗 === */
+.form-mask{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:150;display:none;align-items:flex-end;justify-content:center}
+.form-mask.show{display:flex}
+.form-sheet{background:#fff;width:100%;max-width:500px;border-radius:18px 18px 0 0;max-height:85vh;overflow-y:auto;animation:slideUp .3s ease}
+@keyframes slideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
+.fs-header{display:flex;align-items:center;justify-content:space-between;padding:16px 18px;border-bottom:1px solid var(--line);position:sticky;top:0;background:#fff;border-radius:18px 18px 0 0}
+.fs-header h3{font-size:16px;font-weight:700}
+.fs-close{font-size:20px;color:var(--sub);cursor:pointer;padding:4px 8px}
+.fs-body{padding:18px}
+.fs-field{margin-bottom:14px}
+.fs-field label{display:block;font-size:12px;color:var(--sub);margin-bottom:5px}
+.fs-field label .req{color:var(--red)}
+.fs-field input,.fs-field select{width:100%;border:1px solid var(--line);border-radius:10px;padding:11px 13px;font-size:13px;color:var(--text);outline:none;font-family:inherit}
+.fs-field input:focus,.fs-field select:focus{border-color:var(--blue)}
+.fs-row{display:flex;gap:10px}
+.fs-row .fs-field{flex:1}
+.fs-btn{width:100%;padding:13px;border:none;border-radius:12px;font-size:15px;font-weight:700;cursor:pointer;background:linear-gradient(135deg,#0082D9,#2de2f0);color:#fff;margin-top:6px}
+.fs-btn:active{transform:scale(.97)}
+</style>
+</head>
+<body>
+
+<!-- ============ 登录/注册页 ============ -->
+<div class="page" id="page-login">
+  <div class="login-wrap">
+    <div class="login-logo">✈</div>
+    <div class="login-title">低空飞行业务管理平台</div>
+    <div class="login-sub">移动端业务申请 · 高邮市</div>
+    <div class="login-card">
+      <div class="lc-tab">
+        <div class="active" onclick="lcTab('login')">登录</div>
+        <div onclick="lcTab('reg')">注册</div>
+      </div>
+      <div id="lc-login">
+        <div class="lc-field"><label>手机号</label><input type="tel" id="lg_phone" placeholder="11位手机号" maxlength="11"></div>
+        <div class="lc-field"><label>密码</label><input type="password" id="lg_pwd" placeholder="请输入密码"></div>
+        <button class="lc-btn" onclick="doLogin()">登 录</button>
+      </div>
+      <div id="lc-reg" style="display:none">
+        <div class="lc-field"><label>用户名</label><input type="text" id="rg_name" placeholder="请输入姓名"></div>
+        <div class="lc-field"><label>手机号</label><input type="tel" id="rg_phone" placeholder="11位手机号" maxlength="11"></div>
+        <div class="lc-field"><label>验证码</label>
+          <div class="lc-code"><input type="text" id="rg_code" placeholder="6位验证码" maxlength="6"><button onclick="sendCode(this)" id="codeBtn">获取验证码</button></div>
+        </div>
+        <div class="lc-field"><label>密码</label><input type="password" id="rg_pwd" placeholder="8-20位密码"></div>
+        <div class="lc-field"><label>所属单位</label>
+          <select id="rg_unit" style="width:100%;border:1px solid var(--line);border-radius:10px;padding:12px 14px;font-size:14px;color:var(--text);outline:none;font-family:inherit">
+            <option value="">请选择单位</option><option>高邮市自规局</option><option>高邮水利局</option><option>高邮供电局</option><option>高邮物流公司</option><option>高邮应急局</option><option>高邮文旅局</option><option>高邮农服中心</option><option>高邮海事局</option>
+          </select>
+        </div>
+        <button class="lc-btn" onclick="doReg()">注 册</button>
+      </div>
+      <div class="lc-hint">登录/注册即代表同意《用户服务协议》</div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ 首页 ============ -->
+<div class="page" id="page-home">
+  <div class="home-header">
+    <div class="user">
+      <div class="avatar" id="home_avatar">张</div>
+      <div><div class="uname" id="home_uname">张明</div><div class="urole" id="home_urole">高邮市自规局 · 操作员</div></div>
+    </div>
+    <div class="h-title">低空飞行业务管理平台</div>
+    <div class="home-stats">
+      <div class="hs-card"><div class="hs-val" id="hs_as">3</div><div class="hs-label">空域申请</div></div>
+      <div class="hs-card"><div class="hs-val" id="hs_ac">2</div><div class="hs-label">飞行器</div></div>
+      <div class="hs-card"><div class="hs-val" id="hs_pl">1</div><div class="hs-label">飞手注册</div></div>
+    </div>
+  </div>
+  <div class="home-body">
+    <div class="sec-title">快捷功能</div>
+    <div class="func-grid">
+      <div class="fg-item" onclick="navTo('airspace')"><div class="fg-icon blue">📋</div><div class="fg-label">空域申请<span class="fg-badge">3</span></div></div>
+      <div class="fg-item" onclick="navTo('aircraft')"><div class="fg-icon cyan">🚁</div><div class="fg-label">飞行器管理</div></div>
+      <div class="fg-item" onclick="navTo('pilot')"><div class="fg-icon green">👤</div><div class="fg-label">飞手注册</div></div>
+      <div class="fg-item" onclick="navTo('user')"><div class="fg-icon amber">🔑</div><div class="fg-label">用户注册</div></div>
+    </div>
+    <div class="sec-title">公共信息<span class="more" onclick="toast('查看全部公告')">更多</span></div>
+    <div class="notice-list" id="noticeList"></div>
+    <div class="sec-title">近期申请</div>
+    <div id="recentList"></div>
+  </div>
+</div>
+
+<!-- ============ 空域申请列表页 ============ -->
+<div class="page" id="page-airspace">
+  <div class="statusbar">空域申请</div>
+  <div class="list-tabs">
+    <div class="list-tab active" onclick="listFilter('airspace','all',this)">全部</div>
+    <div class="list-tab" onclick="listFilter('airspace','审批中',this)">审批中</div>
+    <div class="list-tab" onclick="listFilter('airspace','已通过',this)">已通过</div>
+    <div class="list-tab" onclick="listFilter('airspace','待受理',this)">待受理</div>
+  </div>
+  <div class="list-body" id="list-airspace"></div>
+  <div class="fab" onclick="openForm('airspace')">+</div>
+</div>
+
+<!-- ============ 飞行器管理列表页 ============ -->
+<div class="page" id="page-aircraft">
+  <div class="statusbar">飞行器管理</div>
+  <div class="list-tabs">
+    <div class="list-tab active" onclick="listFilter('aircraft','all',this)">全部</div>
+    <div class="list-tab" onclick="listFilter('aircraft','适航',this)">适航</div>
+    <div class="list-tab" onclick="listFilter('aircraft','待检',this)">待检</div>
+    <div class="list-tab" onclick="listFilter('aircraft','年检逾期',this)">逾期</div>
+  </div>
+  <div class="list-body" id="list-aircraft"></div>
+  <div class="fab" onclick="openForm('aircraft')">+</div>
+</div>
+
+<!-- ============ 飞手注册列表页 ============ -->
+<div class="page" id="page-pilot">
+  <div class="statusbar">飞手注册</div>
+  <div class="list-tabs">
+    <div class="list-tab active" onclick="listFilter('pilot','all',this)">全部</div>
+    <div class="list-tab" onclick="listFilter('pilot','待初审',this)">待初审</div>
+    <div class="list-tab" onclick="listFilter('pilot','核验中',this)">核验中</div>
+    <div class="list-tab" onclick="listFilter('pilot','已通过',this)">已通过</div>
+  </div>
+  <div class="list-body" id="list-pilot"></div>
+  <div class="fab" onclick="openForm('pilot')">+</div>
+</div>
+
+<!-- ============ 用户注册列表页 ============ -->
+<div class="page" id="page-user">
+  <div class="statusbar">用户注册</div>
+  <div class="list-tabs">
+    <div class="list-tab active" onclick="listFilter('user','all',this)">全部</div>
+    <div class="list-tab" onclick="listFilter('user','待审核',this)">待审核</div>
+    <div class="list-tab" onclick="listFilter('user','已通过',this)">已通过</div>
+  </div>
+  <div class="list-body" id="list-user"></div>
+  <div class="fab" onclick="openForm('user')">+</div>
+</div>
+
+<!-- ============ 详情页 ============ -->
+<div class="page" id="page-detail">
+  <div class="statusbar"><span class="back" onclick="goBack()">‹</span><span id="detail-title">申请详情</span></div>
+  <div class="detail-body" id="detail-body"></div>
+</div>
+
+<!-- ============ 底部导航 ============ -->
+<div class="tabbar" id="tabbar" style="display:none">
+  <div class="tb-item active" onclick="navTab('home')"><div class="tb-icon">🏠</div><div class="tb-label">首页</div></div>
+  <div class="tb-item" onclick="navTab('airspace')"><div class="tb-icon">📋</div><div class="tb-label">空域</div></div>
+  <div class="tb-item" onclick="navTab('aircraft')"><div class="tb-icon">🚁</div><div class="tb-label">飞行器</div></div>
+  <div class="tb-item" onclick="navTab('pilot')"><div class="tb-icon">👤</div><div class="tb-label">飞手</div></div>
+  <div class="tb-item" onclick="navTab('mine')"><div class="tb-icon">⚙️</div><div class="tb-label">我的</div></div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"><div class="ti" id="toastIcon">✅</div><div class="tm" id="toastMsg"></div></div>
+
+<!-- 表单弹窗 -->
+<div class="form-mask" id="formMask"><div class="form-sheet" id="formSheet"></div></div>
+
+<script>
+// ========== 数据 ==========
+var applyData={
+  airspace:[
+    {id:'SF-20260922-001',type:'适飞空域',unit:'高邮市自规局',area:'高邮市区',airspace:'高邮市区-送桥',height:'120m',duration:'2.5h',purpose:'自然资源巡查',opName:'张明',opLicense:'UA-2026-0012',opPhone:'138****1234',acId:'UAV-021',acModel:'大疆M300',time:'09:15',status:'审批中',progress:3,
+      steps:[{name:'区县受理',time:'08:30',st:'done'},{name:'区县初审',time:'09:10',st:'done'},{name:'市级审批',time:'10:05',st:'cur'},{name:'省级审批',time:'—',st:'wait'},{name:'审批回传',time:'—',st:'wait'},{name:'区县执行',time:'—',st:'wait'}]},
+    {id:'SF-20260922-002',type:'适飞空域',unit:'高邮物流公司',area:'送桥镇',airspace:'送桥-邵伯湖',height:'100m',duration:'1.5h',purpose:'物流配送',opName:'李伟',opLicense:'UA-2026-0015',opPhone:'138****5678',acId:'UAV-048',acModel:'大疆M30T',time:'09:22',status:'审批中',progress:2,
+      steps:[{name:'区县受理',time:'09:00',st:'done'},{name:'区县初审',time:'09:30',st:'cur'},{name:'市级审批',time:'—',st:'wait'},{name:'省级审批',time:'—',st:'wait'},{name:'审批回传',time:'—',st:'wait'},{name:'区县执行',time:'—',st:'wait'}]},
+    {id:'NF-20260922-003',type:'非适飞空域',unit:'高邮供电局',area:'界首镇',airspace:'界首-临泽',height:'120m',duration:'2.5h',purpose:'电力巡检',opName:'赵磊',opLicense:'UA-2026-0033',opPhone:'139****7890',acId:'UAV-052',acModel:'亿航EH216',time:'08:30',status:'审批中',progress:4,
+      steps:[{name:'区县受理',time:'07:50',st:'done'},{name:'区县初审',time:'08:10',st:'done'},{name:'市级审批',time:'08:30',st:'done'},{name:'省级审批',time:'10:00',st:'cur'},{name:'审批回传',time:'—',st:'wait'},{name:'区县执行',time:'—',st:'wait'}]},
+    {id:'SF-20260922-003',type:'适飞空域',unit:'高邮航拍队',area:'三垛镇',airspace:'三垛-高邮镇',height:'150m',duration:'1h',purpose:'航拍测绘',opName:'孙超',opLicense:'UA-2026-0041',opPhone:'139****3456',acId:'UAV-061',acModel:'大疆M300',time:'10:00',status:'已通过',progress:6,
+      steps:[{name:'区县受理',time:'09:20',st:'done'},{name:'区县初审',time:'09:40',st:'done'},{name:'市级审批',time:'10:00',st:'done'},{name:'省级审批',time:'10:30',st:'done'},{name:'审批回传',time:'10:45',st:'done'},{name:'区县执行',time:'11:00',st:'done'}]},
+    {id:'LS-20260922-001',type:'临时空域',unit:'高邮物流公司',area:'高邮市区',airspace:'高邮市区-高邮镇',height:'120m',duration:'2h',purpose:'物流配送',opName:'李伟',opLicense:'UA-2026-0015',opPhone:'138****5678',acId:'UAV-048',acModel:'大疆M30T',time:'14:00',status:'待受理',progress:1,
+      steps:[{name:'区县受理',time:'14:05',st:'cur'},{name:'区县初审',time:'—',st:'wait'},{name:'市级审批',time:'—',st:'wait'},{name:'省级审批',time:'—',st:'wait'},{name:'审批回传',time:'—',st:'wait'},{name:'区县执行',time:'—',st:'wait'}]},
+    {id:'NF-20260922-005',type:'非适飞空域',unit:'高邮海事局',area:'高邮镇',airspace:'高邮镇-运河',height:'80m',duration:'1.5h',purpose:'海事巡查',opName:'周强',opLicense:'UA-2026-0045',opPhone:'137****2345',acId:'UAV-065',acModel:'极飞V40',time:'10:15',status:'已通过',progress:6,
+      steps:[{name:'区县受理',time:'09:30',st:'done'},{name:'区县初审',time:'09:50',st:'done'},{name:'市级审批',time:'10:15',st:'done'},{name:'省级审批',time:'10:40',st:'done'},{name:'审批回传',time:'10:55',st:'done'},{name:'区县执行',time:'11:20',st:'done'}]}
+  ],
+  aircraft:[
+    {id:'AC-021',acId:'UAV-021',model:'大疆M300',unit:'高邮市自规局',serial:'DJI-M300-08821',airworthy:'适航',expire:'2026-12-01',regTime:'2026-03-12',weight:'3.5kg',maxHeight:'500m',status:'适航',progress:0,steps:[]},
+    {id:'AC-048',acId:'UAV-048',model:'大疆M30T',unit:'高邮物流公司',serial:'DJI-M30T-12048',airworthy:'适航',expire:'2026-09-30',regTime:'2026-04-18',weight:'2.8kg',maxHeight:'450m',status:'适航',progress:0,steps:[]},
+    {id:'AC-061',acId:'UAV-061',model:'大疆M300',unit:'高邮航拍队',serial:'DJI-M300-09061',airworthy:'年检逾期',expire:'2026-06-30',regTime:'2026-06-15',weight:'3.5kg',maxHeight:'500m',status:'年检逾期',progress:0,steps:[]},
+    {id:'AC-065',acId:'UAV-065',model:'极飞V40',unit:'高邮应急局',serial:'XA-V40-0065',airworthy:'适航',expire:'2027-01-10',regTime:'2026-07-01',weight:'2.2kg',maxHeight:'300m',status:'适航',progress:0,steps:[]},
+    {id:'AC-070',acId:'UAV-070',model:'大疆M300',unit:'高邮农服中心',serial:'DJI-M300-10070',airworthy:'待检',expire:'2026-11-05',regTime:'2026-08-08',weight:'3.5kg',maxHeight:'500m',status:'待检',progress:0,steps:[]}
+  ],
+  pilot:[
+    {id:'QT-20260922-001',name:'刘洋',idCard:'3210****1234',phone:'138****1111',unit:'高邮市自规局',license:'CAAC-III',licNo:'UA-2026-0099',verifyType:'首次取证',time:'09:00',status:'待初审',progress:1,
+      steps:[{name:'提交申请',time:'09:00',st:'done'},{name:'资质初审',time:'—',st:'cur'},{name:'证件核验',time:'—',st:'wait'},{name:'审核通过',time:'—',st:'wait'}]},
+    {id:'QT-20260922-002',name:'陈晨',idCard:'3210****5678',phone:'138****2222',unit:'高邮水利局',license:'CAAC-IV',licNo:'UA-2026-0102',verifyType:'执照复审',time:'09:30',status:'核验中',progress:2,
+      steps:[{name:'提交申请',time:'09:30',st:'done'},{name:'资质初审',time:'10:00',st:'done'},{name:'证件核验',time:'10:30',st:'cur'},{name:'审核通过',time:'—',st:'wait'}]},
+    {id:'QT-20260922-003',name:'周强',idCard:'3210****9012',phone:'137****2345',unit:'高邮应急局',license:'CAAC-V',licNo:'UA-2026-0045',verifyType:'增驾机型',time:'10:00',status:'已通过',progress:4,
+      steps:[{name:'提交申请',time:'10:00',st:'done'},{name:'资质初审',time:'10:20',st:'done'},{name:'证件核验',time:'10:45',st:'done'},{name:'审核通过',time:'11:00',st:'done'}]},
+    {id:'QT-20260922-004',name:'吴迪',idCard:'3210****3456',phone:'137****6789',unit:'高邮文旅局',license:'CAAC-III',licNo:'UA-2026-0052',verifyType:'首次申请',time:'10:20',status:'待初审',progress:1,
+      steps:[{name:'提交申请',time:'10:20',st:'done'},{name:'资质初审',time:'—',st:'cur'},{name:'证件核验',time:'—',st:'wait'},{name:'审核通过',time:'—',st:'wait'}]}
+  ],
+  user:[
+    {id:'UR-001',name:'郑华',phone:'139****7890',unit:'高邮农服中心',role:'操作员',area:'高邮市区',time:'09:10',status:'待审核',progress:1,
+      steps:[{name:'提交注册',time:'09:10',st:'done'},{name:'管理员审核',time:'—',st:'cur'},{name:'账号激活',time:'—',st:'wait'}]},
+    {id:'UR-002',name:'冯军',phone:'137****3456',unit:'高邮海事局',role:'审批员',area:'市级',time:'09:45',status:'已通过',progress:3,
+      steps:[{name:'提交注册',time:'09:45',st:'done'},{name:'管理员审核',time:'10:00',st:'done'},{name:'账号激活',time:'10:05',st:'done'}]},
+    {id:'UR-003',name:'周敏',phone:'137****0222',unit:'高邮文旅局',role:'操作员',area:'高邮镇',time:'10:30',status:'待审核',progress:1,
+      steps:[{name:'提交注册',time:'10:30',st:'done'},{name:'管理员审核',time:'—',st:'cur'},{name:'账号激活',time:'—',st:'wait'}]}
+  ]
+};
+var notices=[
+  {tag:'red',text:'关于高邮市区9月25日临时管制空域的通告',date:'2026-09-24'},
+  {tag:'blue',text:'县市省三级审批流程已上线，请通过移动端提交申请',date:'2026-09-23'},
+  {tag:'green',text:'高邮市低空经济综合飞行业务平台正式运行',date:'2026-09-22'},
+  {tag:'blue',text:'关于开展2026年度飞行器年检工作的通知',date:'2026-09-20'}
+];
+var statusClass={};
+statusClass['审批中']='st-orange';statusClass['已通过']='st-green';statusClass['待受理']='st-blue';statusClass['待审核']='st-orange';statusClass['核验中']='st-orange';statusClass['适航']='st-green';statusClass['待检']='st-orange';statusClass['年检逾期']='st-red';
+var currentPage='login',prevPage='',listFilterKey={airspace:'all',aircraft:'all',pilot:'all',user:'all'};
+
+// ========== 页面导航 ==========
+function showPage(id){
+  document.querySelectorAll('.page').forEach(function(p){p.classList.remove('active','page-slide')});
+  var p=document.getElementById('page-'+id);if(p){p.classList.add('active','page-slide')}
+  currentPage=id;
+  document.getElementById('tabbar').style.display=(id==='login'||id==='detail')?'none':'flex';
+}
+function navTab(id){
+  if(id==='mine'){toast('个人中心开发中','info');return}
+  showPage(id);
+  document.querySelectorAll('.tb-item').forEach(function(t,i){t.classList.toggle('active',['home','airspace','aircraft','pilot','mine'].indexOf(id)===i)});
+}
+function navTo(id){showPage(id);document.querySelectorAll('.tb-item').forEach(function(t,i){t.classList.toggle('active',['home','airspace','aircraft','pilot','mine'].indexOf(id)===i)})}
+function goBack(){showPage(prevPage||'home');document.querySelectorAll('.tb-item').forEach(function(t,i){t.classList.toggle('active',['home','airspace','aircraft','pilot','mine'].indexOf(prevPage||'home')===i)})}
+
+// ========== 登录/注册 ==========
+function lcTab(t){
+  document.querySelectorAll('.lc-tab div').forEach(function(d){d.classList.remove('active')});
+  event.target.classList.add('active');
+  document.getElementById('lc-login').style.display=t==='login'?'block':'none';
+  document.getElementById('lc-reg').style.display=t==='reg'?'block':'none';
+}
+var codeCount=0;
+function sendCode(btn){
+  var phone=document.getElementById('rg_phone').value;
+  if(!/^1\d{10}$/.test(phone)){toast('请输入正确手机号','error');return}
+  codeCount=60;btn.disabled=true;btn.style.opacity=.5;
+  var timer=setInterval(function(){codeCount--;btn.textContent=codeCount+'s';if(codeCount<=0){clearInterval(timer);btn.disabled=false;btn.style.opacity='1';btn.textContent='获取验证码'}},1000);
+  toast('验证码已发送至'+phone,'info');
+}
+function doLogin(){
+  var phone=document.getElementById('lg_phone').value,pwd=document.getElementById('lg_pwd').value;
+  if(!/^1\d{10}$/.test(phone)){toast('请输入正确手机号','error');return}
+  if(!pwd||pwd.length<6){toast('密码至少6位','error');return}
+  toast('登录成功','success');
+  setTimeout(function(){
+    document.getElementById('home_uname').textContent='张明';
+    document.getElementById('home_urole').textContent='高邮市自规局 · 操作员';
+    renderHome();navTab('home');
+  },800);
+}
+function doReg(){
+  var name=document.getElementById('rg_name').value,phone=document.getElementById('rg_phone').value,code=document.getElementById('rg_code').value,pwd=document.getElementById('rg_pwd').value,unit=document.getElementById('rg_unit').value;
+  if(!name){toast('请输入姓名','error');return}
+  if(!/^1\d{10}$/.test(phone)){toast('请输入正确手机号','error');return}
+  if(!code){toast('请输入验证码','error');return}
+  if(!pwd||pwd.length<8){toast('密码至少8位','error');return}
+  if(!unit){toast('请选择单位','error');return}
+  toast('注册成功，请登录','success');
+  setTimeout(function(){lcTab('login');document.querySelector('.lc-tab div').classList.add('active');document.querySelectorAll('.lc-tab div')[1].classList.remove('active');document.getElementById('lc-login').style.display='block';document.getElementById('lc-reg').style.display='none'},1200);
+}
+
+// ========== 首页渲染 ==========
+function renderHome(){
+  var nl=document.getElementById('noticeList');nl.innerHTML='';
+  notices.forEach(function(n){
+    var d=document.createElement('div');d.className='nl-item';d.onclick=function(){toast(n.text,'info')};
+    d.innerHTML='<span class="nl-tag '+n.tag+'">'+({'red':'紧急','blue':'通知','green':'公告'}[n.tag]||'通知')+'</span><div class="nl-text"><div class="nl-title">'+n.text+'</div><div class="nl-date">'+n.date+'</div></div>';
+    nl.appendChild(d);
+  });
+  var rl=document.getElementById('recentList');rl.innerHTML='';
+  applyData.airspace.slice(0,3).forEach(function(r){
+    var sc=statusClass[r.status]||'st-gray';
+    var d=document.createElement('div');d.className='li-card';d.onclick=function(){openDetail('airspace',r.id)};
+    d.innerHTML='<div class="li-top"><span class="li-id">'+r.id+'</span><span class="li-status '+sc+'">'+r.status+'</span></div><div class="li-row"><span class="lr-label">申请类型</span><span class="lr-val">'+r.type+'</span></div><div class="li-row"><span class="lr-label">申请单位</span><span class="lr-val">'+r.unit+'</span></div><div class="li-row"><span class="lr-label">航线</span><span class="lr-val">'+r.airspace+'</span></div><div class="li-prog"><div class="li-prog-bar"><div class="li-prog-fill" style="width:'+(r.progress/r.steps.length*100)+'%"></div></div><span class="li-prog-text">'+r.progress+'/'+r.steps.length+'</span></div>';
+    rl.appendChild(d);
+  });
+  document.getElementById('hs_as').textContent=applyData.airspace.length;
+  document.getElementById('hs_ac').textContent=applyData.aircraft.length;
+  document.getElementById('hs_pl').textContent=applyData.pilot.length;
+}
+
+// ========== 列表渲染 ==========
+function renderList(type){
+  var data=applyData[type];var filter=listFilterKey[type];
+  var filtered=filter==='all'?data:data.filter(function(r){return r.status===filter});
+  var container=document.getElementById('list-'+type);container.innerHTML='';
+  if(filtered.length===0){container.innerHTML='<div style="text-align:center;padding:40px;color:#aab;font-size:13px">暂无数据</div>';return}
+  filtered.forEach(function(r){
+    var sc=statusClass[r.status]||'st-gray';
+    var d=document.createElement('div');d.className='li-card';d.onclick=function(){openDetail(type,r.id)};
+    var rowsHtml='';
+    if(type==='airspace'){
+      rowsHtml='<div class="li-row"><span class="lr-label">申请类型</span><span class="lr-val">'+r.type+'</span></div><div class="li-row"><span class="lr-label">申请单位</span><span class="lr-val">'+r.unit+'</span></div><div class="li-row"><span class="lr-label">航线</span><span class="lr-val">'+r.airspace+'</span></div><div class="li-row"><span class="lr-label">飞行高度</span><span class="lr-val">'+r.height+'</span></div>';
+    }else if(type==='aircraft'){
+      rowsHtml='<div class="li-row"><span class="lr-label">飞行器编号</span><span class="lr-val">'+r.acId+'</span></div><div class="li-row"><span class="lr-label">机型</span><span class="lr-val">'+r.model+'</span></div><div class="li-row"><span class="lr-label">所属单位</span><span class="lr-val">'+r.unit+'</span></div><div class="li-row"><span class="lr-label">年检到期</span><span class="lr-val">'+r.expire+'</span></div>';
+    }else if(type==='pilot'){
+      rowsHtml='<div class="li-row"><span class="lr-label">姓名</span><span class="lr-val">'+r.name+'</span></div><div class="li-row"><span class="lr-label">所属单位</span><span class="lr-val">'+r.unit+'</span></div><div class="li-row"><span class="lr-label">证件类型</span><span class="lr-val">'+r.license+'</span></div><div class="li-row"><span class="lr-label">核验类型</span><span class="lr-val">'+r.verifyType+'</span></div>';
+    }else if(type==='user'){
+      rowsHtml='<div class="li-row"><span class="lr-label">用户名</span><span class="lr-val">'+r.name+'</span></div><div class="li-row"><span class="lr-label">所属单位</span><span class="lr-val">'+r.unit+'</span></div><div class="li-row"><span class="lr-label">申请角色</span><span class="lr-val">'+r.role+'</span></div>';
+    }
+    var progHtml='';
+    if(r.steps.length>0){progHtml='<div class="li-prog"><div class="li-prog-bar"><div class="li-prog-fill" style="width:'+(r.progress/r.steps.length*100)+'%"></div></div><span class="li-prog-text">'+r.progress+'/'+r.steps.length+'</span></div>'}
+    var title=type==='aircraft'?r.acId:type==='pilot'?r.name+' ('+r.id+')':r.id;
+    d.innerHTML='<div class="li-top"><span class="li-id">'+title+'</span><span class="li-status '+sc+'">'+r.status+'</span></div>'+rowsHtml+progHtml;
+    container.appendChild(d);
+  });
+}
+function listFilter(type,filter,el){
+  listFilterKey[type]=filter;
+  document.querySelectorAll('#page-'+type+' .list-tab').forEach(function(t){t.classList.remove('active')});
+  el.classList.add('active');renderList(type);
+}
+
+// ========== 详情页 ==========
+function openDetail(type,id){
+  var data=applyData[type];var r=data.find(function(x){return x.id===id});if(!r)return;
+  prevPage=currentPage;
+  var titles={airspace:'空域申请详情',aircraft:'飞行器详情',pilot:'飞手注册详情',user:'用户注册详情'};
+  document.getElementById('detail-title').textContent=titles[type]||'详情';
+  var body=document.getElementById('detail-body');body.innerHTML='';
+  var cards=[];
+  if(type==='airspace'){
+    cards.push({title:'申请信息',grid:[
+      ['申请编号',r.id],['申请类型',r.type],['申请单位',r.unit],['所属片区',r.area],['申请空域',r.airspace],['飞行高度',r.height],['飞行时长',r.duration],['任务用途',r.purpose],['申请时间',r.time],['当前状态',r.status]
+    ]});
+    cards.push({title:'操作员信息',grid:[['操作员姓名',r.opName],['证件编号',r.opLicense],['联系电话',r.opPhone]]});
+    cards.push({title:'飞行器信息',grid:[['飞行器编号',r.acId],['机型',r.acModel],['适航状态','适航']]});
+  }else if(type==='aircraft'){
+    cards.push({title:'飞行器信息',grid:[
+      ['登记编号',r.id],['飞行器编号',r.acId],['机型',r.model],['序列号',r.serial],['所属单位',r.unit],['登记时间',r.regTime]
+    ]});
+    cards.push({title:'适航与年检',grid:[['适航状态',r.airworthy],['年检到期',r.expire]]});
+    cards.push({title:'技术参数',grid:[['起飞重量',r.weight],['最大高度',r.maxHeight]]});
+  }else if(type==='pilot'){
+    cards.push({title:'基本信息',grid:[
+      ['申请编号',r.id],['姓名',r.name],['身份证号',r.idCard],['联系电话',r.phone],['所属单位',r.unit]
+    ]});
+    cards.push({title:'资质信息',grid:[['证件类型',r.license],['证件编号',r.licNo],['核验类型',r.verifyType],['提交时间',r.time]]});
+  }else if(type==='user'){
+    cards.push({title:'注册信息',grid:[
+      ['注册编号',r.id],['用户名',r.name],['手机号',r.phone],['所属单位',r.unit],['申请角色',r.role],['所属片区',r.area],['提交时间',r.time]
+    ]});
+  }
+  cards.forEach(function(c){
+    var card=document.createElement('div');card.className='dl-card';
+    var gh='';c.grid.forEach(function(g){gh+='<div class="dl-item"><span class="dl-label">'+g[0]+'</span><span class="dl-val">'+g[1]+'</span></div>'});
+    card.innerHTML='<h3>'+c.title+'</h3><div class="dl-grid">'+gh+'</div>';
+    body.appendChild(card);
+  });
+  if(r.steps.length>0){
+    var tc=document.createElement('div');tc.className='dl-card';
+    var th='<h3>审批进度</h3><div class="timeline">';
+    r.steps.forEach(function(s,i){
+      var stText=s.st==='done'?'已完成':(s.st==='cur'?'进行中':'待办理');
+      var cls=s.st==='done'?'done':(s.st==='cur'?'cur':'wait');
+      var icon=s.st==='done'?'✓':(s.st==='cur'?'●':'○');
+      th+='<div class="tl-node '+cls+'"><div class="tl-dot '+cls+'">'+icon+'</div>';
+      if(i<r.steps.length-1)th+='<div class="tl-line"></div>';
+      th+='<div class="tl-content"><div class="tl-name">'+s.name+'</div><div class="tl-time">'+s.time+'</div><div class="tl-status '+cls+'">'+stText+'</div></div></div>';
+    });
+    th+='</div>';
+    tc.innerHTML=th;body.appendChild(tc);
+  }
+  showPage('detail');
+}
+
+// ========== 表单弹窗 ==========
+function openForm(type){
+  var forms={
+    airspace:{title:'空域飞行申请',fields:[
+      [{l:'申请类型',t:'select',o:['适飞空域','非适飞空域','临时空域']},{l:'申请单位',t:'select',o:['高邮市自规局','高邮水利局','高邮供电局','高邮物流公司','高邮应急局','高邮文旅局','高邮农服中心','高邮海事局']}],
+      [{l:'所属片区',t:'select',o:['高邮市区','送桥镇','三垛镇','高邮镇','界首镇','临泽镇']},{l:'申请空域',t:'text',p:'如：高邮-送桥'}],
+      [{l:'飞行高度',t:'text',p:'如：120m'},{l:'飞行时长',t:'text',p:'如：2.5h'}],
+      [{l:'任务用途',t:'select',o:['自然资源巡查','水利巡查','电力巡检','农业植保','物流配送','航拍测绘','应急巡查','文旅宣传','环境监测','城管巡查']}],
+      [{l:'操作员姓名',t:'text',p:'如：张明'},{l:'证件编号',t:'text',p:'如：UA-2026-0012'}],
+      [{l:'飞行器编号',t:'text',p:'如：UAV-021'},{l:'机型',t:'select',o:['大疆 M300','大疆 M30T','极飞 V40','亿航 EH216','其他机型']}]
+    ]},
+    aircraft:{title:'飞行器注册',fields:[
+      [{l:'飞行器编号',t:'text',p:'如：UAV-071'},{l:'机型',t:'select',o:['大疆 M300','大疆 M30T','极飞 V40','亿航 EH216','其他机型']}],
+      [{l:'序列号',t:'text',p:'设备序列号'},{l:'所属单位',t:'select',o:['高邮市自规局','高邮水利局','高邮供电局','高邮物流公司','高邮应急局','高邮文旅局','高邮农服中心','高邮海事局']}],
+      [{l:'适航状态',t:'select',o:['适航','待检','不适航']},{l:'年检到期',t:'date'}],
+      [{l:'起飞重量',t:'text',p:'如：3.5kg'},{l:'最大高度',t:'text',p:'如：500m'}]
+    ]},
+    pilot:{title:'飞手注册',fields:[
+      [{l:'姓名',t:'text',p:'真实姓名'},{l:'身份证号',t:'text',p:'18位身份证号'}],
+      [{l:'联系电话',t:'tel',p:'手机号码'},{l:'所属单位',t:'select',o:['高邮市自规局','高邮水利局','高邮供电局','高邮物流公司','高邮航拍队','高邮应急局','高邮文旅局','高邮农服中心','高邮海事局']}],
+      [{l:'证件类型',t:'select',o:['CAAC-III','CAAC-IV','CAAC-V']},{l:'证件编号',t:'text',p:'如：UA-2026-0012'}],
+      [{l:'核验类型',t:'select',o:['首次取证','执照复审','增驾机型','首次申请']}]
+    ]},
+    user:{title:'用户注册',fields:[
+      [{l:'用户名',t:'text',p:'4-20位字符'},{l:'手机号',t:'tel',p:'11位手机号'}],
+      [{l:'密码',t:'password',p:'8-20位'},{l:'确认密码',t:'password',p:'再次输入'}],
+      [{l:'所属单位',t:'select',o:['高邮市指挥中心','高邮市自规局','高邮水利局','高邮供电局','高邮物流公司','高邮航拍队','高邮应急局','高邮文旅局','高邮农服中心','高邮海事局','高邮环保局']}],
+      [{l:'申请角色',t:'select',o:['管理员','审批员','操作员']},{l:'所属片区',t:'select',o:['高邮市区','送桥镇','三垛镇','高邮镇','界首镇','临泽镇','市级','省级']}]
+    ]}
+  };
+  var f=forms[type];if(!f)return;
+  var h='<div class="fs-header"><h3>'+f.title+'</h3><span class="fs-close" onclick="closeForm()">✕</span></div><div class="fs-body">';
+  f.fields.forEach(function(row){
+    h+='<div class="fs-row">';
+    row.forEach(function(field){
+      h+='<div class="fs-field"><label>'+field.l+' <span class="req">*</span></label>';
+      if(field.t==='select'){h+='<select id="ff_'+field.l+'">';field.o.forEach(function(o){h+='<option value="'+o+'">'+o+'</option>'});h+='</select>'}
+      else if(field.t==='date'){h+='<input type="date" id="ff_'+field.l+'">'}
+      else{h+='<input type="'+field.t+'" id="ff_'+field.l+'" placeholder="'+(field.p||'')+'">'}
+      h+='</div>';
+    });
+    h+='</div>';
+  });
+  h+='<button class="fs-btn" onclick="submitNew(\''+type+'\')">提交申请</button></div>';
+  document.getElementById('formSheet').innerHTML=h;
+  document.getElementById('formMask').classList.add('show');
+}
+function closeForm(){document.getElementById('formMask').classList.remove('show')}
+function submitNew(type){
+  toast('提交成功，等待审核','success');
+  closeForm();setTimeout(function(){renderList(type)},800);
+}
+
+// ========== Toast ==========
+function toast(msg,type){
+  var t=document.getElementById('toast'),i=document.getElementById('toastIcon'),m=document.getElementById('toastMsg');
+  i.textContent=type==='error'?'❌':(type==='info'?'ℹ️':'✅');m.textContent=msg;t.classList.add('show');
+  setTimeout(function(){t.classList.remove('show')},2000);
+}
+
+// ========== 初始化 ==========
+showPage('login');
+</script>
+</body>
+</html>
