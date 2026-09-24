@@ -323,6 +323,62 @@ table.m-table{width:100%;border-collapse:collapse;font-size:13px}
   <!-- 抽屉拉手 -->
   <div class="drawer-handle left-h" id="leftHandle" onclick="toggleDrawer('left')">◀</div>
   <div class="drawer-handle right-h" id="rightHandle" onclick="toggleDrawer('right')">▶</div>
+<style>
+/* 航空器状态 - 标题按钮组 */
+.dp-btn-group{display:flex;gap:5px;margin-left:auto}
+.dp-btn{padding:3px 9px;border:1px solid rgba(45,226,240,.45);border-radius:6px;background:rgba(16,58,110,.55);color:#7fe3ff;font-size:11px;cursor:pointer;transition:all .2s;white-space:nowrap}
+.dp-btn:hover{background:rgba(45,226,240,.18);color:#fff}
+/* 航空器状态 - 二级子面板 */
+.ac-sub{display:none;flex-direction:column;flex:1 1 0;min-height:0;background:rgba(12,26,52,.85);border:1px solid rgba(80,190,255,.28);border-radius:12px;backdrop-filter:blur(8px);overflow:hidden}
+.ac-sub.show{display:flex}
+.ac-sub-h{display:flex;align-items:center;gap:10px;padding:10px 12px;background:linear-gradient(90deg,rgba(45,226,240,.16),rgba(45,226,240,.02));border-bottom:1px solid rgba(80,190,255,.22);flex-shrink:0}
+.ac-back{display:flex;align-items:center;gap:4px;padding:5px 12px;border:1px solid rgba(45,226,240,.5);border-radius:8px;background:rgba(16,58,110,.6);color:#7fe3ff;font-size:12px;cursor:pointer;transition:all .2s}
+.ac-back:hover{background:rgba(45,226,240,.18)}
+.ac-sub-t{font-size:14px;font-weight:700;color:#eaf7ff;letter-spacing:1px}
+.ac-sub-b{flex:1 1 0;min-height:0;overflow-y:auto;padding:8px 10px}
+.ac-sub-b::-webkit-scrollbar{width:5px}
+.ac-sub-b::-webkit-scrollbar-thumb{background:rgba(95,198,255,.35);border-radius:3px}
+.ac-pager{display:flex;align-items:center;justify-content:center;gap:10px;padding:7px 0;flex-shrink:0;border-top:1px solid rgba(80,190,255,.12)}
+.pg-btn{width:26px;height:26px;border:1px solid rgba(45,226,240,.35);border-radius:7px;background:rgba(16,58,110,.5);color:#7fe3ff;font-size:13px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s}
+.pg-btn:hover:not(:disabled){background:rgba(45,226,240,.15)}
+.pg-btn:disabled{opacity:.3;cursor:not-allowed}
+.pg-info{font-size:12px;color:#8fb8d8}
+/* 设备列表 */
+.dev-item{display:flex;align-items:center;gap:10px;padding:9px 10px;margin-bottom:7px;background:rgba(13,28,53,.7);border:1px solid rgba(56,189,248,.12);border-radius:10px}
+.dev-icon{width:34px;height:34px;border-radius:9px;background:rgba(45,226,240,.08);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
+.dev-info{flex:1;min-width:0}
+.dev-top{display:flex;align-items:center;gap:8px;margin-bottom:3px}
+.dev-id{font-size:12.5px;font-weight:700;color:#e8f1fb}
+.dev-st{font-size:10px;padding:1px 8px;border-radius:9px;font-weight:600}
+.dev-st.fly{background:rgba(52,211,153,.15);color:#34d399;border:1px solid rgba(52,211,153,.4)}
+.dev-st.idle{background:rgba(122,138,160,.15);color:#aab;border:1px solid rgba(160,170,180,.4)}
+.dev-st.off{background:rgba(248,113,113,.15);color:#f87171;border:1px solid rgba(248,113,113,.4)}
+.dev-meta{font-size:10.5px;color:#6b87a8;display:flex;gap:8px;flex-wrap:wrap}
+.dev-meta b{color:#8fb8d8;font-weight:600}
+.dev-batt{width:54px;flex-shrink:0;text-align:right}
+.dev-batt-bar{height:5px;background:rgba(255,255,255,.08);border-radius:3px;overflow:hidden;margin-top:4px}
+.dev-batt-fill{height:100%;border-radius:3px;transition:width .3s}
+/* 多屏监控 */
+.mon-grid{display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:8px;height:100%}
+.mon-cell{position:relative;background:linear-gradient(160deg,#0a1c33 0%,#122c4e 55%,#0d2140 100%);border:1px solid rgba(56,189,248,.15);border-radius:10px;overflow:hidden;min-height:0}
+.mon-cell::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 28px,rgba(56,189,248,.05) 28px,rgba(56,189,248,.05) 29px),repeating-linear-gradient(90deg,transparent,transparent 28px,rgba(56,189,248,.05) 28px,rgba(56,189,248,.05) 29px);pointer-events:none}
+.mon-scan{position:absolute;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,rgba(45,226,240,.45),transparent);animation:monScan 3.2s linear infinite;pointer-events:none}
+@keyframes monScan{0%{top:0}100%{top:100%}}
+.mon-cross{position:absolute;top:50%;left:50%;pointer-events:none}
+.mon-cross::before,.mon-cross::after{content:'';position:absolute;background:rgba(45,226,240,.45)}
+.mon-cross::before{width:36px;height:1px;left:-18px;top:0}
+.mon-cross::after{width:1px;height:36px;top:-18px;left:0}
+.mon-hud{position:absolute;inset:0;padding:7px 9px;pointer-events:none;display:flex;flex-direction:column;justify-content:space-between}
+.mon-top{display:flex;justify-content:space-between;align-items:center;gap:4px}
+.mon-id{font-size:11px;font-weight:700;color:#7fe3ff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mon-rec{font-size:9.5px;color:#f87171;display:flex;align-items:center;gap:3px;flex-shrink:0}
+.mon-rec::before{content:'';width:6px;height:6px;border-radius:50%;background:#f87171;animation:blink 1.2s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.15}}
+.mon-bottom{font-size:10px;color:#9fc0dd;line-height:1.55}
+.mon-bottom b{color:#e8f1fb}
+.mon-empty{display:flex;align-items:center;justify-content:center;color:#2a4a6a;font-size:12px}
+</style>
+
 <!-- 左右统计面板 -->
   <div class="dash-layout">
     <!-- 左侧面板 -->
@@ -391,7 +447,11 @@ table.m-table{width:100%;border-collapse:collapse;font-size:13px}
       <div class="dash-panel">
         <div class="dp-h" onclick="openModal('craft')">
           <div class="dp-t"><span class="dp-bar"></span>航空器状态</div>
-          <div class="dp-link">查看详情</div>
+          <div class="dp-btn-group" onclick="event.stopPropagation()">
+            <span class="dp-btn" onclick="openAircraftSub('list')">设备列表</span>
+            <span class="dp-btn" onclick="openAircraftSub('monitor')">多屏监控</span>
+          </div>
+          <div class="dp-link">详情</div>
         </div>
         <div class="dp-b">
           <div class="stats-grid">
@@ -413,6 +473,16 @@ table.m-table{width:100%;border-collapse:collapse;font-size:13px}
           <div class="substat"><span>亿航 EH216</span><span class="sbv">11 <small>架</small></span></div>
           <div class="substat"><span>其他机型</span><span class="sbv">8 <small>架</small></span></div>
         </div>
+      </div>
+
+      <!-- 航空器状态二级面板 -->
+      <div class="ac-sub" id="acSubPage">
+        <div class="ac-sub-h">
+          <span class="ac-back" onclick="backAircraftSub()">‹ 返回</span>
+          <span class="ac-sub-t" id="acSubTitle">设备列表</span>
+        </div>
+        <div class="ac-sub-b" id="acSubBody"></div>
+        <div class="ac-pager" id="acSubPager"></div>
       </div>
     </div>
 
@@ -1070,6 +1140,100 @@ document.addEventListener('click',function(e){
     m.classList.remove('show');b.classList.remove('open');
   }
 });
+
+// ============ 航空器状态二级面板（设备列表/多屏监控） ============
+var deviceList=[
+  {id:'UAV-021',model:'大疆M300',unit:'高邮自规局',st:'fly',batt:82,alt:'120m',spd:'8.2m/s',route:'高邮-送桥'},
+  {id:'UAV-048',model:'大疆M30T',unit:'高邮物流公司',st:'fly',batt:76,alt:'100m',spd:'9.5m/s',route:'送桥-邵伯湖'},
+  {id:'UAV-035',model:'极飞V40',unit:'高邮水利局',st:'fly',batt:68,alt:'80m',spd:'6.8m/s',route:'高邮-运河'},
+  {id:'UAV-065',model:'极飞V40',unit:'高邮应急局',st:'fly',batt:91,alt:'90m',spd:'7.4m/s',route:'高邮镇-三河'},
+  {id:'UAV-068',model:'大疆M30T',unit:'高邮文旅局',st:'fly',batt:73,alt:'150m',spd:'10.2m/s',route:'临泽-青山'},
+  {id:'UAV-052',model:'亿航EH216',unit:'高邮供电局',st:'fly',batt:64,alt:'120m',spd:'5.6m/s',route:'界首-临泽'},
+  {id:'UAV-070',model:'大疆M300',unit:'高邮农服中心',st:'fly',batt:87,alt:'80m',spd:'11.0m/s',route:'三垛-送桥'},
+  {id:'UAV-061',model:'大疆M300',unit:'高邮航拍队',st:'fly',batt:59,alt:'150m',spd:'8.8m/s',route:'三垛-高邮镇'},
+  {id:'UAV-022',model:'大疆M300',unit:'高邮自规局',st:'idle',batt:100,alt:'—',spd:'—',route:'—'},
+  {id:'UAV-023',model:'大疆M300',unit:'高邮市城管局',st:'idle',batt:95,alt:'—',spd:'—',route:'—'},
+  {id:'UAV-036',model:'极飞V40',unit:'高邮水利局',st:'idle',batt:88,alt:'—',spd:'—',route:'—'},
+  {id:'UAV-049',model:'大疆M30T',unit:'高邮物流公司',st:'idle',batt:92,alt:'—',spd:'—',route:'—'},
+  {id:'UAV-053',model:'亿航EH216',unit:'高邮供电局',st:'idle',batt:78,alt:'—',spd:'—',route:'—'},
+  {id:'UAV-066',model:'极飞V40',unit:'高邮应急局',st:'idle',batt:85,alt:'—',spd:'—',route:'—'},
+  {id:'UAV-069',model:'大疆M30T',unit:'高邮文旅局',st:'idle',batt:90,alt:'—',spd:'—',route:'—'},
+  {id:'UAV-071',model:'大疆M300',unit:'高邮农服中心',st:'idle',batt:81,alt:'—',spd:'—',route:'—'},
+  {id:'UAV-024',model:'大疆M300',unit:'高邮航拍队',st:'off',batt:12,alt:'—',spd:'—',route:'—'},
+  {id:'UAV-037',model:'极飞V40',unit:'高邮海事局',st:'off',batt:0,alt:'—',spd:'—',route:'—'},
+  {id:'UAV-054',model:'亿航EH216',unit:'高邮供电局',st:'off',batt:5,alt:'—',spd:'—',route:'—'},
+  {id:'UAV-072',model:'大疆M300',unit:'高邮环保局',st:'idle',batt:67,alt:'—',spd:'—',route:'—'}
+];
+var acSubMode='',acSubPage=1;
+function openAircraftSub(mode){
+  acSubMode=mode;acSubPage=1;
+  document.querySelectorAll('#leftPanel .dash-panel').forEach(function(p){p.style.display='none'});
+  var sub=document.getElementById('acSubPage');
+  sub.classList.add('show');
+  document.getElementById('acSubTitle').textContent=mode==='list'?'飞行器设备列表':'多屏实时监控';
+  if(mode==='list'){renderDevList()}else{renderMonitor()}
+}
+function backAircraftSub(){
+  document.getElementById('acSubPage').classList.remove('show');
+  document.querySelectorAll('#leftPanel .dash-panel').forEach(function(p){p.style.display=''});
+  acSubMode='';
+}
+function devPer(){return acSubMode==='list'?6:4}
+function devTotal(){
+  var data=acSubMode==='list'?deviceList:deviceList.filter(function(d){return d.st==='fly'});
+  return Math.max(1,Math.ceil(data.length/devPer()));
+}
+function renderDevList(){
+  var per=devPer(),total=devTotal();
+  if(acSubPage>total)acSubPage=total;
+  var start=(acSubPage-1)*per,rows=deviceList.slice(start,start+per);
+  var h='';
+  rows.forEach(function(d){
+    var stText=d.st==='fly'?'在飞':(d.st==='idle'?'待命':'离线');
+    var battColor=d.batt>50?'#34d399':(d.batt>20?'#fbbf24':'#f87171');
+    h+='<div class="dev-item"><div class="dev-icon">🚁</div><div class="dev-info">'+
+      '<div class="dev-top"><span class="dev-id">'+d.id+'</span><span class="dev-st '+d.st+'">'+stText+'</span></div>'+
+      '<div class="dev-meta"><span>机型 <b>'+d.model+'</b></span><span>单位 <b>'+d.unit+'</b></span>'+
+      (d.st==='fly'?'<span>高度 <b>'+d.alt+'</b></span><span>速度 <b>'+d.spd+'</b></span>':'')+
+      '</div></div>'+
+      '<div class="dev-batt"><span style="font-size:9.5px;color:#6b87a8">电量</span> <span style="font-size:11px;color:'+battColor+';font-weight:700">'+d.batt+'%</span>'+
+      '<div class="dev-batt-bar"><div class="dev-batt-fill" style="width:'+d.batt+'%;background:'+battColor+'"></div></div></div></div>';
+  });
+  document.getElementById('acSubBody').innerHTML=h;
+  renderAcPager(total);
+}
+function renderMonitor(){
+  var flying=deviceList.filter(function(d){return d.st==='fly'});
+  var per=devPer(),total=devTotal();
+  if(acSubPage>total)acSubPage=total;
+  var start=(acSubPage-1)*per,rows=flying.slice(start,start+per);
+  var h='<div class="mon-grid">';
+  rows.forEach(function(d){
+    var battColor=d.batt>50?'#34d399':(d.batt>20?'#fbbf24':'#f87171');
+    h+='<div class="mon-cell"><div class="mon-scan"></div><div class="mon-cross"></div>'+
+      '<div class="mon-hud"><div class="mon-top"><span class="mon-id">'+d.id+' · '+d.model+'</span><span class="mon-rec">REC</span></div>'+
+      '<div class="mon-bottom"><div>高度 <b>'+d.alt+'</b>　速度 <b>'+d.spd+'</b>　电量 <b style="color:'+battColor+'">'+d.batt+'%</b></div>'+
+      '<div>航线 <b>'+d.route+'</b></div></div></div></div>';
+  });
+  for(var i=rows.length;i<per;i++){h+='<div class="mon-cell"><div class="mon-empty">暂无信号</div></div>'}
+  h+='</div>';
+  document.getElementById('acSubBody').innerHTML=h;
+  renderAcPager(total);
+}
+function renderAcPager(total){
+  var p=document.getElementById('acSubPager');
+  if(total<=1){p.innerHTML='<span class="pg-info">共 '+total+' 页</span>';return}
+  p.innerHTML='<span class="pg-btn" onclick="acPg(-1)"'+(acSubPage<=1?' disabled':'')+'>‹</span>'+
+    '<span class="pg-info">'+acSubPage+' / '+total+' 页</span>'+
+    '<span class="pg-btn" onclick="acPg(1)"'+(acSubPage>=total?' disabled':'')+'>›</span>';
+}
+function acPg(dir){
+  var total=devTotal();
+  acSubPage+=dir;
+  if(acSubPage<1)acSubPage=1;
+  if(acSubPage>total)acSubPage=total;
+  if(acSubMode==='list'){renderDevList()}else{renderMonitor()}
+}
 
 // ============ 大屏弹窗 ============
 var modalData={
