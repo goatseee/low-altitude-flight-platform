@@ -1325,6 +1325,61 @@ function renderMgmtList(key){
   document.getElementById('mgmtContent').innerHTML=html;
 }
 
+
+// ============ 申请附加信息（操作员/飞行器/航线规划） ============
+var applyExtra={
+'SF-20260922-001':{operator:['张明','UA-2026-0012','138****1234'],aircraft:['UAV-021','大疆M300','适航'],route:['高邮市区','送桥镇','120m','2.5h','自然资源巡查']},
+'SF-20260922-002':{operator:['李伟','UA-2026-0015','138****5678'],aircraft:['UAV-035','极飞V40','适航'],route:['送桥镇','邵伯湖','100m','1.5h','航拍测绘']},
+'SF-20260922-003':{operator:['孙超','UA-2026-0041','139****3456'],aircraft:['UAV-061','大疆M300','适航'],route:['三垛镇','高邮镇','150m','1h','城市航拍']},
+'SF-20260922-004':{operator:['郑华','UA-2026-0058','139****7890'],aircraft:['UAV-070','大疆M300','适航'],route:['三垛镇','临泽镇','80m','2h','农业植保']},
+'SF-20260922-005':{operator:['赵磊','UA-2026-0033','139****7890'],aircraft:['UAV-052','亿航EH216','适航'],route:['界首镇','送桥镇','120m','1.5h','电力巡检']},
+'SF-20260922-006':{operator:['吴迪','UA-2026-0052','137****6789'],aircraft:['UAV-068','大疆M30T','适航'],route:['高邮市区','高邮镇','100m','1h','文旅宣传']},
+'SF-20260922-007':{operator:['周强','UA-2026-0045','137****2345'],aircraft:['UAV-065','极飞V40','适航'],route:['临泽镇','高邮运河','80m','2h','水域巡查']},
+'SF-20260922-008':{operator:['郑华','UA-2026-0058','139****7890'],aircraft:['UAV-070','大疆M300','适航'],route:['高邮镇','三垛镇','80m','1.5h','农业植保']},
+'NF-20260922-001':{operator:['张明','UA-2026-0012','138****1234'],aircraft:['UAV-021','大疆M300','适航'],route:['高邮市区','送桥镇','120m','3h','自然资源巡查']},
+'NF-20260922-002':{operator:['王强','UA-2026-0021','138****2345'],aircraft:['UAV-035','极飞V40','适航'],route:['高邮市区','运河段','80m','2h','水利巡查']},
+'NF-20260922-003':{operator:['赵磊','UA-2026-0033','139****7890'],aircraft:['UAV-052','亿航EH216','适航'],route:['界首镇','临泽镇','120m','2.5h','电力巡检']},
+'NF-20260922-004':{operator:['郑华','UA-2026-0058','139****7890'],aircraft:['UAV-070','大疆M300','适航'],route:['三垛镇','送桥镇','80m','2h','农业服务']},
+'NF-20260922-005':{operator:['周强','UA-2026-0045','137****2345'],aircraft:['UAV-065','极飞V40','适航'],route:['高邮镇','高邮运河','80m','1.5h','海事巡查']},
+'NF-20260922-006':{operator:['周强','UA-2026-0045','137****2345'],aircraft:['UAV-065','极飞V40','适航'],route:['送桥镇','邵伯湖','100m','2h','应急巡查']},
+'NF-20260922-007':{operator:['吴迪','UA-2026-0052','137****6789'],aircraft:['UAV-068','大疆M30T','适航'],route:['临泽镇','青山','150m','1h','文旅航拍']},
+'NF-20260922-008':{operator:['郑华','UA-2026-0058','139****7890'],aircraft:['UAV-070','大疆M300','适航'],route:['高邮市区','三垛镇','100m','2h','环境监测']},
+'LS-20260922-001':{operator:['李伟','UA-2026-0015','138****5678'],aircraft:['UAV-048','大疆M30T','适航'],route:['高邮市区','高邮镇','120m','2h','物流配送']},
+'LS-20260922-002':{operator:['王强','UA-2026-0021','138****2345'],aircraft:['UAV-035','极飞V40','适航'],route:['送桥镇','邵伯湖','80m','2h','水利巡查']},
+'LS-20260922-003':{operator:['孙超','UA-2026-0041','139****3456'],aircraft:['UAV-061','大疆M300','适航'],route:['临泽镇','青山','150m','2h','航拍测绘']},
+'LS-20260922-004':{operator:['周强','UA-2026-0045','137****2345'],aircraft:['UAV-065','极飞V40','适航'],route:['三垛镇','高邮镇','100m','3h','应急巡查']},
+'LS-20260922-005':{operator:['郑华','UA-2026-0058','139****7890'],aircraft:['UAV-070','大疆M300','适航'],route:['界首镇','送桥镇','80m','2h','农业服务']},
+'LS-20260922-006':{operator:['吴迪','UA-2026-0052','137****6789'],aircraft:['UAV-068','大疆M30T','适航'],route:['高邮镇','运河','100m','2h','文旅航拍']},
+'AP-20260922-001':{operator:['张明','UA-2026-0012','138****1234'],aircraft:['UAV-021','大疆M300','适航'],route:['高邮市区','送桥镇','120m','3h','自然资源巡查']},
+'AP-20260922-002':{operator:['李伟','UA-2026-0015','138****5678'],aircraft:['UAV-048','大疆M30T','适航'],route:['送桥镇','邵伯湖','100m','2h','物流配送']},
+'AP-20260922-003':{operator:['王强','UA-2026-0021','138****2345'],aircraft:['UAV-035','极飞V40','适航'],route:['送桥镇','邵伯湖','80m','2h','水利巡查']},
+'AP-20260922-004':{operator:['王强','UA-2026-0021','138****2345'],aircraft:['UAV-035','极飞V40','适航'],route:['高邮市区','运河段','80m','2h','水利巡查']},
+'AP-20260922-005':{operator:['赵磊','UA-2026-0033','139****7890'],aircraft:['UAV-052','亿航EH216','适航'],route:['界首镇','临泽镇','120m','2.5h','电力巡检']},
+'AP-20260922-006':{operator:['孙超','UA-2026-0041','139****3456'],aircraft:['UAV-061','大疆M300','年检逾期'],route:['三垛镇','高邮镇','150m','1h','城管巡查']},
+'AP-20260922-007':{operator:['周强','UA-2026-0045','137****2345'],aircraft:['UAV-065','极飞V40','适航'],route:['高邮镇','运河','80m','1.5h','海事巡查']},
+'AP-20260922-008':{operator:['吴迪','UA-2026-0052','137****6789'],aircraft:['UAV-068','大疆M30T','适航'],route:['临泽镇','青山','150m','2h','文旅航拍']},
+'AP-20260922-009':{operator:['郑华','UA-2026-0058','139****7890'],aircraft:['UAV-070','大疆M300','适航'],route:['三垛镇','送桥镇','80m','2h','农业服务']},
+'AP-20260922-010':{operator:['周强','UA-2026-0045','137****2345'],aircraft:['UAV-065','极飞V40','适航'],route:['高邮镇','三河','100m','1.5h','海事巡查']}
+};
+function buildExtraInfo(appId){
+  var ex=applyExtra[appId];if(!ex)return '';
+  var html='';
+  var secs=[
+    {title:'操作员信息',labels:['操作员姓名','证件编号','联系电话'],data:ex.operator},
+    {title:'申请飞行器信息',labels:['飞行器编号','机型','适航状态'],data:ex.aircraft},
+    {title:'航线规划信息',labels:['航线起点','航线终点','飞行高度','飞行时长','任务用途'],data:ex.route}
+  ];
+  secs.forEach(function(sec){
+    html+='<div class="apm-sec">'+sec.title+'</div>';
+    html+='<div class="detail-grid">';
+    sec.labels.forEach(function(l,i){
+      html+='<div class="dg"><span class="dg-label">'+l+'</span><span class="dg-val">'+(sec.data[i]||'—')+'</span></div>';
+    });
+    html+='</div>';
+  });
+  return html;
+}
+
 // ============ 审批弹窗（含审批时间进度条） ============
 function openApprove(key,idx){
   var d=mgmtData[key];if(!d)return;
@@ -1337,6 +1392,7 @@ function openApprove(key,idx){
   body+='<div class="af-item"><span class="af-label">区域</span><span class="af-val">'+(r[2]||'—')+'</span></div>';
   body+='<div class="af-item"><span class="af-label">时间</span><span class="af-val">'+(r[3]||'—')+'</span></div>';
   body+='</div>';
+  body+=buildExtraInfo(r[0]);
   body+='<div class="apm-sec">审批时间进度</div>';
   body+=genProgress();
   body+='<div class="apm-sec">审批意见</div>';
@@ -1386,6 +1442,7 @@ function openDetail(key,idx){
     body+='<div class="dg"><span class="dg-label">'+c+'</span><span class="dg-val">'+v+'</span></div>';
   });
   body+='</div>';
+  body+=buildExtraInfo(r[0]);
   document.getElementById('apmBody').innerHTML=body;
   document.getElementById('apmFoot').innerHTML='<span class="btn" onclick="closeApm()">关闭</span>';
   document.getElementById('apmMask').classList.add('show');
