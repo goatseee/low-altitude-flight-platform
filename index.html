@@ -419,6 +419,16 @@ table.m-table{width:100%;border-collapse:collapse;font-size:13px}
 .al-status.processing{background:rgba(0,130,217,.12);color:#0082D9;border:1px solid rgba(0,130,217,.3)}
 .al-meta{font-size:10.5px;color:#6b87a8;display:flex;gap:10px;flex-wrap:wrap}
 .al-meta b{color:#8fb8d8}
+/* 预警等级标签 */
+.al-level{font-size:10px;padding:1px 7px;border-radius:8px;font-weight:700}
+.al-level.red{background:rgba(248,113,113,.15);color:#f87171;border:1px solid rgba(248,113,113,.35)}
+.al-level.orange{background:rgba(251,146,60,.15);color:#fb923c;border:1px solid rgba(251,146,60,.35)}
+.al-level.yellow{background:rgba(251,191,36,.15);color:#fbbf24;border:1px solid rgba(251,191,36,.35)}
+.al-level.blue{background:rgba(56,189,248,.15);color:#38bdf8;border:1px solid rgba(56,189,248,.35)}
+/* 分发状态 */
+.al-dispatch{font-size:10px;padding:1px 7px;border-radius:8px;font-weight:600}
+.al-dispatch.sent{background:rgba(52,211,153,.12);color:#34d399;border:1px solid rgba(52,211,153,.3)}
+.al-dispatch.pending{background:rgba(251,191,36,.12);color:#fbbf24;border:1px solid rgba(251,191,36,.3)}
 /* 饼图 */
 .pie-chart{width:140px;height:140px;border-radius:50%;margin:10px auto;position:relative;background:conic-gradient(#0082D9 0deg 87deg,#34d399 87deg 160deg,#fbbf24 160deg 222deg,#a78bfa 222deg 300deg,#6b87a8 300deg 360deg)}
 .pie-chart::before{content:'';position:absolute;inset:28px;background:rgba(12,26,52,.95);border-radius:50%}
@@ -1736,45 +1746,50 @@ function switchAcType(key,el){
 // ============ 事件告警部门切换（事件列表） ============
 var alertDeptData={
   zr:{name:'自规局',events:[
-    {title:'高邮市区非法占用农用地建设',type:'非法占地类',time:'09-24 11:30',status:'pending'},
-    {title:'送桥镇耕地毁坏预警',type:'破坏耕地类',time:'09-24 09:15',status:'done'},
-    {title:'高邮镇未经审批土地用途变更',type:'非法批地类',time:'09-23 16:20',status:'done'},
-    {title:'三垛镇基本农田非农化',type:'非法占地类',time:'09-23 10:45',status:'pending'},
-    {title:'临泽镇无证采矿用地',type:'非法批地类',time:'09-22 14:30',status:'done'},
-    {title:'界首镇耕地毁坏农田设施',type:'破坏耕地类',time:'09-22 08:20',status:'pending'}
+    {id:'WA-0924-001',type:'非法占地类',time:'09-24 11:30',location:'高邮市区南片区',conclusion:'检测到未批先用土地面积约320平方米，AI研判为非法占用农用地',level:'red',dispatch:'sent'},
+    {id:'WA-0924-002',type:'破坏耕地类',time:'09-24 09:15',location:'送桥镇李桥村',conclusion:'耕地表层破坏面积约500平方米，疑似机械作业导致',level:'orange',dispatch:'sent'},
+    {id:'WA-0923-003',type:'非法批地类',time:'09-23 16:20',location:'高邮镇工业园东侧',conclusion:'未经审批变更土地用途，涉及工业用地2.1亩',level:'red',dispatch:'sent'},
+    {id:'WA-0923-004',type:'非法占地类',time:'09-23 10:45',location:'三垛镇基本农田',conclusion:'基本农田非农化利用，AI比对遥感影像确认',level:'orange',dispatch:'pending'},
+    {id:'WA-0922-005',type:'非法批地类',time:'09-22 14:30',location:'临泽镇矿区周边',conclusion:'无证采矿用地，涉及面积800平方米',level:'red',dispatch:'sent'},
+    {id:'WA-0922-006',type:'破坏耕地类',time:'09-22 08:20',location:'界首镇农田设施',conclusion:'耕地毁坏农田水利设施，影响灌溉面积30亩',level:'yellow',dispatch:'pending'}
   ]},
   ny:{name:'农业农村局',events:[
-    {title:'高邮市区秸秆露天焚烧',type:'秸秆禁烧',time:'09-24 10:30',status:'done'},
-    {title:'送桥镇耕地非粮化种植',type:'耕地非粮化',time:'09-24 07:45',status:'pending'},
-    {title:'三垛镇违规养殖场排放',type:'违规养殖',time:'09-23 15:20',status:'done'},
-    {title:'高邮镇秸秆焚烧火点预警',type:'秸秆禁烧',time:'09-23 09:10',status:'pending'},
-    {title:'临泽镇基本农田非粮化',type:'耕地非粮化',time:'09-22 11:30',status:'done'},
-    {title:'界首镇养殖场违规排放',type:'违规养殖',time:'09-22 08:15',status:'done'}
+    {id:'WA-0924-007',type:'秸秆禁烧',time:'09-24 10:30',location:'高邮市区东郊',conclusion:'红外热成像检测到焚烧火点，面积估计50平方米',level:'red',dispatch:'sent'},
+    {id:'WA-0924-008',type:'耕地非粮化',time:'09-24 07:45',location:'送桥镇基本农田',conclusion:'AI识别到非粮作物种植，涉及面积15亩',level:'orange',dispatch:'pending'},
+    {id:'WA-0923-009',type:'违规养殖',time:'09-23 15:20',location:'三垛镇养殖区',conclusion:'养殖场废水直排，水质检测超标3项指标',level:'orange',dispatch:'sent'},
+    {id:'WA-0923-010',type:'秸秆禁烧',time:'09-23 09:10',location:'高邮镇北郊',conclusion:'卫星遥感监测到焚烧烟雾，过火面积200平方米',level:'red',dispatch:'sent'},
+    {id:'WA-0922-011',type:'耕地非粮化',time:'09-22 11:30',location:'临泽镇基本农田',conclusion:'基本农田种植苗木，非粮化面积28亩',level:'yellow',dispatch:'sent'},
+    {id:'WA-0922-012',type:'违规养殖',time:'09-22 08:15',location:'界首镇河道旁',conclusion:'违规养殖场排放超标，AI溯源锁定排放口',level:'orange',dispatch:'pending'}
   ]},
   cg:{name:'城管局',events:[
-    {title:'高邮市区违章建筑拆除',type:'违章建筑类',time:'09-24 14:20',status:'done'},
-    {title:'送桥镇市容环境违规排放',type:'市容环境类',time:'09-24 09:30',status:'pending'},
-    {title:'三垛镇渣土车违规倾倒',type:'渣土违规类',time:'09-23 16:45',status:'done'},
-    {title:'高邮镇户外广告违规',type:'违章建筑类',time:'09-23 10:20',status:'pending'},
-    {title:'临泽镇店外经营占用',type:'市容环境类',time:'09-22 13:10',status:'done'},
-    {title:'界首镇渣土违规运输',type:'渣土违规类',time:'09-22 09:50',status:'done'}
+    {id:'WA-0924-013',type:'违章建筑类',time:'09-24 14:20',location:'高邮市区文昌路',conclusion:'AI比对发现新增违建约60平方米，无审批记录',level:'red',dispatch:'sent'},
+    {id:'WA-0924-014',type:'市容环境类',time:'09-24 09:30',location:'送桥镇商业街',conclusion:'沿街商铺污水违规排放，影响路面200米',level:'yellow',dispatch:'pending'},
+    {id:'WA-0923-015',type:'渣土违规类',time:'09-23 16:45',location:'三垛镇省道旁',conclusion:'渣土车违规倾倒约8吨，AI车牌识别已锁定',level:'orange',dispatch:'sent'},
+    {id:'WA-0923-016',type:'违章建筑类',time:'09-23 10:20',location:'高邮镇城南',conclusion:'户外广告牌违规设置，高度超限4米',level:'yellow',dispatch:'pending'},
+    {id:'WA-0922-017',type:'市容环境类',time:'09-22 13:10',location:'临泽镇农贸市场',conclusion:'店外经营占用通道，影响通行宽度3米',level:'blue',dispatch:'sent'},
+    {id:'WA-0922-018',type:'渣土违规类',time:'09-22 09:50',location:'界首镇国道旁',conclusion:'渣土违规运输未覆盖，AI识别沿途遗撒',level:'orange',dispatch:'sent'}
   ]},
   xz:{name:'乡镇业务',events:[
-    {title:'送桥镇乡道路面塌陷预警',type:'道路隐患类',time:'09-24 08:30',status:'pending'},
-    {title:'高邮镇水域水质异常',type:'水域异常类',time:'09-23 14:15',status:'done'},
-    {title:'三垛镇燃气管道安全排查',type:'燃气安全类',time:'09-23 09:20',status:'done'},
-    {title:'临泽镇乡道路基下沉',type:'道路隐患类',time:'09-22 15:30',status:'pending'},
-    {title:'界首镇河道漂浮物预警',type:'水域异常类',time:'09-22 10:45',status:'done'}
+    {id:'WA-0924-019',type:'道路隐患类',time:'09-24 08:30',location:'送桥镇乡道K3+200',conclusion:'路面塌陷面积约2平方米，深度0.5米',level:'orange',dispatch:'sent'},
+    {id:'WA-0923-020',type:'水域异常类',time:'09-23 14:15',location:'高邮镇三河交汇处',conclusion:'水质异常变色，AI比对确认污染源上游',level:'yellow',dispatch:'sent'},
+    {id:'WA-0923-021',type:'燃气安全类',time:'09-23 09:20',location:'三垛镇居民点',conclusion:'燃气管道接口泄漏风险，AI热成像检测到异常',level:'red',dispatch:'sent'},
+    {id:'WA-0922-022',type:'道路隐患类',time:'09-22 15:30',location:'临泽镇乡道K7+500',conclusion:'路基下沉约3米，影响通行宽度1.5米',level:'orange',dispatch:'pending'},
+    {id:'WA-0922-023',type:'水域异常类',time:'09-22 10:45',location:'界首镇河道',conclusion:'河道漂浮物堆积，AI识别面积40平方米',level:'blue',dispatch:'sent'}
   ]}
 };
+var levelMap={red:'红',orange:'橙',yellow:'黄',blue:'蓝'};
+var dispatchMap={sent:'已分发',pending:'待分发'};
 function switchAlertDept(key,el){
   document.querySelectorAll('#alertDeptTabs .tt').forEach(function(t){t.classList.remove('active')});
   el.classList.add('active');
   var d=alertDeptData[key];
-  var stMap={pending:'待处理',done:'已办结'};
   var h='<div class="alert-list">';
   d.events.forEach(function(e,idx){
-    h+='<div class="al-item" onclick="openAlertDetail(\''+key+'\','+idx+')"><div class="al-top"><span class="al-title">'+e.title+'</span><span class="al-status '+e.status+'">'+stMap[e.status]+'</span></div><div class="al-meta"><span>类型 <b>'+e.type+'</b></span><span>告警时间 <b>'+e.time+'</b></span></div></div>';
+    h+='<div class="al-item" onclick="openAlertDetail(\''+key+'\','+idx+')">'+
+      '<div class="al-top"><span class="al-title">'+e.id+' · '+e.type+'</span>'+
+      '<span class="al-level '+e.level+'">'+levelMap[e.level]+'</span></div>'+
+      '<div class="al-meta"><span>时间 <b>'+e.time+'</b></span><span>位置 <b>'+e.location+'</b></span>'+
+      '<span class="al-dispatch '+e.dispatch+'">'+dispatchMap[e.dispatch]+'</span></div></div>';
   });
   h+='</div>';
   document.getElementById('alertDeptBody').innerHTML=h;
@@ -1782,17 +1797,21 @@ function switchAlertDept(key,el){
 function openAlertDetail(key,idx){
   var e=alertDeptData[key].events[idx];
   if(!e)return;
-  var stMap={pending:'待处理',done:'已办结'};
-  var stColor=e.status==='done'?'#34d399':'#fbbf24';
-  var body='<div class="m-stats"><div class="m-stat"><div class="mv" style="color:'+stColor+'">'+stMap[e.status]+'</div><div class="ml">事件状态</div></div></div>';
+  var levelColor={red:'#f87171',orange:'#fb923c',yellow:'#fbbf24',blue:'#38bdf8'}[e.level];
+  var disColor={sent:'#34d399',pending:'#fbbf24'}[e.dispatch];
+  var body='<div class="m-stats">'+
+    '<div class="m-stat"><div class="mv" style="color:'+levelColor+'">'+levelMap[e.level]+'级</div><div class="ml">预警等级</div></div>'+
+    '<div class="m-stat"><div class="mv" style="color:'+disColor+'">'+dispatchMap[e.dispatch]+'</div><div class="ml">分发状态</div></div>'+
+    '</div>';
   body+='<table class="m-table2"><tbody>';
-  body+='<tr><td style="color:#8aa0bb">事件标题</td><td>'+e.title+'</td></tr>';
+  body+='<tr><td style="color:#8aa0bb;width:100px">事件编号</td><td style="font-weight:700">'+e.id+'</td></tr>';
   body+='<tr><td style="color:#8aa0bb">事件类型</td><td>'+e.type+'</td></tr>';
-  body+='<tr><td style="color:#8aa0bb">委办局</td><td>'+alertDeptData[key].name+'</td></tr>';
-  body+='<tr><td style="color:#8aa0bb">告警时间</td><td>'+e.time+'</td></tr>';
-  body+='<tr><td style="color:#8aa0bb">事件状态</td><td><span style="color:'+stColor+';font-weight:700">'+stMap[e.status]+'</span></td></tr>';
-  body+='<tr><td style="color:#8aa0bb">处理情况</td><td>'+(e.status==='done'?'已现场核查并处置完毕，相关隐患已消除。':'尚未派员现场核查，已通知相关部门限期处理。')+'</td></tr>';
-  body+='<tr><td style="color:#8aa0bb">涉及片区</td><td>'+e.title.split('镇')[0]+(e.title.indexOf('镇')>=0?'镇':'高邮市区')+'</td></tr>';
+  body+='<tr><td style="color:#8aa0bb">抓拍时间</td><td>'+e.time+'</td></tr>';
+  body+='<tr><td style="color:#8aa0bb">所在位置</td><td>'+e.location+'</td></tr>';
+  body+='<tr><td style="color:#8aa0bb">AI研判结论</td><td style="line-height:1.6">'+e.conclusion+'</td></tr>';
+  body+='<tr><td style="color:#8aa0bb">预警等级</td><td><span style="color:'+levelColor+';font-weight:700">'+levelMap[e.level]+'级</span></td></tr>';
+  body+='<tr><td style="color:#8aa0bb">分发状态</td><td><span style="color:'+disColor+';font-weight:700">'+dispatchMap[e.dispatch]+'</span></td></tr>';
+  body+='<tr><td style="color:#8aa0bb">所属委办局</td><td>'+alertDeptData[key].name+'</td></tr>';
   body+='</tbody></table>';
   document.getElementById('modalTitle').textContent='事件告警详情';
   document.getElementById('modalBody').innerHTML=body;
