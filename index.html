@@ -428,6 +428,9 @@ table.m-table{width:100%;border-collapse:collapse;font-size:13px}
 .pie-legend{display:grid;grid-template-columns:1fr 1fr;gap:5px 12px;margin-top:8px}
 .pl-item{display:flex;align-items:center;gap:5px;font-size:10.5px;color:#8fb8d8}
 .pl-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+/* Tab角标 */
+.dept-tabs .tt{position:relative}
+.tt-badge{position:absolute;top:-3px;right:-3px;min-width:15px;height:15px;padding:0 4px;border-radius:8px;background:#f87171;color:#fff;font-size:9px;font-weight:700;display:flex;align-items:center;justify-content:center;line-height:1}
 /* mini-bars加高 */
 .mini-bars.tall{height:56px !important}
 </style>
@@ -467,7 +470,13 @@ table.m-table{width:100%;border-collapse:collapse;font-size:13px}
           <div class="dp-t"><span class="dp-bar"></span>飞行统计</div>
         </div>
         <div class="dp-b">
-          <div class="sec-label" style="margin-top:0">政务飞行</div>
+          <div class="sec-label" style="margin-top:0">全部汇总</div>
+          <div class="stats-grid3">
+            <div class="stat"><div class="sv">110</div><div class="sl">飞行次数</div></div>
+            <div class="stat"><div class="sv">515.7<span class="unit-sm">km</span></div><div class="sl">飞行里程</div></div>
+            <div class="stat"><div class="sv">158.0<span class="unit-sm">h</span></div><div class="sl">飞行时长</div></div>
+          </div>
+          <div class="sec-label" style="margin-top:8px">政务飞行</div>
           <div class="stats-grid3">
             <div class="stat"><div class="sv">32</div><div class="sl">飞行次数</div></div>
             <div class="stat"><div class="sv">126.5<span class="unit-sm">km</span></div><div class="sl">飞行里程</div></div>
@@ -579,10 +588,10 @@ table.m-table{width:100%;border-collapse:collapse;font-size:13px}
         </div>
         <div class="dp-b">
           <div class="dept-tabs" id="alertDeptTabs">
-            <span class="tt active" onclick="switchAlertDept('zr',this)">自规局</span>
-            <span class="tt" onclick="switchAlertDept('ny',this)">农业农村局</span>
-            <span class="tt" onclick="switchAlertDept('cg',this)">城管局</span>
-            <span class="tt" onclick="switchAlertDept('xz',this)">乡镇业务</span>
+            <span class="tt active" onclick="switchAlertDept('zr',this)">自规局<span class="tt-badge">6</span></span>
+            <span class="tt" onclick="switchAlertDept('ny',this)">农业农村局<span class="tt-badge">6</span></span>
+            <span class="tt" onclick="switchAlertDept('cg',this)">城管局<span class="tt-badge">6</span></span>
+            <span class="tt" onclick="switchAlertDept('xz',this)">乡镇业务<span class="tt-badge">5</span></span>
           </div>
           <div id="alertDeptBody"></div>
         </div>
@@ -1730,13 +1739,13 @@ var alertDeptData={
     {title:'高邮市区非法占用农用地建设',type:'非法占地类',time:'09-24 11:30',status:'pending'},
     {title:'送桥镇耕地毁坏预警',type:'破坏耕地类',time:'09-24 09:15',status:'done'},
     {title:'高邮镇未经审批土地用途变更',type:'非法批地类',time:'09-23 16:20',status:'done'},
-    {title:'三垛镇基本农田非农化',type:'非法占地类',time:'09-23 10:45',status:'processing'},
+    {title:'三垛镇基本农田非农化',type:'非法占地类',time:'09-23 10:45',status:'pending'},
     {title:'临泽镇无证采矿用地',type:'非法批地类',time:'09-22 14:30',status:'done'},
     {title:'界首镇耕地毁坏农田设施',type:'破坏耕地类',time:'09-22 08:20',status:'pending'}
   ]},
   ny:{name:'农业农村局',events:[
     {title:'高邮市区秸秆露天焚烧',type:'秸秆禁烧',time:'09-24 10:30',status:'done'},
-    {title:'送桥镇耕地非粮化种植',type:'耕地非粮化',time:'09-24 07:45',status:'processing'},
+    {title:'送桥镇耕地非粮化种植',type:'耕地非粮化',time:'09-24 07:45',status:'pending'},
     {title:'三垛镇违规养殖场排放',type:'违规养殖',time:'09-23 15:20',status:'done'},
     {title:'高邮镇秸秆焚烧火点预警',type:'秸秆禁烧',time:'09-23 09:10',status:'pending'},
     {title:'临泽镇基本农田非粮化',type:'耕地非粮化',time:'09-22 11:30',status:'done'},
@@ -1744,7 +1753,7 @@ var alertDeptData={
   ]},
   cg:{name:'城管局',events:[
     {title:'高邮市区违章建筑拆除',type:'违章建筑类',time:'09-24 14:20',status:'done'},
-    {title:'送桥镇市容环境违规排放',type:'市容环境类',time:'09-24 09:30',status:'processing'},
+    {title:'送桥镇市容环境违规排放',type:'市容环境类',time:'09-24 09:30',status:'pending'},
     {title:'三垛镇渣土车违规倾倒',type:'渣土违规类',time:'09-23 16:45',status:'done'},
     {title:'高邮镇户外广告违规',type:'违章建筑类',time:'09-23 10:20',status:'pending'},
     {title:'临泽镇店外经营占用',type:'市容环境类',time:'09-22 13:10',status:'done'},
@@ -1754,7 +1763,7 @@ var alertDeptData={
     {title:'送桥镇乡道路面塌陷预警',type:'道路隐患类',time:'09-24 08:30',status:'pending'},
     {title:'高邮镇水域水质异常',type:'水域异常类',time:'09-23 14:15',status:'done'},
     {title:'三垛镇燃气管道安全排查',type:'燃气安全类',time:'09-23 09:20',status:'done'},
-    {title:'临泽镇乡道路基下沉',type:'道路隐患类',time:'09-22 15:30',status:'processing'},
+    {title:'临泽镇乡道路基下沉',type:'道路隐患类',time:'09-22 15:30',status:'pending'},
     {title:'界首镇河道漂浮物预警',type:'水域异常类',time:'09-22 10:45',status:'done'}
   ]}
 };
@@ -1762,13 +1771,32 @@ function switchAlertDept(key,el){
   document.querySelectorAll('#alertDeptTabs .tt').forEach(function(t){t.classList.remove('active')});
   el.classList.add('active');
   var d=alertDeptData[key];
-  var stMap={pending:'待处理',processing:'处理中',done:'已办结'};
+  var stMap={pending:'待处理',done:'已办结'};
   var h='<div class="alert-list">';
-  d.events.forEach(function(e){
-    h+='<div class="al-item"><div class="al-top"><span class="al-title">'+e.title+'</span><span class="al-status '+e.status+'">'+stMap[e.status]+'</span></div><div class="al-meta"><span>类型 <b>'+e.type+'</b></span><span>告警时间 <b>'+e.time+'</b></span></div></div>';
+  d.events.forEach(function(e,idx){
+    h+='<div class="al-item" onclick="openAlertDetail(\''+key+'\','+idx+')"><div class="al-top"><span class="al-title">'+e.title+'</span><span class="al-status '+e.status+'">'+stMap[e.status]+'</span></div><div class="al-meta"><span>类型 <b>'+e.type+'</b></span><span>告警时间 <b>'+e.time+'</b></span></div></div>';
   });
   h+='</div>';
   document.getElementById('alertDeptBody').innerHTML=h;
+}
+function openAlertDetail(key,idx){
+  var e=alertDeptData[key].events[idx];
+  if(!e)return;
+  var stMap={pending:'待处理',done:'已办结'};
+  var stColor=e.status==='done'?'#34d399':'#fbbf24';
+  var body='<div class="m-stats"><div class="m-stat"><div class="mv" style="color:'+stColor+'">'+stMap[e.status]+'</div><div class="ml">事件状态</div></div></div>';
+  body+='<table class="m-table2"><tbody>';
+  body+='<tr><td style="color:#8aa0bb">事件标题</td><td>'+e.title+'</td></tr>';
+  body+='<tr><td style="color:#8aa0bb">事件类型</td><td>'+e.type+'</td></tr>';
+  body+='<tr><td style="color:#8aa0bb">委办局</td><td>'+alertDeptData[key].name+'</td></tr>';
+  body+='<tr><td style="color:#8aa0bb">告警时间</td><td>'+e.time+'</td></tr>';
+  body+='<tr><td style="color:#8aa0bb">事件状态</td><td><span style="color:'+stColor+';font-weight:700">'+stMap[e.status]+'</span></td></tr>';
+  body+='<tr><td style="color:#8aa0bb">处理情况</td><td>'+(e.status==='done'?'已现场核查并处置完毕，相关隐患已消除。':'尚未派员现场核查，已通知相关部门限期处理。')+'</td></tr>';
+  body+='<tr><td style="color:#8aa0bb">涉及片区</td><td>'+e.title.split('镇')[0]+(e.title.indexOf('镇')>=0?'镇':'高邮市区')+'</td></tr>';
+  body+='</tbody></table>';
+  document.getElementById('modalTitle').textContent='事件告警详情';
+  document.getElementById('modalBody').innerHTML=body;
+  document.getElementById('modalMask').classList.add('show');
 }
 
 // ============ 事件办结列表弹窗 ============
