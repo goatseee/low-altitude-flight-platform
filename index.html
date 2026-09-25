@@ -407,6 +407,29 @@ table.m-table{width:100%;border-collapse:collapse;font-size:13px}
 .ws-label{font-size:10px;color:#6b87a8;margin-top:2px;letter-spacing:1px}
 /* 单位小字 */
 .unit-sm{font-size:11px;font-weight:400;color:#8fb8d8;margin-left:2px}
+/* 事件告警列表 */
+.alert-list{padding:0}
+.al-item{background:rgba(13,28,53,.6);border:1px solid rgba(56,189,248,.1);border-radius:8px;padding:9px 11px;margin-bottom:6px;cursor:pointer;transition:all .15s}
+.al-item:hover{border-color:rgba(45,226,240,.3);background:rgba(13,28,53,.8)}
+.al-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:4px}
+.al-title{font-size:12px;font-weight:700;color:#e8f1fb}
+.al-status{font-size:10px;padding:1px 8px;border-radius:9px;font-weight:600}
+.al-status.pending{background:rgba(251,191,36,.12);color:#fbbf24;border:1px solid rgba(251,191,36,.3)}
+.al-status.done{background:rgba(52,211,153,.12);color:#34d399;border:1px solid rgba(52,211,153,.3)}
+.al-status.processing{background:rgba(0,130,217,.12);color:#0082D9;border:1px solid rgba(0,130,217,.3)}
+.al-meta{font-size:10.5px;color:#6b87a8;display:flex;gap:10px;flex-wrap:wrap}
+.al-meta b{color:#8fb8d8}
+/* 饼图 */
+.pie-chart{width:140px;height:140px;border-radius:50%;margin:10px auto;position:relative;background:conic-gradient(#0082D9 0deg 87deg,#34d399 87deg 160deg,#fbbf24 160deg 222deg,#a78bfa 222deg 300deg,#6b87a8 300deg 360deg)}
+.pie-chart::before{content:'';position:absolute;inset:28px;background:rgba(12,26,52,.95);border-radius:50%}
+.pie-center{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:1}
+.pie-center .pc-val{font-size:22px;font-weight:800;color:#e8f1fb}
+.pie-center .pc-label{font-size:10px;color:#6b87a8}
+.pie-legend{display:grid;grid-template-columns:1fr 1fr;gap:5px 12px;margin-top:8px}
+.pl-item{display:flex;align-items:center;gap:5px;font-size:10.5px;color:#8fb8d8}
+.pl-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+/* mini-bars加高 */
+.mini-bars.tall{height:56px !important}
 </style>
 
 <!-- 左右统计面板 -->
@@ -416,21 +439,17 @@ table.m-table{width:100%;border-collapse:collapse;font-size:13px}
 
       <!-- 1. 空域态势 -->
       <div class="dash-panel" style="flex:1.15 1 0">
-        <div class="dp-h">
+        <div class="dp-h" onclick="openModal('space')">
           <div class="dp-t"><span class="dp-bar"></span>空域态势</div>
         </div>
         <div class="dp-b">
-          <div class="stats-grid">
+          <div class="stats-grid3">
             <div class="stat"><div class="sv">67%<span class="tr tr-up">+5</span></div><div class="sl">空域使用率</div></div>
             <div class="stat"><div class="sv">12<span class="tr tr-up">+2</span></div><div class="sl">管制空域(块)</div></div>
             <div class="stat"><div class="sv">3<span class="tr tr-up">+2</span></div><div class="sl">临时管制(块)</div></div>
             <div class="stat"><div class="sv">5</div><div class="sl">限飞区(个)</div></div>
-          </div>
-          <div class="stats-grid" style="margin-top:8px">
             <div class="stat"><div class="sv">248</div><div class="sl">空域网格(个)</div></div>
             <div class="stat"><div class="sv">36<span class="tr tr-up">+4</span></div><div class="sl">在用航线(条)</div></div>
-            <div class="stat"><div class="sv">6</div><div class="sl">空域申请(今日)</div></div>
-            <div class="stat"><div class="sv">12</div><div class="sl">空域巡查(次)</div></div>
           </div>
           <div class="sec-label">高邮市各片区空域使用率</div>
           <div class="dist-row"><span class="dr-name">高邮市区</span><span class="dr-bar"><i style="width:86%"></i></span><span class="dr-val">86%</span></div>
@@ -444,7 +463,7 @@ table.m-table{width:100%;border-collapse:collapse;font-size:13px}
 
       <!-- 2. 飞行统计 -->
       <div class="dash-panel">
-        <div class="dp-h">
+        <div class="dp-h" onclick="openModal('fly')">
           <div class="dp-t"><span class="dp-bar"></span>飞行统计</div>
         </div>
         <div class="dp-b">
@@ -469,7 +488,7 @@ table.m-table{width:100%;border-collapse:collapse;font-size:13px}
 
       <!-- 3. 基础数据（原航空器状态） -->
       <div class="dash-panel">
-        <div class="dp-h">
+        <div class="dp-h" onclick="openModal('craft')">
           <div class="dp-t"><span class="dp-bar"></span>基础数据</div>
           <div class="dp-btn-group" onclick="event.stopPropagation()">
             <span class="dp-btn" onclick="openAircraftSub('list')">设备列表</span>
@@ -486,7 +505,7 @@ table.m-table{width:100%;border-collapse:collapse;font-size:13px}
             <span class="tt" onclick="switchAcType('other',this)">其他</span>
           </div>
           <div class="stats-grid" id="acTypeStats"></div>
-          <div class="sec-label" id="acTypeModelLabel">机型分布</div>
+          <div class="sec-label" id="acTypeModelLabel">机型列表</div>
           <div id="acTypeModels"></div>
         </div>
       </div>
@@ -507,7 +526,7 @@ table.m-table{width:100%;border-collapse:collapse;font-size:13px}
 
       <!-- 1. 预警统计（原安全监管） -->
       <div class="dash-panel" style="flex:1.15 1 0">
-        <div class="dp-h">
+        <div class="dp-h" onclick="openModal('warn')">
           <div class="dp-t warn"><span class="dp-bar"></span>预警统计 <span class="chip chip-red" style="margin:0">实时告警</span></div>
         </div>
         <div class="dp-b">
@@ -517,12 +536,12 @@ table.m-table{width:100%;border-collapse:collapse;font-size:13px}
             <div class="stat"><div class="sv">5</div><div class="sl">航线冲突</div></div>
             <div class="stat"><div class="sv">3</div><div class="sl">非适飞起飞</div></div>
           </div>
-          <div class="sec-label">航线冲突统计</div>
+          <div class="sec-label">预警类型</div>
           <div class="substat"><span>非合作无人机预警</span><span class="sbv">4 <small>架</small></span></div>
-          <div class="substat"><span>航线冲突数量</span><span class="sbv">5 <small>起</small></span></div>
+          <div class="substat"><span>航线冲突</span><span class="sbv">5 <small>起</small></span></div>
           <div class="sec-label">近7日告警处置走势</div>
-          <div class="mini-bars">
-            <i style="height:30%"></i><i class="hot" style="height:55%"></i><i class="neg" style="height:40%"></i><i class="hot" style="height:70%"></i><i class="neg" style="height:52%"></i><i class="hot" style="height:78%"></i><i class="neg" style="height:60%"></i>
+          <div class="mini-bars tall">
+            <i style="height:30%"></i><i class="hot" style="height:55%"></i><i class="neg" style="height:40%"></i><i class="hot" style="height:70%"></i><i class="neg" style="height:52%"></i><i class="hot" style="height:78%"></i><i class="neg" style="height:60%"></i><i style="height:45%"></i><i class="hot" style="height:68%"></i><i class="neg" style="height:50%"></i>
           </div>
         </div>
       </div>
@@ -535,22 +554,27 @@ table.m-table{width:100%;border-collapse:collapse;font-size:13px}
         </div>
         <div class="dp-b">
           <div class="stats-grid">
+            <div class="stat"><div class="sv">57</div><div class="sl">事件总数</div></div>
             <div class="stat"><div class="sv">45</div><div class="sl">已办结</div></div>
             <div class="stat"><div class="sv">12</div><div class="sl">未办结</div></div>
             <div class="stat"><div class="sv">78.9%</div><div class="sl">办结率</div></div>
-            <div class="stat"><div class="sv">57</div><div class="sl">事件总数</div></div>
           </div>
-          <div class="sec-label">按部门办结分布（已结/未结）</div>
-          <div class="substat"><span>城管局</span><span class="sbv">12 <small>结</small> / 3 <small>未</small></span></div>
-          <div class="substat"><span>自规局</span><span class="sbv">10 <small>结</small> / 2 <small>未</small></span></div>
-          <div class="substat"><span>农业农村局</span><span class="sbv">9 <small>结</small> / 2 <small>未</small></span></div>
-          <div class="substat"><span>乡镇业务</span><span class="sbv">14 <small>结</small> / 5 <small>未</small></span></div>
+          <div class="sec-label">按部门办结分布</div>
+          <div class="pie-chart">
+            <div class="pie-center"><span class="pc-val">57</span><span class="pc-label">事件总数</span></div>
+          </div>
+          <div class="pie-legend">
+            <span class="pl-item"><span class="pl-dot" style="background:#0082D9"></span>城管局 15</span>
+            <span class="pl-item"><span class="pl-dot" style="background:#34d399"></span>自规局 12</span>
+            <span class="pl-item"><span class="pl-dot" style="background:#fbbf24"></span>农业农村局 11</span>
+            <span class="pl-item"><span class="pl-dot" style="background:#a78bfa"></span>乡镇业务 19</span>
+          </div>
         </div>
       </div>
 
       <!-- 3. 事件告警（原AI数据研判） -->
       <div class="dash-panel" style="flex:1.15 1 0">
-        <div class="dp-h">
+        <div class="dp-h" onclick="openModal('alert')">
           <div class="dp-t"><span class="dp-bar"></span>事件告警</div>
         </div>
         <div class="dp-b">
@@ -1208,7 +1232,10 @@ craft:{name:'航空器状态详情',stats:[['76','在册总数(架)'],['89.6%','
 safe:{name:'安全监管详情',stats:[['7','黑飞告警(今日)'],['5','已处置'],['71.4%','处置率'],['3','反制联动(次)']],head:['告警编号','时间','位置','等级','状态'],rows:[['HF-001','11:42','高邮机场北侧','高危','已处置'],['HF-002','11:05','高邮运河段','中危','处置中'],['HF-003','10:38','高邮市中心起降点','中危','已处置'],['HF-004','09:56','高邮禁飞区边缘','高危','待处置'],['HF-005','09:12','高邮青山片区','低危','已处置']]},
 audit:{name:'县市省联动审批详情',stats:[['19','待审批(件)'],['228','今日已批'],['94.2%','通过率'],['2.3h','平均审批时长']],head:['片区','今日审批','待审','通过率'],rows:[['高邮市区','68','6','96.4%'],['送桥镇','42','3','95.2%'],['三垛镇','36','3','93.8%'],['高邮镇','30','2','92.9%'],['临泽镇','26','2','91.7%'],['界首镇','26','3','91.7%']]},
 ai:{name:'AI数据研判详情',stats:[['23','今日预警(条)'],['96.8%','研判准确率'],['2','航迹冲突预测'],['1','空域拥堵预警']],head:['预警编号','时间','类型','来源','等级'],rows:[['YJ-001','11:40','航迹冲突','AI模型','红'],['YJ-002','11:12','空域拥堵','规则引擎','橙'],['YJ-003','10:45','气象风险','多源融合','橙'],['YJ-004','10:20','违规飞行','大模型分析','红'],['YJ-005','09:55','航线偏航','规则引擎','黄'],['YJ-006','09:30','高度异常','AI模型','蓝']]},
-weather:{name:'气象监测详情',stats:[['22℃','温度'],['4.2m/s','风速'],['3.0km','能见度'],['1013hPa','气压']],head:['气象站','温度','风速','能见度','状态'],rows:[['高邮机场站','21.8℃','4.1m/s','3.2km','正常'],['高邮市区站','22.1℃','4.8m/s','2.6km','能见度偏低'],['送桥镇站','21.5℃','3.9m/s','3.4km','正常'],['三垛镇站','22.3℃','5.2m/s','2.8km','能见度偏低'],['临泽镇站','21.9℃','4.0m/s','3.0km','正常'],['界首镇站','22.0℃','3.6m/s','3.5km','正常'],['高邮镇站','—','—','—','维护中']]}
+weather:{name:'气象监测详情',stats:[['22℃','温度'],['4.2m/s','风速'],['3.0km','能见度'],['1013hPa','气压']],head:['气象站','温度','风速','能见度','状态'],rows:[['高邮机场站','21.8℃','4.1m/s','3.2km','正常'],['高邮市区站','22.1℃','4.8m/s','2.6km','能见度偏低'],['送桥镇站','21.5℃','3.9m/s','3.4km','正常'],['三垛镇站','22.3℃','5.2m/s','2.8km','能见度偏低'],['临泽镇站','21.9℃','4.0m/s','3.0km','正常'],['界首镇站','22.0℃','3.6m/s','3.5km','正常'],['高邮镇站','—','—','—','维护中']]},
+fly:{name:'飞行统计详情',stats:[['110','飞行总次数'],['515.7km','飞行总里程'],['158h','飞行总时长'],['32','政务飞行'],['78','商业飞行']],head:['日期','类型','次数','里程','时长'],rows:[['09-24','政务飞行','8','32.5km','11.2h'],['09-24','商业飞行','18','68.2km','22.5h'],['09-23','政务飞行','7','28.1km','10.5h'],['09-23','商业飞行','16','72.8km','19.8h'],['09-22','政务飞行','9','35.2km','12.8h'],['09-22','商业飞行','15','65.3km','18.0h'],['09-21','政务飞行','8','30.7km','10.7h'],['09-21','商业飞行','15','68.2km','20.5h'],['09-20','政务飞行','6','22.4km','8.2h'],['09-20','商业飞行','14','57.9km','17.0h']]},
+warn:{name:'预警统计详情',stats:[['7','安全告警'],['23','事件告警'],['5','航线冲突'],['3','非适飞起飞']],head:['告警编号','时间','预警类型','等级','状态'],rows:[['WA-001','11:42','安全告警','高危','已处置'],['WA-002','11:05','航线冲突','中危','处置中'],['WA-003','10:38','事件告警','中危','已处置'],['WA-004','09:56','非适飞起飞','高危','待处置'],['WA-005','09:12','非合作无人机','低危','已处置'],['WA-006','08:45','航线冲突','中危','已处置'],['WA-007','08:20','安全告警','低危','已处置']]},
+alert:{name:'事件告警详情',stats:[['26','告警总数'],['8','待处理'],['6','处理中'],['12','已办结']],head:['事件标题','事件类型','部门','告警时间','状态'],rows:[['高邮市区非法占用农用地建设','非法占地类','自规局','09-24 11:30','待处理'],['送桥镇耕地毁坏预警','破坏耕地类','自规局','09-24 09:15','已办结'],['高邮市区秸秆露天焚烧','秸秆禁烧','农业农村局','09-24 10:30','已办结'],['送桥镇市容环境违规排放','市容环境类','城管局','09-24 09:30','处理中'],['送桥镇乡道路面塌陷预警','道路隐患类','乡镇业务','09-24 08:30','待处理'],['高邮镇水域水质异常','水域异常类','乡镇业务','09-23 14:15','已办结'],['高邮市区违章建筑拆除','违章建筑类','城管局','09-24 14:20','已办结'],['三垛镇违规养殖场排放','违规养殖','农业农村局','09-23 15:20','已办结']]}
 };
 function openModal(key){
   var data=modalData[key];if(!data)return;
@@ -1629,12 +1656,49 @@ function filterDev(el,type){
 }
 // ============ 基础数据类型切换 ============
 var acTypeData={
-  all:{name:'全部',total:76,fly:23,idle:45,off:8,models:[['大疆 M300','24'],['大疆 M30T','18'],['极飞 V40','15'],['亿航 EH216','11'],['其他机型','8']]},
-  gov:{name:'政务飞行类',total:28,fly:9,idle:16,off:3,models:[['大疆 M300','12'],['大疆 M30T','8'],['极飞 V40','8']]},
-  logi:{name:'外卖物流',total:22,fly:8,idle:11,off:3,models:[['大疆 M30T','12'],['极飞 V40','10']]},
-  medi:{name:'医疗物资',total:10,fly:2,idle:6,off:2,models:[['亿航 EH216','7'],['大疆 M30T','3']]},
-  poli:{name:'公安应急',total:12,fly:3,idle:8,off:1,models:[['大疆 M300','8'],['极飞 V40','4']]},
-  other:{name:'其他',total:4,fly:1,idle:3,off:0,models:[['其他机型','4']]}
+  all:{name:'全部',total:76,fly:23,idle:45,off:8,devices:[
+    {id:'UAV-021',model:'大疆M300',unit:'高邮自规局',st:'fly',batt:82},
+    {id:'UAV-048',model:'大疆M30T',unit:'高邮物流公司',st:'fly',batt:76},
+    {id:'UAV-035',model:'极飞V40',unit:'高邮水利局',st:'fly',batt:68},
+    {id:'UAV-022',model:'大疆M300',unit:'高邮自规局',st:'idle',batt:100},
+    {id:'UAV-024',model:'大疆M300',unit:'高邮航拍队',st:'off',batt:12},
+    {id:'UAV-070',model:'大疆M300',unit:'高邮农服中心',st:'fly',batt:87}
+  ]},
+  gov:{name:'政务飞行类',total:28,fly:9,idle:16,off:3,devices:[
+    {id:'UAV-021',model:'大疆M300',unit:'高邮自规局',st:'fly',batt:82},
+    {id:'UAV-035',model:'极飞V40',unit:'高邮水利局',st:'fly',batt:68},
+    {id:'UAV-065',model:'极飞V40',unit:'高邮应急局',st:'fly',batt:91},
+    {id:'UAV-022',model:'大疆M300',unit:'高邮自规局',st:'idle',batt:100},
+    {id:'UAV-023',model:'大疆M300',unit:'高邮市城管局',st:'idle',batt:95},
+    {id:'UAV-024',model:'大疆M300',unit:'高邮航拍队',st:'off',batt:12}
+  ]},
+  logi:{name:'外卖物流',total:22,fly:8,idle:11,off:3,devices:[
+    {id:'UAV-048',model:'大疆M30T',unit:'高邮物流公司',st:'fly',batt:76},
+    {id:'UAV-049',model:'大疆M30T',unit:'高邮物流公司',st:'idle',batt:92},
+    {id:'UAV-070',model:'大疆M300',unit:'高邮农服中心',st:'fly',batt:87},
+    {id:'UAV-071',model:'大疆M300',unit:'高邮农服中心',st:'idle',batt:81},
+    {id:'UAV-054',model:'亿航EH216',unit:'高邮供电局',st:'off',batt:5},
+    {id:'UAV-072',model:'大疆M300',unit:'高邮环保局',st:'idle',batt:67}
+  ]},
+  medi:{name:'医疗物资',total:10,fly:2,idle:6,off:2,devices:[
+    {id:'UAV-052',model:'亿航EH216',unit:'高邮供电局',st:'fly',batt:64},
+    {id:'UAV-053',model:'亿航EH216',unit:'高邮供电局',st:'idle',batt:78},
+    {id:'UAV-068',model:'大疆M30T',unit:'高邮文旅局',st:'fly',batt:73},
+    {id:'UAV-069',model:'大疆M30T',unit:'高邮文旅局',st:'idle',batt:90},
+    {id:'UAV-037',model:'极飞V40',unit:'高邮海事局',st:'off',batt:0},
+    {id:'UAV-054',model:'亿航EH216',unit:'高邮供电局',st:'off',batt:5}
+  ]},
+  poli:{name:'公安应急',total:12,fly:3,idle:8,off:1,devices:[
+    {id:'UAV-061',model:'大疆M300',unit:'高邮航拍队',st:'fly',batt:59},
+    {id:'UAV-066',model:'极飞V40',unit:'高邮应急局',st:'idle',batt:85},
+    {id:'UAV-065',model:'极飞V40',unit:'高邮应急局',st:'fly',batt:91},
+    {id:'UAV-036',model:'极飞V40',unit:'高邮水利局',st:'idle',batt:88},
+    {id:'UAV-024',model:'大疆M300',unit:'高邮航拍队',st:'off',batt:12}
+  ]},
+  other:{name:'其他',total:4,fly:1,idle:3,off:0,devices:[
+    {id:'UAV-072',model:'大疆M300',unit:'高邮环保局',st:'idle',batt:67},
+    {id:'UAV-069',model:'大疆M30T',unit:'高邮文旅局',st:'idle',batt:90}
+  ]}
 };
 function switchAcType(key,el){
   document.querySelectorAll('#acTypeTabs .tt').forEach(function(t){t.classList.remove('active')});
@@ -1645,33 +1709,65 @@ function switchAcType(key,el){
     '<div class="stat"><div class="sv">'+d.idle+'</div><div class="sl">待命</div></div>'+
     '<div class="stat"><div class="sv">'+d.off+'</div><div class="sl">离线</div></div>'+
     '<div class="stat"><div class="sv">'+d.total+'</div><div class="sl">在册总数</div></div>';
+  document.getElementById('acTypeModelLabel').textContent=d.name+' · 机型列表';
   var mh='';
-  d.models.forEach(function(m){
-    mh+='<div class="substat"><span>'+m[0]+'</span><span class="sbv">'+m[1]+' <small>架</small></span></div>';
+  d.devices.forEach(function(v){
+    var stText=v.st==='fly'?'在飞':(v.st==='idle'?'待命':'离线');
+    var stCls=v.st==='fly'?'st-green':(v.st==='idle'?'st-gray':'st-red');
+    var battColor=v.batt>50?'#34d399':(v.batt>20?'#fbbf24':'#f87171');
+    mh+='<div class="dev-item"><div class="dev-icon">🚁</div><div class="dev-info">'+
+      '<div class="dev-top"><span class="dev-id">'+v.id+'</span><span class="dev-st '+v.st+'">'+stText+'</span></div>'+
+      '<div class="dev-meta"><span>机型 <b>'+v.model+'</b></span><span>单位 <b>'+v.unit+'</b></span></div></div>'+
+      '<div class="dev-batt"><span style="font-size:9.5px;color:#6b87a8">电量</span> <span style="font-size:11px;color:'+battColor+';font-weight:700">'+v.batt+'%</span>'+
+      '<div class="dev-batt-bar"><div class="dev-batt-fill" style="width:'+v.batt+'%;background:'+battColor+'"></div></div></div></div>';
   });
   document.getElementById('acTypeModels').innerHTML=mh;
-  document.getElementById('acTypeModelLabel').textContent=d.name+' · 机型分布';
 }
 
-// ============ 事件告警部门切换 ============
+// ============ 事件告警部门切换（事件列表） ============
 var alertDeptData={
-  zr:{name:'自规局',total:8,today:3,types:[['非法占地类','3'],['破坏耕地类','2'],['非法批地类','3']]},
-  ny:{name:'农业农村局',total:6,today:2,types:[['秸秆禁烧','2'],['耕地非粮化','2'],['违规养殖','2']]},
-  cg:{name:'城管局',total:7,today:4,types:[['违章建筑类','3'],['市容环境类','2'],['渣土违规类','2']]},
-  xz:{name:'乡镇业务',total:5,today:2,types:[['道路隐患类','2'],['水域异常类','2'],['燃气安全类','1']]}
+  zr:{name:'自规局',events:[
+    {title:'高邮市区非法占用农用地建设',type:'非法占地类',time:'09-24 11:30',status:'pending'},
+    {title:'送桥镇耕地毁坏预警',type:'破坏耕地类',time:'09-24 09:15',status:'done'},
+    {title:'高邮镇未经审批土地用途变更',type:'非法批地类',time:'09-23 16:20',status:'done'},
+    {title:'三垛镇基本农田非农化',type:'非法占地类',time:'09-23 10:45',status:'processing'},
+    {title:'临泽镇无证采矿用地',type:'非法批地类',time:'09-22 14:30',status:'done'},
+    {title:'界首镇耕地毁坏农田设施',type:'破坏耕地类',time:'09-22 08:20',status:'pending'}
+  ]},
+  ny:{name:'农业农村局',events:[
+    {title:'高邮市区秸秆露天焚烧',type:'秸秆禁烧',time:'09-24 10:30',status:'done'},
+    {title:'送桥镇耕地非粮化种植',type:'耕地非粮化',time:'09-24 07:45',status:'processing'},
+    {title:'三垛镇违规养殖场排放',type:'违规养殖',time:'09-23 15:20',status:'done'},
+    {title:'高邮镇秸秆焚烧火点预警',type:'秸秆禁烧',time:'09-23 09:10',status:'pending'},
+    {title:'临泽镇基本农田非粮化',type:'耕地非粮化',time:'09-22 11:30',status:'done'},
+    {title:'界首镇养殖场违规排放',type:'违规养殖',time:'09-22 08:15',status:'done'}
+  ]},
+  cg:{name:'城管局',events:[
+    {title:'高邮市区违章建筑拆除',type:'违章建筑类',time:'09-24 14:20',status:'done'},
+    {title:'送桥镇市容环境违规排放',type:'市容环境类',time:'09-24 09:30',status:'processing'},
+    {title:'三垛镇渣土车违规倾倒',type:'渣土违规类',time:'09-23 16:45',status:'done'},
+    {title:'高邮镇户外广告违规',type:'违章建筑类',time:'09-23 10:20',status:'pending'},
+    {title:'临泽镇店外经营占用',type:'市容环境类',time:'09-22 13:10',status:'done'},
+    {title:'界首镇渣土违规运输',type:'渣土违规类',time:'09-22 09:50',status:'done'}
+  ]},
+  xz:{name:'乡镇业务',events:[
+    {title:'送桥镇乡道路面塌陷预警',type:'道路隐患类',time:'09-24 08:30',status:'pending'},
+    {title:'高邮镇水域水质异常',type:'水域异常类',time:'09-23 14:15',status:'done'},
+    {title:'三垛镇燃气管道安全排查',type:'燃气安全类',time:'09-23 09:20',status:'done'},
+    {title:'临泽镇乡道路基下沉',type:'道路隐患类',time:'09-22 15:30',status:'processing'},
+    {title:'界首镇河道漂浮物预警',type:'水域异常类',time:'09-22 10:45',status:'done'}
+  ]}
 };
 function switchAlertDept(key,el){
   document.querySelectorAll('#alertDeptTabs .tt').forEach(function(t){t.classList.remove('active')});
   el.classList.add('active');
   var d=alertDeptData[key];
-  var h='<div class="stats-grid"><div class="stat"><div class="sv"><span class="pulse amber"></span>'+d.total+'</div><div class="sl">预警总数(条)</div></div>'+
-    '<div class="stat"><div class="sv">'+d.today+'</div><div class="sl">今日新增(条)</div></div>'+
-    '<div class="stat"><div class="sv">'+(d.total-d.today)+'</div><div class="sl">存量预警(条)</div></div>'+
-    '<div class="stat"><div class="sv">92.5%</div><div class="sl">研判准确率</div></div></div>';
-  h+='<div class="sec-label">'+d.name+' · 告警类型分布</div>';
-  d.types.forEach(function(t){
-    h+='<div class="substat"><span>'+t[0]+'</span><span class="sbv">'+t[1]+' <small>条</small></span></div>';
+  var stMap={pending:'待处理',processing:'处理中',done:'已办结'};
+  var h='<div class="alert-list">';
+  d.events.forEach(function(e){
+    h+='<div class="al-item"><div class="al-top"><span class="al-title">'+e.title+'</span><span class="al-status '+e.status+'">'+stMap[e.status]+'</span></div><div class="al-meta"><span>类型 <b>'+e.type+'</b></span><span>告警时间 <b>'+e.time+'</b></span></div></div>';
   });
+  h+='</div>';
   document.getElementById('alertDeptBody').innerHTML=h;
 }
 
@@ -1694,6 +1790,25 @@ modalData.events={name:'事件办结列表',stats:[['45','已办结'],['12','未
 // ============ 初始化新面板 ============
 switchAcType('all', document.querySelector('#acTypeTabs .tt'));
 switchAlertDept('zr', document.querySelector('#alertDeptTabs .tt'));
+// 弹窗绑定重新执行（适配新面板结构）
+(function(){
+  document.querySelectorAll('.dash-panel').forEach(function(panel){
+    var header=panel.querySelector('.dp-h');
+    if(!header)return;
+    var m=header.getAttribute('onclick');
+    if(!m)return;
+    var match=m.match(/openModal\('(\w+)'\)/);
+    if(!match)return;
+    var key=match[1];
+    panel.querySelectorAll('.stat,.dist-row,.substat,.chip,.mini-bars,.sec-label,.stats-grid3').forEach(function(el){
+      el.style.cursor='pointer';
+      el.addEventListener('click',function(e){
+        e.stopPropagation();
+        openModal(key);
+      });
+    });
+  });
+})();
 </script>
 </body>
 </html>
