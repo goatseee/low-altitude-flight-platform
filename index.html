@@ -320,15 +320,25 @@ table.m-table{width:100%;border-collapse:collapse;font-size:13px}
     <div class="lm-item on" onclick="toggleLayer('ports',this)"><span class="dot"></span>机场起降点<span class="lm-num">5</span></div>
   </div>
 
+  <!-- 气象监测横条 -->
+  <div class="weather-strip">
+    <div class="ws-item"><span class="ws-val">22℃</span><span class="ws-label">温度</span></div>
+    <div class="ws-item"><span class="ws-val">4.2m/s</span><span class="ws-label">风速</span></div>
+    <div class="ws-item"><span class="ws-val">3.0km</span><span class="ws-label">能见度</span></div>
+    <div class="ws-item"><span class="ws-val">65%</span><span class="ws-label">湿度</span></div>
+    <div class="ws-item"><span class="ws-val">东北风</span><span class="ws-label">风向</span></div>
+    <div class="ws-item"><span class="ws-val"><span class="pulse green"></span>良好</span><span class="ws-label">飞行条件</span></div>
+  </div>
+
   <!-- 抽屉拉手 -->
   <div class="drawer-handle left-h" id="leftHandle" onclick="toggleDrawer('left')">◀</div>
   <div class="drawer-handle right-h" id="rightHandle" onclick="toggleDrawer('right')">▶</div>
 <style>
-/* 航空器状态 - 标题按钮组 */
+/* 标题按钮组 */
 .dp-btn-group{display:flex;gap:5px;margin-left:auto}
 .dp-btn{padding:3px 9px;border:1px solid rgba(45,226,240,.45);border-radius:6px;background:rgba(16,58,110,.55);color:#7fe3ff;font-size:11px;cursor:pointer;transition:all .2s;white-space:nowrap}
 .dp-btn:hover{background:rgba(45,226,240,.18);color:#fff}
-/* 航空器状态 - 二级子面板 */
+/* 二级子面板 */
 .ac-sub{display:none;flex-direction:column;flex:1 1 0;min-height:0;background:rgba(12,26,52,.85);border:1px solid rgba(80,190,255,.28);border-radius:12px;backdrop-filter:blur(8px);overflow:hidden}
 .ac-sub.show{display:flex}
 .ac-sub-h{display:flex;align-items:center;gap:10px;padding:10px 12px;background:linear-gradient(90deg,rgba(45,226,240,.16),rgba(45,226,240,.02));border-bottom:1px solid rgba(80,190,255,.22);flex-shrink:0}
@@ -377,45 +387,37 @@ table.m-table{width:100%;border-collapse:collapse;font-size:13px}
 .mon-bottom{font-size:10px;color:#9fc0dd;line-height:1.55}
 .mon-bottom b{color:#e8f1fb}
 .mon-empty{display:flex;align-items:center;justify-content:center;color:#2a4a6a;font-size:12px}
+/* 三列统计 */
+.stats-grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+/* 类型Tab（基础数据） */
+.type-tabs{display:flex;gap:4px;margin-bottom:10px}
+.type-tabs .tt{flex:1;text-align:center;padding:5px 0;font-size:11px;color:#6b87a8;border:1px solid rgba(56,189,248,.18);border-radius:6px;cursor:pointer;transition:all .2s;min-width:0;white-space:nowrap}
+.type-tabs .tt:hover{color:#7fe3ff;border-color:rgba(45,226,240,.3)}
+.type-tabs .tt.active{color:#2de2f0;border-color:rgba(45,226,240,.55);background:rgba(45,226,240,.08);font-weight:700}
+/* 部门Tab（事件告警） */
+.dept-tabs{display:flex;gap:4px;margin-bottom:10px}
+.dept-tabs .tt{flex:1;text-align:center;padding:5px 2px;font-size:11px;color:#6b87a8;border:1px solid rgba(56,189,248,.18);border-radius:6px;cursor:pointer;transition:all .2s;min-width:0;white-space:nowrap}
+.dept-tabs .tt:hover{color:#7fe3ff;border-color:rgba(45,226,240,.3)}
+.dept-tabs .tt.active{color:#fbbf24;border-color:rgba(251,191,36,.55);background:rgba(251,191,36,.08);font-weight:700}
+/* 气象横条 */
+.weather-strip{position:absolute;bottom:20px;left:50%;transform:translateX(-50%);display:flex;background:rgba(12,26,52,.9);border:1px solid rgba(80,190,255,.28);border-radius:16px;padding:10px 6px;z-index:20;backdrop-filter:blur(10px);box-shadow:0 4px 24px rgba(0,0,0,.35)}
+.ws-item{display:flex;flex-direction:column;align-items:center;padding:0 18px;border-right:1px solid rgba(80,190,255,.12)}
+.ws-item:last-child{border-right:none}
+.ws-val{font-size:16px;font-weight:700;color:#e8f1fb;display:flex;align-items:center;gap:4px}
+.ws-label{font-size:10px;color:#6b87a8;margin-top:2px;letter-spacing:1px}
+/* 单位小字 */
+.unit-sm{font-size:11px;font-weight:400;color:#8fb8d8;margin-left:2px}
 </style>
 
 <!-- 左右统计面板 -->
   <div class="dash-layout">
     <!-- 左侧面板 -->
     <div class="dash-panel-wrap" id="leftPanel">
-      <div class="dash-panel" style="flex:1.15 1 0">
-        <div class="dp-h" onclick="openModal('task')">
-          <div class="dp-t"><span class="dp-bar"></span>飞行任务统计</div>
-          <div class="dp-link">查看详情</div>
-        </div>
-        <div class="dp-b">
-          <div class="stats-grid">
-            <div class="stat"><div class="sv">128<span class="tr tr-up">+1.2</span></div><div class="sl">今日任务总数</div></div>
-            <div class="stat"><div class="sv">86<span class="tr tr-up">+8</span></div><div class="sl">已完成</div></div>
-            <div class="stat"><div class="sv"><span class="pulse green"></span>23</div><div class="sl">执行中</div></div>
-            <div class="stat"><div class="sv">19</div><div class="sl">待审批</div></div>
-          </div>
-          <div class="stats-grid" style="margin-top:8px">
-            <div class="stat"><div class="sv">23<span class="tr tr-up">+5</span></div><div class="sl">在飞航空器(架)</div></div>
-            <div class="stat"><div class="sv">156<span class="tr tr-up">+18</span></div><div class="sl">今日飞行架次</div></div>
-            <div class="stat"><div class="sv"><span class="pulse amber"></span>3<span class="tr tr-up">+2</span></div><div class="sl">异常事件(起)</div></div>
-            <div class="stat"><div class="sv">94.2%<span class="tr tr-down">-0.3</span></div><div class="sl">审批通过率</div></div>
-          </div>
-          <div class="sec-label">近7日飞行任务趋势</div>
-          <div class="mini-bars">
-            <i style="height:46%"></i><i style="height:58%"></i><i style="height:50%"></i><i style="height:72%"></i><i style="height:64%"></i><i style="height:82%"></i><i class="hot" style="height:95%"></i>
-          </div>
-          <div class="sec-label">任务类型分布</div>
-          <div class="substat"><span>适飞空域</span><span class="sbv">32 <small>次</small></span></div>
-          <div class="substat"><span>非适飞空域</span><span class="sbv">78 <small>次</small></span></div>
-          <div class="substat"><span>临时空域</span><span class="sbv">18 <small>次</small></span></div>
-        </div>
-      </div>
 
-      <div class="dash-panel">
-        <div class="dp-h" onclick="openModal('space')">
+      <!-- 1. 空域态势 -->
+      <div class="dash-panel" style="flex:1.15 1 0">
+        <div class="dp-h">
           <div class="dp-t"><span class="dp-bar"></span>空域态势</div>
-          <div class="dp-link">查看详情</div>
         </div>
         <div class="dp-b">
           <div class="stats-grid">
@@ -427,12 +429,8 @@ table.m-table{width:100%;border-collapse:collapse;font-size:13px}
           <div class="stats-grid" style="margin-top:8px">
             <div class="stat"><div class="sv">248</div><div class="sl">空域网格(个)</div></div>
             <div class="stat"><div class="sv">36<span class="tr tr-up">+4</span></div><div class="sl">在用航线(条)</div></div>
-            <div class="stat"><div class="sv">42%</div><div class="sl">低空 0-120m</div></div>
-            <div class="stat"><div class="sv">58%</div><div class="sl">中空 120-300m</div></div>
-          </div>
-          <div class="sec-label">空域分层占比</div>
-          <div class="mini-bars">
-            <i class="hot" style="height:42%"></i><i style="height:58%"></i><i class="neg" style="height:15%"></i>
+            <div class="stat"><div class="sv">6</div><div class="sl">空域申请(今日)</div></div>
+            <div class="stat"><div class="sv">12</div><div class="sl">空域巡查(次)</div></div>
           </div>
           <div class="sec-label">高邮市各片区空域使用率</div>
           <div class="dist-row"><span class="dr-name">高邮市区</span><span class="dr-bar"><i style="width:86%"></i></span><span class="dr-val">86%</span></div>
@@ -444,38 +442,56 @@ table.m-table{width:100%;border-collapse:collapse;font-size:13px}
         </div>
       </div>
 
+      <!-- 2. 飞行统计 -->
       <div class="dash-panel">
-        <div class="dp-h" onclick="openModal('craft')">
-          <div class="dp-t"><span class="dp-bar"></span>航空器状态</div>
+        <div class="dp-h">
+          <div class="dp-t"><span class="dp-bar"></span>飞行统计</div>
+        </div>
+        <div class="dp-b">
+          <div class="sec-label" style="margin-top:0">政务飞行</div>
+          <div class="stats-grid3">
+            <div class="stat"><div class="sv">32</div><div class="sl">飞行次数</div></div>
+            <div class="stat"><div class="sv">126.5<span class="unit-sm">km</span></div><div class="sl">飞行里程</div></div>
+            <div class="stat"><div class="sv">45.2<span class="unit-sm">h</span></div><div class="sl">飞行时长</div></div>
+          </div>
+          <div class="sec-label" style="margin-top:8px">商业飞行</div>
+          <div class="stats-grid3">
+            <div class="stat"><div class="sv">78</div><div class="sl">飞行次数</div></div>
+            <div class="stat"><div class="sv">389.2<span class="unit-sm">km</span></div><div class="sl">飞行里程</div></div>
+            <div class="stat"><div class="sv">112.8<span class="unit-sm">h</span></div><div class="sl">飞行时长</div></div>
+          </div>
+          <div class="sec-label">近7日飞行趋势</div>
+          <div class="mini-bars">
+            <i style="height:46%"></i><i style="height:58%"></i><i style="height:50%"></i><i style="height:72%"></i><i style="height:64%"></i><i style="height:82%"></i><i class="hot" style="height:95%"></i>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3. 基础数据（原航空器状态） -->
+      <div class="dash-panel">
+        <div class="dp-h">
+          <div class="dp-t"><span class="dp-bar"></span>基础数据</div>
           <div class="dp-btn-group" onclick="event.stopPropagation()">
             <span class="dp-btn" onclick="openAircraftSub('list')">设备列表</span>
             <span class="dp-btn" onclick="openAircraftSub('monitor')">多屏监控</span>
           </div>
-          <div class="dp-link">详情</div>
         </div>
         <div class="dp-b">
-          <div class="stats-grid">
-            <div class="stat"><div class="sv"><span class="pulse green"></span>23</div><div class="sl">飞行中</div></div>
-            <div class="stat"><div class="sv">45</div><div class="sl">待命</div></div>
-            <div class="stat"><div class="sv">8</div><div class="sl">离线</div></div>
-            <div class="stat"><div class="sv"><span class="pulse red"></span>3</div><div class="sl">异常</div></div>
+          <div class="type-tabs" id="acTypeTabs">
+            <span class="tt active" onclick="switchAcType('all',this)">全部</span>
+            <span class="tt" onclick="switchAcType('gov',this)">政务</span>
+            <span class="tt" onclick="switchAcType('logi',this)">物流</span>
+            <span class="tt" onclick="switchAcType('medi',this)">医疗</span>
+            <span class="tt" onclick="switchAcType('poli',this)">公安</span>
+            <span class="tt" onclick="switchAcType('other',this)">其他</span>
           </div>
-          <div class="stats-grid" style="margin-top:8px">
-            <div class="stat"><div class="sv">76</div><div class="sl">在册总数(架)</div></div>
-            <div class="stat"><div class="sv">89.6%<span class="tr tr-up">+0.8</span></div><div class="sl">在线率</div></div>
-            <div class="stat"><div class="sv">68</div><div class="sl">适航有效</div></div>
-            <div class="stat"><div class="sv">5</div><div class="sl">机型种类</div></div>
-          </div>
-          <div class="sec-label">机型分布</div>
-          <div class="substat"><span>大疆 M300</span><span class="sbv">24 <small>架</small></span></div>
-          <div class="substat"><span>大疆 M30T</span><span class="sbv">18 <small>架</small></span></div>
-          <div class="substat"><span>极飞 V40</span><span class="sbv">15 <small>架</small></span></div>
-          <div class="substat"><span>亿航 EH216</span><span class="sbv">11 <small>架</small></span></div>
-          <div class="substat"><span>其他机型</span><span class="sbv">8 <small>架</small></span></div>
+          <div class="stats-grid" id="acTypeStats"></div>
+          <div class="sec-label" id="acTypeModelLabel">机型分布</div>
+          <div id="acTypeModels"></div>
         </div>
       </div>
 
-      <!-- 航空器状态二级面板 -->
+      <!-- 航空器二级面板 -->
       <div class="ac-sub" id="acSubPage">
         <div class="ac-sub-h">
           <span class="ac-back" onclick="backAircraftSub()">‹ 返回</span>
@@ -488,114 +504,63 @@ table.m-table{width:100%;border-collapse:collapse;font-size:13px}
 
     <!-- 右侧面板 -->
     <div class="dash-panel-wrap right" id="rightPanel">
+
+      <!-- 1. 预警统计（原安全监管） -->
       <div class="dash-panel" style="flex:1.15 1 0">
-        <div class="dp-h" onclick="openModal('safe')">
-          <div class="dp-t warn"><span class="dp-bar"></span>安全监管 <span class="chip chip-red" style="margin:0">实时告警</span></div>
-          <div class="dp-link">查看详情</div>
+        <div class="dp-h">
+          <div class="dp-t warn"><span class="dp-bar"></span>预警统计 <span class="chip chip-red" style="margin:0">实时告警</span></div>
         </div>
         <div class="dp-b">
           <div class="stats-grid">
-            <div class="stat"><div class="sv"><span class="pulse red"></span>7</div><div class="sl">黑飞告警(今日)</div></div>
-            <div class="stat"><div class="sv">5</div><div class="sl">已处置</div></div>
-            <div class="stat"><div class="sv">71.4%<span class="tr tr-down">-8.6</span></div><div class="sl">处置率</div></div>
-            <div class="stat"><div class="sv">3<span class="tr tr-up">+2</span></div><div class="sl">反制设备联动</div></div>
+            <div class="stat"><div class="sv"><span class="pulse red"></span>7</div><div class="sl">安全告警</div></div>
+            <div class="stat"><div class="sv">23</div><div class="sl">事件告警</div></div>
+            <div class="stat"><div class="sv">5</div><div class="sl">航线冲突</div></div>
+            <div class="stat"><div class="sv">3</div><div class="sl">非适飞起飞</div></div>
           </div>
-          <div class="stats-grid" style="margin-top:8px">
-            <div class="stat"><div class="sv">4</div><div class="sl">飞手定位(人)</div></div>
-            <div class="stat"><div class="sv">28/30</div><div class="sl">感知设备在线</div></div>
-            <div class="stat"><div class="sv">2</div><div class="sl">覆盖盲区(处)</div></div>
-            <div class="stat"><div class="sv">98.2%</div><div class="sl">探测覆盖率</div></div>
-          </div>
-          <div class="sec-label">今日告警处置走势</div>
+          <div class="sec-label">航线冲突统计</div>
+          <div class="substat"><span>非合作无人机预警</span><span class="sbv">4 <small>架</small></span></div>
+          <div class="substat"><span>航线冲突数量</span><span class="sbv">5 <small>起</small></span></div>
+          <div class="sec-label">近7日告警处置走势</div>
           <div class="mini-bars">
             <i style="height:30%"></i><i class="hot" style="height:55%"></i><i class="neg" style="height:40%"></i><i class="hot" style="height:70%"></i><i class="neg" style="height:52%"></i><i class="hot" style="height:78%"></i><i class="neg" style="height:60%"></i>
           </div>
-          <div class="sec-label">感知手段分布</div>
-          <div class="substat"><span>雷达探测</span><span class="sbv">8 <small>台</small></span></div>
-          <div class="substat"><span>光电识别</span><span class="sbv">6 <small>台</small></span></div>
-          <div class="substat"><span>无线电侦测</span><span class="sbv">10 <small>台</small></span></div>
-          <div class="substat"><span>ADS-B</span><span class="sbv">4 <small>台</small></span></div>
         </div>
       </div>
 
+      <!-- 2. 事件办结（原县市联动审批） -->
       <div class="dash-panel" style="flex:1.05 1 0">
-        <div class="dp-h" onclick="openModal('audit')">
-          <div class="dp-t"><span class="dp-bar"></span>县市联动审批</div>
-          <div class="dp-link">查看详情</div>
+        <div class="dp-h" onclick="openEventList()">
+          <div class="dp-t"><span class="dp-bar"></span>事件办结</div>
+          <div class="dp-link">事件列表</div>
         </div>
         <div class="dp-b">
           <div class="stats-grid">
-            <div class="stat"><div class="sv">19</div><div class="sl">待审批(件)</div></div>
-            <div class="stat"><div class="sv">109<span class="tr tr-up">+12</span></div><div class="sl">今日已批</div></div>
-            <div class="stat"><div class="sv">94.2%<span class="tr tr-down">-0.3</span></div><div class="sl">通过率</div></div>
-            <div class="stat"><div class="sv">6/6</div><div class="sl">区县接入</div></div>
+            <div class="stat"><div class="sv">45</div><div class="sl">已办结</div></div>
+            <div class="stat"><div class="sv">12</div><div class="sl">未办结</div></div>
+            <div class="stat"><div class="sv">78.9%</div><div class="sl">办结率</div></div>
+            <div class="stat"><div class="sv">57</div><div class="sl">事件总数</div></div>
           </div>
-          <div class="sec-label">待审分布</div>
-          <div class="substat"><span>区县待审</span><span class="sbv">8 <small>件</small></span></div>
-          <div class="substat"><span>市级待审</span><span class="sbv">11 <small>件</small></span></div>
-          <div class="substat"><span>平均审批时长</span><span class="sbv">2.3 <small>小时</small></span></div>
-          <div class="sec-label">申请类型分布</div>
-          <div>
-            <span class="chip chip-blue">适飞空域 32</span>
-            <span class="chip chip-cyan">非适飞空域 78</span>
-            <span class="chip chip-amber">临时空域 18</span>
-          </div>
-          <div class="sec-label">近7日审批量</div>
-          <div class="mini-bars">
-            <i style="height:42%"></i><i style="height:55%"></i><i style="height:48%"></i><i class="hot" style="height:68%"></i><i style="height:60%"></i><i style="height:74%"></i><i class="hot" style="height:88%"></i>
-          </div>
+          <div class="sec-label">按部门办结分布（已结/未结）</div>
+          <div class="substat"><span>城管局</span><span class="sbv">12 <small>结</small> / 3 <small>未</small></span></div>
+          <div class="substat"><span>自规局</span><span class="sbv">10 <small>结</small> / 2 <small>未</small></span></div>
+          <div class="substat"><span>农业农村局</span><span class="sbv">9 <small>结</small> / 2 <small>未</small></span></div>
+          <div class="substat"><span>乡镇业务</span><span class="sbv">14 <small>结</small> / 5 <small>未</small></span></div>
         </div>
       </div>
 
+      <!-- 3. 事件告警（原AI数据研判） -->
       <div class="dash-panel" style="flex:1.15 1 0">
-        <div class="dp-h" onclick="openModal('ai')">
-          <div class="dp-t"><span class="dp-bar"></span>AI数据研判</div>
-          <div class="dp-link">查看详情</div>
+        <div class="dp-h">
+          <div class="dp-t"><span class="dp-bar"></span>事件告警</div>
         </div>
         <div class="dp-b">
-          <div class="stats-grid">
-            <div class="stat"><div class="sv"><span class="pulse amber"></span>23<span class="tr tr-up">+5</span></div><div class="sl">预警总数(条)</div></div>
-            <div class="stat"><div class="sv">96.8%<span class="tr tr-up">+1.2</span></div><div class="sl">AI研判准确率</div></div>
-            <div class="stat"><div class="sv">2</div><div class="sl">航迹冲突预测</div></div>
-            <div class="stat"><div class="sv">1</div><div class="sl">空域拥堵预警</div></div>
+          <div class="dept-tabs" id="alertDeptTabs">
+            <span class="tt active" onclick="switchAlertDept('zr',this)">自规局</span>
+            <span class="tt" onclick="switchAlertDept('ny',this)">农业农村局</span>
+            <span class="tt" onclick="switchAlertDept('cg',this)">城管局</span>
+            <span class="tt" onclick="switchAlertDept('xz',this)">乡镇业务</span>
           </div>
-          <div class="sec-label">预警等级分布</div>
-          <div>
-            <span class="chip chip-red">红 3</span>
-            <span class="chip chip-amber">橙 5</span>
-            <span class="chip chip-blue">黄 8</span>
-            <span class="chip chip-gray">蓝 7</span>
-          </div>
-          <div class="sec-label">研判来源分布</div>
-          <div class="substat"><span>规则引擎</span><span class="sbv">8 <small>条</small></span></div>
-          <div class="substat"><span>AI模型</span><span class="sbv">7 <small>条</small></span></div>
-          <div class="substat"><span>大模型分析</span><span class="sbv">5 <small>条</small></span></div>
-          <div class="substat"><span>多源融合</span><span class="sbv">3 <small>条</small></span></div>
-        </div>
-      </div>
-
-      <div class="dash-panel" style="flex:1.0 1 0">
-        <div class="dp-h" onclick="openModal('weather')">
-          <div class="dp-t"><span class="dp-bar"></span>气象监测</div>
-          <div class="dp-link">查看详情</div>
-        </div>
-        <div class="dp-b">
-          <div class="stats-grid">
-            <div class="stat"><div class="sv">22℃</div><div class="sl">温度</div></div>
-            <div class="stat"><div class="sv">4.2m/s</div><div class="sl">风速</div></div>
-            <div class="stat"><div class="sv">3.0km</div><div class="sl">能见度</div></div>
-            <div class="stat"><div class="sv">1013hPa</div><div class="sl">气压</div></div>
-          </div>
-          <div class="stats-grid" style="margin-top:8px">
-            <div class="stat"><div class="sv">65%</div><div class="sl">湿度</div></div>
-            <div class="stat"><div class="sv">东北风</div><div class="sl">风向</div></div>
-            <div class="stat"><div class="sv"><span class="pulse green"></span>良好</div><div class="sl">飞行气象条件</div></div>
-            <div class="stat"><div class="sv">4/7</div><div class="sl">气象站正常</div></div>
-          </div>
-          <div class="sec-label">气象站状态</div>
-          <div class="substat"><span>正常</span><span class="sbv">4 <small>座</small></span></div>
-          <div class="substat"><span>能见度偏低</span><span class="sbv">2 <small>座</small></span></div>
-          <div class="substat"><span>维护中</span><span class="sbv">1 <small>座</small></span></div>
+          <div id="alertDeptBody"></div>
         </div>
       </div>
     </div>
@@ -1662,6 +1627,73 @@ function filterDev(el,type){
   el.parentElement.querySelectorAll('span').forEach(function(s){s.classList.remove('active')});
   el.classList.add('active');
 }
+// ============ 基础数据类型切换 ============
+var acTypeData={
+  all:{name:'全部',total:76,fly:23,idle:45,off:8,models:[['大疆 M300','24'],['大疆 M30T','18'],['极飞 V40','15'],['亿航 EH216','11'],['其他机型','8']]},
+  gov:{name:'政务飞行类',total:28,fly:9,idle:16,off:3,models:[['大疆 M300','12'],['大疆 M30T','8'],['极飞 V40','8']]},
+  logi:{name:'外卖物流',total:22,fly:8,idle:11,off:3,models:[['大疆 M30T','12'],['极飞 V40','10']]},
+  medi:{name:'医疗物资',total:10,fly:2,idle:6,off:2,models:[['亿航 EH216','7'],['大疆 M30T','3']]},
+  poli:{name:'公安应急',total:12,fly:3,idle:8,off:1,models:[['大疆 M300','8'],['极飞 V40','4']]},
+  other:{name:'其他',total:4,fly:1,idle:3,off:0,models:[['其他机型','4']]}
+};
+function switchAcType(key,el){
+  document.querySelectorAll('#acTypeTabs .tt').forEach(function(t){t.classList.remove('active')});
+  el.classList.add('active');
+  var d=acTypeData[key];
+  document.getElementById('acTypeStats').innerHTML=
+    '<div class="stat"><div class="sv"><span class="pulse green"></span>'+d.fly+'</div><div class="sl">在飞</div></div>'+
+    '<div class="stat"><div class="sv">'+d.idle+'</div><div class="sl">待命</div></div>'+
+    '<div class="stat"><div class="sv">'+d.off+'</div><div class="sl">离线</div></div>'+
+    '<div class="stat"><div class="sv">'+d.total+'</div><div class="sl">在册总数</div></div>';
+  var mh='';
+  d.models.forEach(function(m){
+    mh+='<div class="substat"><span>'+m[0]+'</span><span class="sbv">'+m[1]+' <small>架</small></span></div>';
+  });
+  document.getElementById('acTypeModels').innerHTML=mh;
+  document.getElementById('acTypeModelLabel').textContent=d.name+' · 机型分布';
+}
+
+// ============ 事件告警部门切换 ============
+var alertDeptData={
+  zr:{name:'自规局',total:8,today:3,types:[['非法占地类','3'],['破坏耕地类','2'],['非法批地类','3']]},
+  ny:{name:'农业农村局',total:6,today:2,types:[['秸秆禁烧','2'],['耕地非粮化','2'],['违规养殖','2']]},
+  cg:{name:'城管局',total:7,today:4,types:[['违章建筑类','3'],['市容环境类','2'],['渣土违规类','2']]},
+  xz:{name:'乡镇业务',total:5,today:2,types:[['道路隐患类','2'],['水域异常类','2'],['燃气安全类','1']]}
+};
+function switchAlertDept(key,el){
+  document.querySelectorAll('#alertDeptTabs .tt').forEach(function(t){t.classList.remove('active')});
+  el.classList.add('active');
+  var d=alertDeptData[key];
+  var h='<div class="stats-grid"><div class="stat"><div class="sv"><span class="pulse amber"></span>'+d.total+'</div><div class="sl">预警总数(条)</div></div>'+
+    '<div class="stat"><div class="sv">'+d.today+'</div><div class="sl">今日新增(条)</div></div>'+
+    '<div class="stat"><div class="sv">'+(d.total-d.today)+'</div><div class="sl">存量预警(条)</div></div>'+
+    '<div class="stat"><div class="sv">92.5%</div><div class="sl">研判准确率</div></div></div>';
+  h+='<div class="sec-label">'+d.name+' · 告警类型分布</div>';
+  d.types.forEach(function(t){
+    h+='<div class="substat"><span>'+t[0]+'</span><span class="sbv">'+t[1]+' <small>条</small></span></div>';
+  });
+  document.getElementById('alertDeptBody').innerHTML=h;
+}
+
+// ============ 事件办结列表弹窗 ============
+function openEventList(){openModal('events')}
+// 事件列表数据（注入到 modalData）
+modalData.events={name:'事件办结列表',stats:[['45','已办结'],['12','未办结'],['78.9%','办结率'],['57','事件总数']],head:['事件编号','部门','事件类型','状态','办结时间'],rows:[
+  ['EV-0924-001','城管局','违章建筑类','已办结','09-24 10:30'],
+  ['EV-0924-002','自规局','非法占地类','已办结','09-24 09:15'],
+  ['EV-0924-003','农业农村局','秸秆禁烧','已办结','09-24 08:45'],
+  ['EV-0924-004','城管局','市容环境类','未办结','—'],
+  ['EV-0923-005','乡镇业务','道路隐患类','已办结','09-23 16:20'],
+  ['EV-0923-006','自规局','破坏耕地类','未办结','—'],
+  ['EV-0923-007','农业农村局','耕地非粮化','已办结','09-23 14:10'],
+  ['EV-0923-008','城管局','渣土违规类','已办结','09-23 11:50'],
+  ['EV-0923-009','乡镇业务','水域异常类','未办结','—'],
+  ['EV-0923-010','自规局','非法批地类','已办结','09-23 09:30']
+]};
+
+// ============ 初始化新面板 ============
+switchAcType('all', document.querySelector('#acTypeTabs .tt'));
+switchAlertDept('zr', document.querySelector('#alertDeptTabs .tt'));
 </script>
 </body>
 </html>
