@@ -1569,22 +1569,32 @@ function openApprove(key,idx){
   body+='</div>';
   body+=buildExtraInfo(r[0]);
   body+='<div class="apm-sec">审批时间进度</div>';
-  body+=genProgress();
+  body+=genProgress(key);
   body+='<div class="apm-sec">审批意见</div>';
   body+='<textarea id="apmComment" style="width:100%;height:64px;border:1px solid #d8e4f2;border-radius:8px;padding:8px 10px;font-size:13px;color:#23456e;outline:none;resize:vertical;font-family:inherit">同意，按批准航线执行。</textarea>';
   document.getElementById('apmBody').innerHTML=body;
   document.getElementById('apmFoot').innerHTML='<span class="btn btn-danger" onclick="apmSubmit(false)">驳回</span><span class="btn btn-success" onclick="apmSubmit(true)">通过</span>';
   document.getElementById('apmMask').classList.add('show');
 }
-function genProgress(){
-  var nodes=[
-    {name:'区县受理',time:'08:30',st:'done'},
-    {name:'区县初审',time:'09:10',st:'done'},
-    {name:'市级审批',time:'10:05',st:'cur'},
-    {name:'省级审批',time:'—',st:'wait'},
-    {name:'审批回传',time:'—',st:'wait'},
-    {name:'区县执行',time:'—',st:'wait'}
-  ];
+function genProgress(key){
+  var nodes;
+  if(key==='shifei'){
+    nodes=[
+      {name:'区县受理',time:'08:30',st:'done'},
+      {name:'区县初审',time:'09:10',st:'cur'},
+      {name:'审批回传',time:'—',st:'wait'},
+      {name:'区县执行',time:'—',st:'wait'}
+    ];
+  }else{
+    nodes=[
+      {name:'区县受理',time:'08:30',st:'done'},
+      {name:'区县初审',time:'09:10',st:'done'},
+      {name:'市级审批',time:'10:05',st:'cur'},
+      {name:'省级审批',time:'—',st:'wait'},
+      {name:'审批回传',time:'—',st:'wait'},
+      {name:'区县执行',time:'—',st:'wait'}
+    ];
+  }
   var html='<div class="ap-progress">';
   nodes.forEach(function(n,i){
     if(i>0){html+='<div class="ap-link '+(n.st==='wait'?'':'done')+'"></div>'}
