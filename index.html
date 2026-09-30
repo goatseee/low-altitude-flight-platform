@@ -382,10 +382,18 @@ table.m-table{width:100%;border-collapse:collapse;font-size:13px;min-width:600px
 .cr-num{font-size:16px;font-weight:800;color:#fb923c;flex-shrink:0}
 .cr-link{font-size:10.5px;color:#5fc6ff;flex-shrink:0}
 /* 委办局宫格（飞行服务-低空政务） */
-.bureau-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
-.bureau-chip{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);border-radius:8px;padding:7px 4px;text-align:center;font-size:11px;color:#8fb8d8;cursor:pointer;transition:all .15s}
+.bureau-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:4px}
+.bureau-chip{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);border-radius:8px;padding:3px 4px 2px;text-align:center;font-size:11px;color:#8fb8d8;cursor:pointer;transition:all .15s}
 .bureau-chip:hover{border-color:rgba(45,226,240,.4);color:#7fe3ff;background:rgba(45,226,240,.06)}
-.bureau-chip b{display:block;font-size:16px;color:#2de2f0;font-weight:800;margin-top:2px}
+.bureau-chip .bc-name{display:block;font-size:11px;color:#c8d6e5;white-space:nowrap;line-height:1.3}
+.bureau-chip .bc-nums{display:flex;justify-content:space-around;margin-top:2px;gap:2px}
+.bureau-chip .bc-nums b{display:flex;flex-direction:column;align-items:center;line-height:1.1}
+.bureau-chip .bc-nums b i{font-style:normal;font-size:12.5px;font-weight:800;color:#2de2f0}
+.bureau-chip .bc-nums b.sus i{color:#fb923c}
+.bureau-chip .bc-nums b small{font-size:8.5px;color:#8aa4c8;font-weight:400;line-height:1.2}
+.bureau-chip.more{grid-column:1 / -1;display:flex;align-items:center;justify-content:center;gap:6px;border-style:dashed;border-color:rgba(45,226,240,.35);background:rgba(45,226,240,.05);padding:3px 4px}
+.bureau-chip.more .bc-name{color:#7fe3ff}
+.bureau-chip.more .more-arrow{display:inline;font-size:11.5px;color:#5fe2ff;margin-top:0;font-weight:700}
 /* 业务管理Tab */
 .biz-tabs{display:flex;gap:4px;margin-bottom:8px}
 .biz-tabs .tt{flex:1;text-align:center;padding:5px 0;font-size:11.5px;color:#6b87a8;border:1px solid rgba(56,189,248,.18);border-radius:6px;cursor:pointer;transition:all .2s;white-space:nowrap}
@@ -538,26 +546,25 @@ table.m-table{width:100%;border-collapse:collapse;font-size:13px;min-width:600px
           <div class="dp-t"><span class="dp-bar"></span>飞行服务</div>
         </div>
         <div class="dp-b">
-          <div class="sec-label" style="margin-top:0">低空政务 · 委办局飞行架次</div>
+          <div class="sec-label" style="margin-top:0">低空政务 · 委办局飞行架次与疑似事件</div>
           <div class="bureau-grid">
-            <div class="bureau-chip" onclick="openGovBureau('cg')">城管局<b>42</b></div>
-            <div class="bureau-chip" onclick="openGovBureau('zr')">资规局<b>28</b></div>
-            <div class="bureau-chip" onclick="openGovBureau('hb')">环保局<b>18</b></div>
-            <div class="bureau-chip" onclick="openGovBureau('ny')">农业农村局<b>35</b></div>
-            <div class="bureau-chip" onclick="openGovBureau('ly')">林业局<b>12</b></div>
-            <div class="bureau-chip" onclick="openGovBureau('sl')">水利局<b>20</b></div>
+            <div class="bureau-chip" onclick="openGovBureau('cg')"><span class="bc-name">城管局</span><span class="bc-nums"><b><i>20</i><small>架次</small></b><b class="sus"><i>30</i><small>疑似</small></b></span></div>
+            <div class="bureau-chip" onclick="openGovBureau('zr')"><span class="bc-name">资规局</span><span class="bc-nums"><b><i>16</i><small>架次</small></b><b class="sus"><i>22</i><small>疑似</small></b></span></div>
+            <div class="bureau-chip" onclick="openGovBureau('hb')"><span class="bc-name">环保局</span><span class="bc-nums"><b><i>12</i><small>架次</small></b><b class="sus"><i>15</i><small>疑似</small></b></span></div>
+            <div class="bureau-chip" onclick="openGovBureau('ny')"><span class="bc-name">农业农村局</span><span class="bc-nums"><b><i>18</i><small>架次</small></b><b class="sus"><i>26</i><small>疑似</small></b></span></div>
+            <div class="bureau-chip" onclick="openGovBureau('ly')"><span class="bc-name">林业局</span><span class="bc-nums"><b><i>8</i><small>架次</small></b><b class="sus"><i>9</i><small>疑似</small></b></span></div>
+            <div class="bureau-chip" onclick="openGovBureau('sl')"><span class="bc-name">水利局</span><span class="bc-nums"><b><i>14</i><small>架次</small></b><b class="sus"><i>18</i><small>疑似</small></b></span></div>
+            <div class="bureau-chip more" onclick="openGovMore()"><span class="bc-name">更多委办局</span><span class="more-arrow">+6 ›</span></div>
           </div>
-          <div class="substat" onclick="openGovSuspect()"><span>低空政务疑似事件总数</span><span class="sbv">18 <small>起</small></span></div>
+          <div class="substat" onclick="openGovSuspect()"><span>低空政务疑似事件总数</span><span class="sbv">166 <small>起</small></span></div>
           <div class="sec-label">物流 · 商业飞行统计</div>
           <div class="stats-grid" style="grid-template-columns:1fr 1fr" onclick="openModal('logi')">
             <div class="stat"><div class="sv">126</div><div class="sl">医疗配送(架次)</div></div>
             <div class="stat"><div class="sv">892</div><div class="sl">外卖配送(架次)</div></div>
           </div>
-          <div class="sec-label">公安应急 · 事件算法预警</div>
-          <div class="substat" onclick="openModal('police')"><span>人群聚集预警</span><span class="sbv">12 <small>起</small></span></div>
-          <div class="substat" onclick="openModal('police')"><span>治安事件预警</span><span class="sbv">8 <small>起</small></span></div>
-          <div class="substat" onclick="openModal('police')"><span>交通异常预警</span><span class="sbv">9 <small>起</small></span></div>
-          <div class="substat" onclick="openModal('police')"><span>涉水安全预警</span><span class="sbv">5 <small>起</small></span></div>
+          <div class="sec-label">公安应急 · 飞行勤务统计</div>
+          <div class="substat" onclick="openModal('police')"><span>公安应急飞行架次</span><span class="sbv">20 <small>次</small></span></div>
+          <div class="substat" onclick="openModal('police')"><span>公安应急疑似事件</span><span class="sbv">30 <small>件</small></span></div>
         </div>
       </div>
 
@@ -1128,24 +1135,38 @@ document.addEventListener('click',function(e){
 
 // ============ 飞行服务：委办局飞行架次数据 ============
 var govBureauData={
-  cg:{name:'城管局',total:42,done:34,doing:8,suspect:5,tasks:[['城市巡查','156','18','2','运行中'],['违建巡查','112','14','2','运行中'],['渣土运输监控','68','10','1','运行中']]},
-  zr:{name:'资规局',total:28,done:22,doing:6,suspect:3,tasks:[['自然资源巡查','96','14','2','运行中'],['矿山巡查','54','8','1','运行中'],['规划核查','38','6','0','运行中']]},
-  hb:{name:'环保局',total:18,done:14,doing:4,suspect:2,tasks:[['水质监测','62','8','1','运行中'],['大气巡查','44','6','1','运行中'],['秸秆禁烧','30','4','0','运行中']]},
-  ny:{name:'农业农村局',total:35,done:29,doing:6,suspect:4,tasks:[['农业植保','128','16','2','运行中'],['农情监测','86','12','1','运行中'],['养殖巡查','52','7','1','运行中']]},
-  ly:{name:'林业局',total:12,done:10,doing:2,suspect:1,tasks:[['森林防火','42','7','1','运行中'],['病虫害监测','28','5','0','运行中']]},
-  sl:{name:'水利局',total:20,done:16,doing:4,suspect:3,tasks:[['河道巡查','74','10','1','运行中'],['水源地巡查','48','6','1','运行中'],['非法采砂监测','32','4','1','运行中']]}
+  cg:{name:'城管局',total:20,done:16,doing:4,suspect:30,tasks:[['城市巡查','128','8','13','运行中'],['违建巡查','96','7','11','运行中'],['渣土运输监控','64','5','6','运行中']]},
+  zr:{name:'资规局',total:16,done:12,doing:4,suspect:22,tasks:[['自然资源巡查','86','8','12','运行中'],['矿山巡查','52','4','6','运行中'],['规划核查','38','4','4','运行中']]},
+  hb:{name:'环保局',total:12,done:9,doing:3,suspect:15,tasks:[['水质监测','58','5','6','运行中'],['大气巡查','42','4','5','运行中'],['秸秆禁烧','30','3','4','运行中']]},
+  ny:{name:'农业农村局',total:18,done:14,doing:4,suspect:26,tasks:[['农业植保','92','8','12','运行中'],['农情监测','66','6','8','运行中'],['养殖巡查','48','4','6','运行中']]},
+  ly:{name:'林业局',total:8,done:6,doing:2,suspect:9,tasks:[['森林防火','36','5','6','运行中'],['病虫害监测','22','3','3','运行中']]},
+  sl:{name:'水利局',total:14,done:11,doing:3,suspect:18,tasks:[['河道巡查','68','7','9','运行中'],['水源地巡查','46','4','5','运行中'],['非法采砂监测','28','3','4','运行中']]}
 };
 function openGovBureau(key){
   var d=govBureauData[key];if(!d)return;
   openBizModal({name:d.name+' · 飞行架次统计',stats:[[d.total,'今日飞行架次'],[d.done,'已完成'],[d.doing,'执行中'],[d.suspect,'疑似事件']],head:['巡检任务','累计架次','今日架次','疑似事件','状态'],rows:d.tasks});
 }
+var govMoreData=[
+  ['应急管理局','12','8','应急演练航拍 · 灾情巡查'],
+  ['住建局','9','11','工地安全巡查 · 违建监测'],
+  ['交通运输局','15','14','路桥巡查 · 超限监测'],
+  ['文旅局','10','6','景区巡查 · 活动保障'],
+  ['市场监管局','6','5','市场周边秩序巡查'],
+  ['卫健委','4','2','医疗物资配送 · 院区巡查']
+];
+function openGovMore(){
+  var fly=0,sus=0;
+  govMoreData.forEach(function(r){fly+=parseInt(r[1]);sus+=parseInt(r[2])});
+  openBizModal({name:'低空政务 · 更多委办局',stats:[[govMoreData.length,'更多委办局'],[fly,'飞行架次(次)'],[sus,'疑似事件(件)'],['12','委办局覆盖']],head:['委办局','飞行架次','疑似事件','重点任务'],rows:govMoreData});
+}
 function openGovSuspect(){
-  var rows=[],total=0;
+  var rows=[],total=0,flyAll=0;
   ['cg','zr','hb','ny','ly','sl'].forEach(function(k){
-    var d=govBureauData[k];total+=d.suspect;
+    var d=govBureauData[k];total+=d.suspect;flyAll+=d.total;
     rows.push([d.name,d.total,d.suspect,d.suspect>0?'核查中':'—']);
   });
-  openBizModal({name:'低空政务 · 疑似事件汇总',stats:[[total,'疑似事件总数'],['6','委办局覆盖'],['155','今日架次'],['2','重点核查']],head:['委办局','今日架次','疑似事件','处置状态'],rows:rows});
+  govMoreData.forEach(function(r){flyAll+=parseInt(r[1]);total+=parseInt(r[2]);rows.push([r[0],r[1],r[2],'核查中'])});
+  openBizModal({name:'低空政务 · 疑似事件汇总',stats:[[total,'疑似事件总数'],['12','委办局覆盖'],[flyAll,'飞行架次'],['6','重点核查']],head:['委办局','飞行架次','疑似事件','处置状态'],rows:rows});
 }
 
 // ============ 业务管理：智能体研判场景数据 ============
@@ -1231,8 +1252,8 @@ counter:{name:'反制设备监测详情',stats:[['7','设备总数'],['6','在�
 ['AB-001','盉城驿文化节安保飞行','高邮文旅局','09-26','已通过'],['AB-002','高邮湖大闸蟹开捕节','高邮农服中心','09-28','已通过'],['AB-003','运河马拉松航拍保障','高邮航拍队','10-02','已通过'],['AB-004','送桥镇广场活动安保','送桥镇政府','09-30','已通过'],['AB-005','三垛镇民俗节','三垛镇政府','10-05','未通过'],['AB-006','临泽工业区应急演练','高邮应急局','09-25','已通过']]},
 logi:{name:'物流商业飞行统计',stats:[['1018','商业飞行架次'],['126','医疗配送'],['892','外卖配送'],['96.5%','准时率']],head:['场景','今日架次','本周架次','本月架次','准时率'],rows:[
 ['医疗配送','6','42','126','98.2%'],['外卖配送','52','385','892','96.1%']]},
-  police:{name:'公安应急事件算法预警',stats:[['34','预警总数'],['26','已处置'],['8','处置中'],['76.5%','处置率']],head:['算法名称','预警数量','今日新增','处置率','状态'],rows:[
-['人群聚集预警','12','3','82%','运行中'],['治安事件预警','8','1','85%','运行中'],['交通异常预警','9','2','78%','运行中'],['涉水安全预警','5','0','80%','运行中']]},
+  police:{name:'公安应急 · 飞行勤务统计',stats:[['20','飞行架次'],['30','疑似事件'],['26','已处置'],['86.7%','处置率']],head:['预警类别','飞行架次','疑似事件','处置率','状态'],rows:[
+  ['人群聚集预警','6','9','88.9%','运行中'],['治安事件预警','5','8','75.0%','运行中'],['交通异常预警','5','7','85.7%','运行中'],['涉水安全预警','4','6','83.3%','运行中']]},
 flight:{name:'飞行态势详情',stats:[['23','在飞航空器'],['156','今日架次'],['3','异常事件'],['86','已完成']],head:['任务编号','飞行器','航线','状态','高度(m)','速度(km/h)','进度'],rows:[
 ['FL-20260922-001','UAV-021 大疆M300','高邮-送桥','飞行中','120','45','68%'],['FL-20260922-002','UAV-035 极飞V40','送桥-邵伯湖','飞行中','95','38','52%'],['FL-20260922-003','UAV-048 大疆M30T','高邮镇-三垛','偏航','160','52','74%'],['FL-20260922-004','UAV-052 亿航EH216','界首-汜水','飞行中','80','30','35%'],['FL-20260922-005','UAV-061 大疆M300','临泽-青山','待起飞','—','—','0%'],['FL-20260922-006','UAV-021 大疆M300','高邮-运河','已完成','—','—','100%']]},
   analysis:{name:'AI数据研判详情',stats:[['23','今日预警'],['78.3%','处置率'],['18','已闭环'],['5','研判中']],head:['预警编号','时间','类型','研判来源','内容摘要','等级','状态'],rows:[
