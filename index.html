@@ -683,6 +683,8 @@ table.m-table{width:100%;border-collapse:collapse;font-size:13px;min-width:600px
 .ap-st.done{background:#e8f9ee;color:#1f9d55}
 .ap-st.cur{background:#e6f2ff;color:#0082D9}
 .ap-st.wait{background:#f0f2f5;color:#7a8aa0}
+.ap-node.reject .ap-dot{background:#e74c3c;box-shadow:0 0 0 4px #fdeceb}
+.ap-st.reject{background:#fdeceb;color:#e74c3c}
 
 /* ========== 审批页弹窗 ========== */
 .apm-mask{position:fixed;inset:0;background:rgba(2,8,20,.6);z-index:210;display:none;align-items:center;justify-content:center;backdrop-filter:blur(3px)}
@@ -753,7 +755,7 @@ table.m-table{width:100%;border-collapse:collapse;font-size:13px;min-width:600px
       <div class="approval-side">
         <div class="fn-card">
           <div class="fn-card-header">
-            <div class="fn-title"><span class="fn-icon">项</span>县市省功能模块</div>
+            <div class="fn-title"><span class="fn-icon">项</span>业务申请</div>
             <div class="fn-sub">后台管理</div>
           </div>
           <div class="fn-menu">
@@ -1544,6 +1546,13 @@ function renderMgmtList(key){
 }
 
 // ============ 已批复管控区申请：一飞四报 ============
+// 各标签页审批进度节点流与当前节点映射（map 值=进行中节点序号，字符串 rN=在第N节点驳回）
+var GK_PROG={
+  gkPlan:{nodes:['计划申报','区县初审','市级审批','省级审批','计划批复'],map:{'待审批':1,'已批复':5,'已驳回':'r2'}},
+  gkFly:{nodes:['飞行申请','区县初审','市级审批','省级审批','批复放行'],map:{'申请待审批':1,'飞行中':5,'计划待审批':0,'已结束':5,'省级审批中':3}},
+  gkTakeoff:{nodes:['起飞报告','飞控确认','放行起飞'],map:{'已确认':3,'待确认':1,'已完成':3,'待起飞':2}},
+  gkArchive:{nodes:['资料提交','归档审核','完成归档'],map:{'已归档':3,'待归档':1,'资料补传中':0}}
+};
 var gkTabKey='gkPlan';
 var GK_TABS=[['gkPlan','计划申请'],['gkFly','飞行申请'],['gkTakeoff','起飞通知'],['gkArchive','信息归档']];
 function switchGkTab(k,el){
@@ -1706,14 +1715,14 @@ function openApprove(key,idx){
   body+='</div>';
   body+=buildExtraInfo(r[0]);
   body+='<div class="apm-sec">审批时间进度</div>';
-  body+=genProgress(key);
+  body+=genProgress(key,r);
   body+='<div class="apm-sec">审批意见</div>';
   body+='<textarea id="apmComment" style="width:100%;height:64px;border:1px solid #d8e4f2;border-radius:8px;padding:8px 10px;font-size:13px;color:#23456e;outline:none;resize:vertical;font-family:inherit">同意，按批准航线执行。</textarea>';
   document.getElementById('apmBody').innerHTML=body;
   document.getElementById('apmFoot').innerHTML='<span class="btn btn-danger" onclick="apmSubmit(false)">驳回</span><span class="btn btn-success" onclick="apmSubmit(true)">通过</span>';
   document.getElementById('apmMask').classList.add('show');
 }
-function genProgress(key){
+function genProgress(key,row){
   var nodes;
   if(key==='shifei'){
     nodes=[
@@ -1722,30 +1731,26 @@ function genProgress(key){
       {name:'审批回传',time:'—',st:'wait'},
       {name:'区县执行',time:'—',st:'wait'}
     ];
-  }else if(key==='gkPlan'){
-    nodes=[
-      {name:'计划申报',time:'08:30',st:'done'},
-      {name:'部门审核',time:'09:10',st:'cur'},
-      {name:'计划批复',time:'—',st:'wait'}
-    ];
-  }else if(key==='gkFly'){
-    nodes=[
-      {name:'飞行申请',time:'09:20',st:'done'},
-      {name:'空域校验',time:'09:40',st:'cur'},
-      {name:'批复放行',time:'—',st:'wait'}
-    ];
-  }else if(key==='gkTakeoff'){
-    nodes=[
-      {name:'起飞报告',time:'07:50',st:'done'},
-      {name:'飞控确认',time:'08:00',st:'cur'},
-      {name:'放行起飞',time:'—',st:'wait'}
-    ];
-  }else if(key==='gkArchive'){
-    nodes=[
-      {name:'资料提交',time:'17:00',st:'done'},
-      {name:'归档审核',time:'17:30',st:'cur'},
-      {name:'完成归档',time:'—',st:'wait'}
-    ];
+  }else if(GK_PROG[key]){
+    var cfg=GK_PROG[key];
+    var st='';
+    if(row){
+      var dd=mgmtData[key];
+      st=String(row[dd.cols.indexOf('状态')]||'').replace(/<[^>]+>/g,'');
+    }
+    var cur=(st&&cfg.map[st]!==undefined)?cfg.map[st]:1;
+    var rejectPos=(typeof cur==='string'&&cur.charAt(0)==='r')?parseInt(cur.substring(1),10):-1;
+    var pos=typeof cur==='number'?cur:rejectPos;
+    var TIMES=['08:30','09:10','10:05','10:40','11:15'];
+    nodes=cfg.nodes.map(function(nm,i){
+      var t;
+      if(rejectPos>=0){
+        t=i<rejectPos?'done':(i===rejectPos?'reject':'wait');
+      }else{
+        t=i<pos?'done':(i===pos?'cur':'wait');
+      }
+      return {name:nm,st:t,time:(t==='wait')?'—':TIMES[i]};
+    });
   }else{
     nodes=[
       {name:'区县受理',time:'08:30',st:'done'},
@@ -1759,7 +1764,7 @@ function genProgress(key){
   var html='<div class="ap-progress">';
   nodes.forEach(function(n,i){
     if(i>0){html+='<div class="ap-link '+(n.st==='wait'?'':'done')+'"></div>'}
-    var stText=n.st==='done'?'已通过':(n.st==='cur'?'进行中':'待办理');
+    var stText=n.st==='done'?'已通过':(n.st==='cur'?'进行中':(n.st==='reject'?'已驳回':'待办理'));
     html+='<div class="ap-node '+n.st+'"><div class="ap-dot"></div><div class="ap-name">'+n.name+'</div><div class="ap-time">'+n.time+'</div><div class="ap-state"><span class="ap-st '+n.st+'">'+stText+'</span></div></div>';
   });
   html+='</div>';
