@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>低空飞行业务管理平台</title>
+<title>低空智控平台</title>
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230082D9'/%3E%3Ctext x='32' y='46' font-size='36' text-anchor='middle' fill='white'%3E%E2%9C%88%3C/text%3E%3C/svg%3E">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
@@ -151,7 +151,28 @@ table.m-table{width:100%;border-collapse:collapse;font-size:13px;min-width:600px
 .m-table2{width:100%;border-collapse:collapse;font-size:13px}
 .m-table2 th{background:rgba(45,226,240,.1);color:#bfe9ff;padding:9px;text-align:left;border-bottom:1px solid rgba(95,198,255,.3)}
 .m-table2 td{padding:9px;border-bottom:1px solid rgba(255,255,255,.07);color:#d8e6f8}
-/* 一飞四报标签页（已批复管控区申请） */
+/* 底部气象栏 */
+.dash-weather-bar{position:absolute;bottom:16px;left:386px;right:386px;z-index:9;display:flex;align-items:center;gap:0;background:rgba(12,26,52,.72);border:1px solid rgba(80,190,255,.28);border-radius:12px;backdrop-filter:blur(8px);overflow:hidden;height:70px}
+.dash-weather-bar .wb-h{padding:0 14px;border-right:1px solid rgba(80,190,255,.22);font-size:14px;font-weight:700;color:#eaf7ff;letter-spacing:1px;white-space:nowrap}
+.dash-weather-bar .wb-items{display:flex;flex:1;align-items:center;justify-content:space-around;gap:4px}
+.dash-weather-bar .wb-item{display:flex;flex-direction:column;align-items:center;gap:1px}
+.dash-weather-bar .wb-item .wv{font-size:14px;font-weight:700;color:#5fe2ff}
+.dash-weather-bar .wb-item .wl{font-size:9.5px;color:#8aa4c8}
+/* 设备管理模块 */
+.dev-panel{cursor:pointer}
+.dev-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:4px}
+.dev-chip{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);border-radius:8px;padding:5px 4px;text-align:center;font-size:11px;color:#8fb8d8;cursor:pointer;transition:all .15s}
+.dev-chip:hover{border-color:rgba(45,226,240,.4);color:#7fe3ff;background:rgba(45,226,240,.06)}
+.dev-chip .dc-name{display:block;font-size:11px;color:#c8d6e5;white-space:nowrap;line-height:1.3}
+.dev-chip .dc-nums{display:flex;justify-content:space-around;margin-top:2px;gap:2px}
+.dev-chip .dc-nums b{display:flex;flex-direction:column;align-items:center;line-height:1.1}
+.dev-chip .dc-nums b i{font-style:normal;font-size:13px;font-weight:800;color:#2de2f0}
+.dev-chip .dc-nums b.sus i{color:#fbbf24}
+.dev-chip .dc-nums b small{font-size:8.5px;color:#8aa4c8;font-weight:400;line-height:1.2}
+/* PC端申请入口按钮 */
+.nav .nav-apply-btn{background:linear-gradient(135deg,#2de2f0,#0082D9);color:#fff!important;font-weight:700;box-shadow:0 0 12px rgba(45,226,240,.5)}
+.nav .nav-apply-btn:hover{box-shadow:0 0 18px rgba(45,226,240,.8)}
+/* 一飞四报标签页（非适飞空域申请） */
 .gk-tabs{display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap}
 .gk-tabs .gt{padding:8px 18px;border-radius:8px;cursor:pointer;font-size:13.5px;font-weight:600;color:#5a7aa6;background:#f2f7fd;border:1px solid #d8e4f2;transition:all .2s}
 .gk-tabs .gt:hover{color:#0082D9;border-color:#b3d7f8}
@@ -163,18 +184,40 @@ table.m-table{width:100%;border-collapse:collapse;font-size:13px;min-width:600px
 .gk-filter .gf{padding:4px 12px;border-radius:14px;font-size:12px;cursor:pointer;color:#5a7aa6;background:#f2f7fd;border:1px solid #d8e4f2;transition:all .2s}
 .gk-filter .gf:hover{color:#0082D9;border-color:#b3d7f8}
 .gk-filter .gf.active{background:#e3f0fd;color:#0082D9;border-color:#b3d7f8;font-weight:700}
+/* PC端申请页 */
+.apply-hero{background:linear-gradient(120deg,#0a2a5e,#14539a 55%,#1c6fc2);color:#fff;padding:40px 36px;text-align:center}
+.apply-hero h1{font-size:30px;font-weight:800;letter-spacing:2px}
+.apply-hero .sub{margin-top:8px;font-size:15px;color:#bfdcff}
+.apply-tabs{display:flex;justify-content:center;gap:0;margin:24px auto 0;max-width:420px;background:rgba(255,255,255,.15);border-radius:12px;padding:4px}
+.apply-tabs .at{flex:1;padding:10px 0;text-align:center;border-radius:10px;font-size:14px;font-weight:600;color:#cfe2f5;cursor:pointer;transition:all .2s}
+.apply-tabs .at.active{background:#fff;color:#0082D9;box-shadow:0 2px 12px rgba(0,0,0,.15)}
+.apply-form-card{max-width:680px;margin:28px auto;background:#fff;border-radius:14px;box-shadow:0 4px 24px rgba(10,42,94,.1);overflow:hidden}
+.apply-form-card .afc-h{padding:16px 28px;border-bottom:1px solid #edf2f9;font-size:16px;font-weight:700;color:#0a2c55;display:flex;align-items:center;gap:8px}
+.apply-form-card .afc-b{padding:24px 28px}
+.apply-form-card .afc-b .ff{display:flex;flex-direction:column;gap:4px}
+.apply-form-card .afc-b label{font-size:12px;color:#8aa0bb}
+.apply-form-card .afc-b input,.apply-form-card .afc-b select,.apply-form-card .afc-b textarea{padding:9px 12px;border:1px solid #d8e4f2;border-radius:8px;font-size:13.5px;color:#23456e;outline:none;font-family:inherit}
+.apply-form-card .afc-b input:focus,.apply-form-card .afc-b select:focus,.apply-form-card .afc-b textarea:focus{border-color:#0082D9}
+.apply-form-card .afc-sec{font-size:14px;font-weight:700;color:#0a2c55;margin:18px 0 6px;padding-left:8px;border-left:4px solid #0082D9;grid-column:1/-1}
+.apply-form-card .afc-full{grid-column:1/-1}
+.apply-form-card .afc-checklist{grid-column:1/-1;display:grid;grid-template-columns:1fr 1fr;gap:6px 14px;padding:12px 14px;background:#f7fafd;border:1px solid #edf2f9;border-radius:8px}
+.apply-form-card .afc-checklist label{display:flex;align-items:flex-start;gap:6px;font-size:12px;color:#3c4d66;cursor:pointer;line-height:1.5}
+.apply-form-card .afc-checklist input[type=checkbox]{width:15px;height:15px;accent-color:#0082D9;flex-shrink:0;margin-top:1px}
+.apply-form-card .afc-f{display:flex;justify-content:flex-end;gap:10px;padding:14px 28px;border-top:1px solid #edf2f9;background:#f8fbfe}
+.apply-form-card .afc-f .btn{padding:8px 28px;font-size:13.5px}
 </style>
 </head>
 <body>
 <!-- ============ 顶部导航 ============ -->
 <div class="topbar">
-  <div class="brand"><div class="brand-logo">✈</div>低空飞行业务管理平台</div>
+  <div class="brand"><div class="brand-logo">✈</div>低空智控平台</div>
   <div class="nav">
     <a data-page="dash" class="active" onclick="goPage('dash')">首页</a>
-    <a data-page="approval" onclick="goPage('approval')">业务申请</a>
-    <a data-page="flight" onclick="goPage('flight')">综合飞行</a>
+    <a data-page="approval" onclick="goPage('approval')">飞行申请</a>
+    <a data-page="flight" onclick="goPage('flight')">综合应用</a>
     <a data-page="security" onclick="goPage('security')">安全监管</a>
-    <a data-page="analysis" onclick="goPage('analysis')">业务管理</a>
+    <a data-page="analysis" onclick="goPage('analysis')">事件统管</a>
+    <a data-page="apply" onclick="goPage('apply')" class="nav-apply-btn">PC端申请</a>
   </div>
   <div class="clock" id="clock">2026-09-22 12:00:00</div>
 </div>
@@ -434,16 +477,16 @@ table.m-table{width:100%;border-collapse:collapse;font-size:13px;min-width:600px
     <!-- 左侧面板 -->
     <div class="dash-panel-wrap" id="leftPanel">
 
-      <!-- 1. 业务申请 -->
+      <!-- 1. 飞行申请 -->
       <div class="dash-panel" style="flex:1.1 1 0">
         <div class="dp-h" onclick="openModal('apply')">
-          <div class="dp-t"><span class="dp-bar"></span>业务申请</div>
+          <div class="dp-t"><span class="dp-bar"></span>飞行申请</div>
         </div>
         <div class="dp-b">
           <div class="stats-grid3">
             <div class="stat"><div class="sv">128</div><div class="sl">空域飞行申请总数</div></div>
             <div class="stat"><div class="sv">86</div><div class="sl">适飞空域申请</div></div>
-            <div class="stat"><div class="sv">42</div><div class="sl">已批复管控区域申请</div></div>
+            <div class="stat"><div class="sv">42</div><div class="sl">非适飞空域申请</div></div>
           </div>
           <div class="sec-label">适飞空域申请状态</div>
           <div class="stats-grid3">
@@ -451,7 +494,7 @@ table.m-table{width:100%;border-collapse:collapse;font-size:13px;min-width:600px
             <div class="stat"><div class="sv" style="color:#34d399">56</div><div class="sl">已通过</div></div>
             <div class="stat"><div class="sv" style="color:#8fb8d8">7</div><div class="sl">已结束</div></div>
           </div>
-          <div class="sec-label">已批复管控区域申请状态</div>
+          <div class="sec-label">非适飞空域申请状态</div>
           <div class="stats-grid">
             <div class="stat"><div class="sv" style="color:#fbbf24">12</div><div class="sl">计划待审批</div></div>
             <div class="stat"><div class="sv" style="color:#fb923c">18</div><div class="sl">申请待审批</div></div>
@@ -494,7 +537,7 @@ table.m-table{width:100%;border-collapse:collapse;font-size:13px;min-width:600px
             <span class="cr-link">查看详情 ›</span>
           </div>
           <div class="conflict-row" onclick="openModal('conflictGZ')">
-            <span class="cr-name">已批复管控区域冲突预警</span>
+            <span class="cr-name">非适飞空域冲突预警</span>
             <span class="cr-num">3</span>
             <span class="cr-link">查看详情 ›</span>
           </div>
@@ -517,30 +560,7 @@ table.m-table{width:100%;border-collapse:collapse;font-size:13px;min-width:600px
     <!-- 右侧面板 -->
     <div class="dash-panel-wrap right" id="rightPanel">
 
-      <!-- 3. 气象监测 -->
-      <div class="dash-panel" style="flex:1.05 1 0">
-        <div class="dp-h" onclick="openModal('weather')">
-          <div class="dp-t"><span class="dp-bar"></span>气象监测</div>
-        </div>
-        <div class="dp-b">
-          <div class="stats-grid" style="grid-template-columns:repeat(6,1fr)">
-            <div class="stat"><div class="sv">22℃</div><div class="sl">温度</div></div>
-            <div class="stat"><div class="sv">4.2m/s</div><div class="sl">风速</div></div>
-            <div class="stat"><div class="sv">3.0km</div><div class="sl">能见度</div></div>
-            <div class="stat"><div class="sv">65%</div><div class="sl">湿度</div></div>
-            <div class="stat"><div class="sv">东北风</div><div class="sl">风向</div></div>
-            <div class="stat"><div class="sv"><span class="pulse green"></span>良好</div><div class="sl">飞行条件</div></div>
-          </div>
-          <div class="sec-label">气象站点实时数据</div>
-          <div class="wx-row" onclick="openModal('weather')"><span class="wx-name">高邮市区站</span><span class="wx-meta">22.1℃ · 4.8m/s · 能见度2.6km</span><span class="wx-st warn">注意</span></div>
-          <div class="wx-row" onclick="openModal('weather')"><span class="wx-name">送桥镇站</span><span class="wx-meta">21.5℃ · 3.9m/s · 能见度3.4km</span><span class="wx-st ok">正常</span></div>
-          <div class="wx-row" onclick="openModal('weather')"><span class="wx-name">三垛镇站</span><span class="wx-meta">22.3℃ · 5.2m/s · 能见度2.8km</span><span class="wx-st warn">注意</span></div>
-          <div class="wx-row" onclick="openModal('weather')"><span class="wx-name">界首镇站</span><span class="wx-meta">22.0℃ · 3.6m/s · 能见度3.5km</span><span class="wx-st ok">正常</span></div>
-          <div class="wx-row" onclick="openModal('weather')"><span class="wx-name">临泽镇站</span><span class="wx-meta">21.9℃ · 4.0m/s · 能见度3.0km</span><span class="wx-st ok">正常</span></div>
-        </div>
-      </div>
-
-      <!-- 4. 飞行服务 -->
+      <!-- 3. 飞行服务 -->
       <div class="dash-panel" style="flex:1.3 1 0">
         <div class="dp-h">
           <div class="dp-t"><span class="dp-bar"></span>飞行服务</div>
@@ -568,10 +588,35 @@ table.m-table{width:100%;border-collapse:collapse;font-size:13px;min-width:600px
         </div>
       </div>
 
-      <!-- 5. 业务管理 -->
+      <!-- 4. 设备管理 -->
+      <div class="dash-panel dev-panel" style="flex:1.1 1 0" onclick="openModal('devmgr')">
+        <div class="dp-h">
+          <div class="dp-t"><span class="dp-bar"></span>设备管理</div>
+        </div>
+        <div class="dp-b">
+          <div class="sec-label" style="margin-top:0">设备总量统计</div>
+          <div class="stats-grid3">
+            <div class="stat"><div class="sv">12</div><div class="sl">机库数量</div></div>
+            <div class="stat"><div class="sv">28</div><div class="sl">侦测设备</div></div>
+            <div class="stat"><div class="sv">142</div><div class="sl">无人机设备</div></div>
+          </div>
+          <div class="sec-label">按区域维度分布</div>
+          <div class="dev-grid">
+            <div class="dev-chip"><span class="dc-name">高邮市区</span><span class="dc-nums"><b><i>3</i><small>机库</small></b><b><i>8</i><small>侦测</small></b><b class="sus"><i>38</i><small>无人机</small></b></span></div>
+            <div class="dev-chip"><span class="dc-name">送桥镇</span><span class="dc-nums"><b><i>2</i><small>机库</small></b><b><i>5</i><small>侦测</small></b><b class="sus"><i>26</i><small>无人机</small></b></span></div>
+            <div class="dev-chip"><span class="dc-name">三垛镇</span><span class="dc-nums"><b><i>2</i><small>机库</small></b><b><i>4</i><small>侦测</small></b><b class="sus"><i>20</i><small>无人机</small></b></span></div>
+            <div class="dev-chip"><span class="dc-name">界首镇</span><span class="dc-nums"><b><i>2</i><small>机库</small></b><b><i>5</i><small>侦测</small></b><b class="sus"><i>24</i><small>无人机</small></b></span></div>
+            <div class="dev-chip"><span class="dc-name">临泽镇</span><span class="dc-nums"><b><i>2</i><small>机库</small></b><b><i>3</i><small>侦测</small></b><b class="sus"><i>18</i><small>无人机</small></b></span></div>
+            <div class="dev-chip"><span class="dc-name">高邮镇</span><span class="dc-nums"><b><i>1</i><small>机库</small></b><b><i>3</i><small>侦测</small></b><b class="sus"><i>16</i><small>无人机</small></b></span></div>
+          </div>
+          <div class="substat"><span>设备在线率</span><span class="sbv">92.3%</span></div>
+        </div>
+      </div>
+
+      <!-- 5. 事件统管 -->
       <div class="dash-panel" style="flex:1.2 1 0">
         <div class="dp-h">
-          <div class="dp-t"><span class="dp-bar"></span>业务管理</div>
+          <div class="dp-t"><span class="dp-bar"></span>事件统管</div>
         </div>
         <div class="dp-b">
           <div class="biz-tabs" id="bizMgmtTabs">
@@ -582,6 +627,20 @@ table.m-table{width:100%;border-collapse:collapse;font-size:13px;min-width:600px
           <div id="bizMgmtBody"></div>
         </div>
       </div>
+    </div>
+  </div>
+
+  <!-- 底部气象监测栏 -->
+  <div class="dash-weather-bar">
+    <div class="wb-h"><span class="dp-bar" style="display:inline-block;width:5px;height:14px;border-radius:3px;background:linear-gradient(180deg,#2de2f0,#0891d2);vertical-align:middle;margin-right:6px"></span>气象监测</div>
+    <div class="wb-items">
+      <div class="wb-item"><span class="wv">22℃</span><span class="wl">温度</span></div>
+      <div class="wb-item"><span class="wv">4.2m/s</span><span class="wl">风速</span></div>
+      <div class="wb-item"><span class="wv">3.0km</span><span class="wl">能见度</span></div>
+      <div class="wb-item"><span class="wv">65%</span><span class="wl">湿度</span></div>
+      <div class="wb-item"><span class="wv">东北风</span><span class="wl">风向</span></div>
+      <div class="wb-item"><span class="wv"><span class="pulse green" style="width:7px;height:7px"></span>良好</span><span class="wl">飞行条件</span></div>
+      <div class="wb-item" onclick="openModal('weather')" style="cursor:pointer"><span class="wv" style="color:#5fc6ff">5站</span><span class="wl">气象站点</span></div>
     </div>
   </div>
 </div>
@@ -734,12 +793,12 @@ table.m-table{width:100%;border-collapse:collapse;font-size:13px;min-width:600px
 .stb-purple{background:#f0ebff;color:#6c4fd6}
 </style>
 
-<!-- ============ 县市省联动审批 ============ -->
+<!-- ============ 飞行申请后台管理 ============ -->
 <div class="page" id="page-approval">
 <div class="mgmt-page">
   <div class="mgmt-banner">
     <div>
-      <h1>业务申请</h1>
+      <h1>飞行申请</h1>
       <div class="sub">区县受理初审 — 市级审批 — 省级审批 — 区县执行备案</div>
     </div>
     <div class="banner-stats">
@@ -763,7 +822,7 @@ table.m-table{width:100%;border-collapse:collapse;font-size:13px;min-width:600px
               <div class="fn-group-header" onclick="toggleFnGroup(this)"><span class="fn-gicon" style="background:#0082D9">审</span>审批管理<span class="fn-garrow">▶</span></div>
               <div class="fn-items">
                 <div class="fn-item" onclick="selectMgmt(this,'shifei')">适飞空域申请<span class="fn-badge">12</span></div>
-                <div class="fn-item" onclick="selectMgmt(this,'feishifei')">已批复管控区申请<span class="fn-badge hot">8</span></div>
+                <div class="fn-item" onclick="selectMgmt(this,'feishifei')">非适飞空域申请<span class="fn-badge hot">8</span></div>
                 <div class="fn-item" onclick="selectMgmt(this,'linshi')">临时空域申请<span class="fn-badge">3</span></div>
                 <div class="fn-item active" onclick="selectMgmt(this,'approval')">审批任务列表</div>
               </div>
@@ -839,7 +898,7 @@ table.m-table{width:100%;border-collapse:collapse;font-size:13px;min-width:600px
 <div class="mgmt-page">
   <div class="mgmt-banner">
     <div>
-      <h1>综合飞行管理</h1>
+      <h1>综合应用管理</h1>
       <div class="sub">飞行全过程监控 · 排期调度 · 指挥控制</div>
     </div>
     <div class="banner-stats">
@@ -1008,7 +1067,7 @@ table.m-table{width:100%;border-collapse:collapse;font-size:13px;min-width:600px
 <div class="mgmt-page">
   <div class="mgmt-banner">
     <div>
-      <h1>业务管理</h1>
+      <h1>事件统管</h1>
       <div class="sub">智能体研判引擎 · 大模型分析 · 预警报告</div>
     </div>
     <div class="banner-stats">
@@ -1036,6 +1095,30 @@ table.m-table{width:100%;border-collapse:collapse;font-size:13px;min-width:600px
 </div>
 </div>
 <style>#page-dash{position:relative;background:#060c1d;overflow:hidden;height:100vh}</style>
+
+<!-- ============ PC端申请 ============ -->
+<div class="page" id="page-apply">
+<div class="mgmt-page">
+  <div class="apply-hero">
+    <h1>低空智控平台 · 飞行申请</h1>
+    <div class="sub">企业 / 个人用户在线申请空域飞行</div>
+    <div class="apply-tabs">
+      <div class="at active" onclick="switchApplyTab('enterprise',this)">企业申请</div>
+      <div class="at" onclick="switchApplyTab('personal',this)">个人申请</div>
+    </div>
+  </div>
+  <div class="apply-form-card" id="applyFormCard">
+    <div class="afc-h"><span class="m-dot"></span>企业用户注册与飞行申请</div>
+    <div class="afc-b">
+      <div class="apm-form" id="applyFormBody"></div>
+    </div>
+    <div class="afc-f">
+      <span class="btn" onclick="goPage('dash')">返回首页</span>
+      <span class="btn btn-primary" onclick="submitApplyForm()">提交申请</span>
+    </div>
+  </div>
+</div>
+</div>
 
 <script>
 // ============ 时钟 ============
@@ -1242,12 +1325,11 @@ function openBizMgmtDetail(key,idx){
 
 // ============ 大屏弹窗 ============
 var modalData={
-apply:{name:'业务申请详情',stats:[['128','空域飞行申请总数'],['86','适飞空域申请'],['42','已批复管控区域申请'],['8','飞行中']],head:['申请编号','申请类型','申请单位','片区','状态','申请时间'],rows:[
-['SF-20260922-001','适飞空域','高邮市自规局','高邮市区','审批中','09:15'],['GK-20260922-001','已批复管控区域','高邮市自规局','高邮市区','申请待审批','09:20'],['GK-20260922-002','已批复管控区域','高邮市水利局','高邮市区','飞行中','08:50'],['LS-20260922-001','临时空域','高邮物流公司','高邮市区','审批中','09:22'],['GK-20260922-003','已批复管控区域','高邮供电局','界首镇','申请待审批','10:05'],['SF-20260922-004','适飞空域','高邮农服中心','三垛镇','待受理','10:30'],['GK-20260922-004','已批复管控区域','高邮文旅局','临泽镇','计划待审批','11:40'],['SF-20260922-008','适飞空域','高邮农服中心','高邮镇','已通过','13:00']]},
-conflictSF:{name:'适飞区域冲突预警详情',stats:[['6','冲突预警总数'],['4','已处置'],['2','处置中'],['66.7%','处置率']],head:['预警编号','时间','涉及航线','冲突类型','等级','状态'],rows:[
-['CF-001','11:42','高邮-送桥','航迹交叉','高危','已处置'],['CF-002','11:05','送桥-邵伯湖','高度冲突','中危','处置中'],['CF-003','10:38','三垛-高邮镇','航迹交叉','中危','已处置'],['CF-004','09:56','高邮-界首','进入限制区','高危','已处置'],['CF-005','09:12','界首-临泽','高度冲突','低危','处置中'],['CF-006','08:45','高邮镇-三河','航迹交叉','中危','已处置']]},
-conflictGZ:{name:'已批复管控区域冲突预警详情',stats:[['3','冲突预警总数'],['2','已处置'],['1','待处置'],['66.7%','处置率']],head:['预警编号','时间','管控区域','冲突类型','等级','状态'],rows:[
-['GF-001','11:20','高邮市区管控区','未授权起飞','高危','已处置'],['GF-002','10:05','界首管控区','超高度飞行','中危','已处置'],['GF-003','09:30','三垛管控区','偏离批复航线','中危','待处置']]},
+  apply:{name:'飞行申请详情',stats:[['128','空域飞行申请总数'],['86','适飞空域申请'],['42','非适飞空域申请'],['8','飞行中']],head:['申请编号','申请类型','申请单位','片区','状态','申请时间'],rows:[
+['SF-20260922-001','适飞空域','高邮市自规局','高邮市区','审批中','09:15'],['GK-20260922-001','非适飞空域','高邮市自规局','高邮市区','申请待审批','09:20'],['GK-20260922-002','非适飞空域','高邮市水利局','高邮市区','飞行中','08:50'],['LS-20260922-001','临时空域','高邮物流公司','高邮市区','审批中','09:22'],['GK-20260922-003','非适飞空域','高邮供电局','界首镇','申请待审批','10:05'],['SF-20260922-004','适飞空域','高邮农服中心','三垛镇','待受理','10:30'],['GK-20260922-004','非适飞空域','高邮文旅局','临泽镇','计划待审批','11:40'],['SF-20260922-008','适飞空域','高邮农服中心','高邮镇','已通过','13:00']]},
+  conflictGZ:{name:'非适飞空域冲突预警详情',stats:[['3','冲突预警总数'],['2','已处置'],['1','待处置'],['66.7%','处置率']],head:['预警编号','时间','空域区域','冲突类型','等级','状态'],rows:[
+['GF-001','11:20','高邮市区非适飞空域','未授权起飞','高危','已处置'],['GF-002','10:05','界首非适飞空域','超高度飞行','中危','已处置'],['GF-003','09:30','三垛非适飞空域','偏离批复航线','中危','待处置']]},
+  devmgr:{name:'设备管理详情',stats:[['12','机库数量'],['28','侦测设备'],['142','无人机设备'],['92.3%','在线率']],head:['区域','机库','侦测设备','无人机','在线率'],rows:[['高邮市区','3','8','38','94.7%'],['送桥镇','2','5','26','92.3%'],['三垛镇','2','4','20','90.0%'],['界首镇','2','5','24','91.7%'],['临泽镇','2','3','18','88.9%'],['高邮镇','1','3','16','93.8%']]},
 counter:{name:'反制设备监测详情',stats:[['7','设备总数'],['6','在线'],['1','离线'],['85.7%','在线率']],head:['设备类型','数量','在线','离线'],rows:[
 ['便携式反制设备','3','2','1'],['固定式反制设备','2','2','0'],['车载反制系统','2','2','0']]},
   security:{name:'大型安保活动报备详情',stats:[['15','报备总数'],['11','已通过'],['4','未通过'],['73.3%','通过率']],head:['活动编号','活动名称','报备单位','活动日期','状态'],rows:[
@@ -1332,23 +1414,23 @@ var mgmtData={
     ['SF-20260922-007','高邮海事处','临泽镇','临泽-高邮运河','11:45',ST.yellow+'待受理'+ST.e,'<span class="btn btn-sm btn-primary" onclick="openApprove(\'shifei\',6)">审批</span> <span class="btn btn-sm" onclick="openDetail(\'shifei\',6)">详情</span>'],
     ['SF-20260922-008','高邮农服中心','高邮镇','高邮镇-三垛','13:00',ST.green+'已通过'+ST.e,'<span class="btn btn-sm" onclick="openDetail(\'shifei\',7)">详情</span>']
   ]},
-  feishifei:{name:'已批复管控区申请',cols:['申请编号','申请单位','飞行单位','任务性质','起降点','管控区范围及高度','飞行日期','状态','操作'],rows:[
-    ['GK-20260922-001','高邮市自规局','高邮市自规局','自然资源巡查','高邮市区野外起降点','管控区1个：高邮市区-送桥半径800m真高120m以下','2026-09-22至09-22',ST.blue+'申请待审批'+ST.e,'<span class="btn btn-sm btn-primary" onclick="openApprove(\'feishifei\',0)">审批</span> <span class="btn btn-sm" onclick="openDetail(\'feishifei\',0)">详情</span>'],
-    ['GK-20260922-002','高邮市水利局','高邮市水利局','水利巡查','高邮运河起降点','管控区1个：高邮-运河真高80m以下','2026-09-22至09-22',ST.green+'飞行中'+ST.e,'<span class="btn btn-sm btn-primary" onclick="openApprove(\'feishifei\',1)">监管</span> <span class="btn btn-sm" onclick="openDetail(\'feishifei\',1)">详情</span>'],
-    ['GK-20260922-003','高邮供电局','高邮供电局','电力巡检','界首镇起降点','管控区1个：界首-临泽四点连线真高120m以下','2026-09-22至09-23',ST.blue+'申请待审批'+ST.e,'<span class="btn btn-sm btn-primary" onclick="openApprove(\'feishifei\',2)">审批</span> <span class="btn btn-sm" onclick="openDetail(\'feishifei\',2)">详情</span>'],
-    ['GK-20260922-004','高邮农服中心','高邮农服中心','农业植保','三垛镇起降点','管控区1个：三垛-送桥半径500m真高80m以下','2026-09-22至09-22',ST.yellow+'计划待审批'+ST.e,'<span class="btn btn-sm btn-primary" onclick="openApprove(\'feishifei\',3)">审批</span> <span class="btn btn-sm" onclick="openDetail(\'feishifei\',3)">详情</span>'],
-    ['GK-20260922-005','高邮海事局','高邮海事局','海事巡查','高邮镇起降点','管控区1个：高邮镇-运河真高80m以下','2026-09-22至09-22',ST.gray+'已结束'+ST.e,'<span class="btn btn-sm" onclick="openDetail(\'feishifei\',4)">详情</span>'],
-    ['GK-20260922-006','高邮应急局','高邮应急局','应急巡查','送桥镇起降点','管控区1个：送桥-邵伯湖四点连线真高100m以下','2026-09-22至09-23',ST.purple+'省级审批中'+ST.e,'<span class="btn btn-sm btn-primary" onclick="openApprove(\'feishifei\',5)">审批</span> <span class="btn btn-sm" onclick="openDetail(\'feishifei\',5)">详情</span>'],
-    ['GK-20260922-007','高邮文旅局','高邮文旅局','文旅航拍','临泽镇起降点','管控区1个：临泽-青山真高150m以下','2026-09-22至09-22',ST.gray+'已结束'+ST.e,'<span class="btn btn-sm" onclick="openDetail(\'feishifei\',6)">详情</span>'],
-    ['GK-20260922-008','高邮环保局','高邮环保局','环境监测','高邮市区起降点','管控区1个：高邮市区-三垛半径800m真高100m以下','2026-09-22至09-22',ST.yellow+'计划待审批'+ST.e,'<span class="btn btn-sm btn-primary" onclick="openApprove(\'feishifei\',7)">审批</span> <span class="btn btn-sm" onclick="openDetail(\'feishifei\',7)">详情</span>']
+  feishifei:{name:'非适飞空域申请',cols:['申请编号','申请单位','飞行单位','任务性质','起降点','空域范围及高度','飞行日期','状态','操作'],rows:[
+    ['GK-20260922-001','高邮市自规局','高邮市自规局','自然资源巡查','高邮市区野外起降点','空域1个：高邮市区-送桥半径800m真高120m以下','2026-09-22至09-22',ST.blue+'申请待审批'+ST.e,'<span class="btn btn-sm btn-primary" onclick="openApprove(\'feishifei\',0)">审批</span> <span class="btn btn-sm" onclick="openDetail(\'feishifei\',0)">详情</span>'],
+    ['GK-20260922-002','高邮市水利局','高邮市水利局','水利巡查','高邮运河起降点','空域1个：高邮-运河真高80m以下','2026-09-22至09-22',ST.green+'飞行中'+ST.e,'<span class="btn btn-sm btn-primary" onclick="openApprove(\'feishifei\',1)">监管</span> <span class="btn btn-sm" onclick="openDetail(\'feishifei\',1)">详情</span>'],
+    ['GK-20260922-003','高邮供电局','高邮供电局','电力巡检','界首镇起降点','空域1个：界首-临泽四点连线真高120m以下','2026-09-22至09-23',ST.blue+'申请待审批'+ST.e,'<span class="btn btn-sm btn-primary" onclick="openApprove(\'feishifei\',2)">审批</span> <span class="btn btn-sm" onclick="openDetail(\'feishifei\',2)">详情</span>'],
+    ['GK-20260922-004','高邮农服中心','高邮农服中心','农业植保','三垛镇起降点','空域1个：三垛-送桥半径500m真高80m以下','2026-09-22至09-22',ST.yellow+'计划待审批'+ST.e,'<span class="btn btn-sm btn-primary" onclick="openApprove(\'feishifei\',3)">审批</span> <span class="btn btn-sm" onclick="openDetail(\'feishifei\',3)">详情</span>'],
+    ['GK-20260922-005','高邮海事局','高邮海事局','海事巡查','高邮镇起降点','空域1个：高邮镇-运河真高80m以下','2026-09-22至09-22',ST.gray+'已结束'+ST.e,'<span class="btn btn-sm" onclick="openDetail(\'feishifei\',4)">详情</span>'],
+    ['GK-20260922-006','高邮应急局','高邮应急局','应急巡查','送桥镇起降点','空域1个：送桥-邵伯湖四点连线真高100m以下','2026-09-22至09-23',ST.purple+'省级审批中'+ST.e,'<span class="btn btn-sm btn-primary" onclick="openApprove(\'feishifei\',5)">审批</span> <span class="btn btn-sm" onclick="openDetail(\'feishifei\',5)">详情</span>'],
+    ['GK-20260922-007','高邮文旅局','高邮文旅局','文旅航拍','临泽镇起降点','空域1个：临泽-青山真高150m以下','2026-09-22至09-22',ST.gray+'已结束'+ST.e,'<span class="btn btn-sm" onclick="openDetail(\'feishifei\',6)">详情</span>'],
+    ['GK-20260922-008','高邮环保局','高邮环保局','环境监测','高邮市区起降点','空域1个：高邮市区-三垛半径800m真高100m以下','2026-09-22至09-22',ST.yellow+'计划待审批'+ST.e,'<span class="btn btn-sm btn-primary" onclick="openApprove(\'feishifei\',7)">审批</span> <span class="btn btn-sm" onclick="openDetail(\'feishifei\',7)">详情</span>']
   ]},
-  gkPlan:{name:'计划申请',cols:['计划编号','申请单位','飞行单位','任务性质','管控区范围及高度','计划日期','状态','操作'],rows:[
-    ['JH-20260922-001','高邮市自规局','高邮市自规局','自然资源巡查','管控区1个：高邮市区-送桥半径800m真高120m以下','2026-09-22至09-23',ST.yellow+'待审批'+ST.e,'<span class="btn btn-sm btn-primary" onclick="openApprove(\'gkPlan\',0)">审批</span> <span class="btn btn-sm" onclick="openDetail(\'gkPlan\',0)">详情</span>'],
-    ['JH-20260922-002','高邮市水利局','高邮市水利局','水利巡查','管控区1个：高邮-运河真高80m以下','2026-09-22至09-22',ST.green+'已批复'+ST.e,'<span class="btn btn-sm" onclick="openDetail(\'gkPlan\',1)">详情</span>'],
-    ['JH-20260922-003','高邮供电局','高邮供电局','电力巡检','管控区1个：界首-临泽四点连线真高120m以下','2026-09-23至09-24',ST.yellow+'待审批'+ST.e,'<span class="btn btn-sm btn-primary" onclick="openApprove(\'gkPlan\',2)">审批</span> <span class="btn btn-sm" onclick="openDetail(\'gkPlan\',2)">详情</span>'],
-    ['JH-20260922-004','高邮农服中心','高邮农服中心','农业植保','管控区1个：三垛-送桥半径500m真高80m以下','2026-09-22至09-22',ST.green+'已批复'+ST.e,'<span class="btn btn-sm" onclick="openDetail(\'gkPlan\',3)">详情</span>'],
-    ['JH-20260922-005','高邮环保局','高邮环保局','环境监测','管控区1个：高邮市区-三垛半径800m真高100m以下','2026-09-24至09-24',ST.red+'已驳回'+ST.e,'<span class="btn btn-sm" onclick="openDetail(\'gkPlan\',4)">详情</span>'],
-    ['JH-20260922-006','高邮市文旅局','高邮市文旅局','文旅航拍','管控区1个：临泽-青山真高150m以下','2026-09-25至09-25',ST.green+'已批复'+ST.e,'<span class="btn btn-sm" onclick="openDetail(\'gkPlan\',5)">详情</span>']
+  gkPlan:{name:'计划申请',cols:['计划编号','申请单位','飞行单位','任务性质','空域范围及高度','计划日期','状态','操作'],rows:[
+    ['JH-20260922-001','高邮市自规局','高邮市自规局','自然资源巡查','空域1个：高邮市区-送桥半径800m真高120m以下','2026-09-22至09-23',ST.yellow+'待审批'+ST.e,'<span class="btn btn-sm btn-primary" onclick="openApprove(\'gkPlan\',0)">审批</span> <span class="btn btn-sm" onclick="openDetail(\'gkPlan\',0)">详情</span>'],
+    ['JH-20260922-002','高邮市水利局','高邮市水利局','水利巡查','空域1个：高邮-运河真高80m以下','2026-09-22至09-22',ST.green+'已批复'+ST.e,'<span class="btn btn-sm" onclick="openDetail(\'gkPlan\',1)">详情</span>'],
+    ['JH-20260922-003','高邮供电局','高邮供电局','电力巡检','空域1个：界首-临泽四点连线真高120m以下','2026-09-23至09-24',ST.yellow+'待审批'+ST.e,'<span class="btn btn-sm btn-primary" onclick="openApprove(\'gkPlan\',2)">审批</span> <span class="btn btn-sm" onclick="openDetail(\'gkPlan\',2)">详情</span>'],
+    ['JH-20260922-004','高邮农服中心','高邮农服中心','农业植保','空域1个：三垛-送桥半径500m真高80m以下','2026-09-22至09-22',ST.green+'已批复'+ST.e,'<span class="btn btn-sm" onclick="openDetail(\'gkPlan\',3)">详情</span>'],
+    ['JH-20260922-005','高邮环保局','高邮环保局','环境监测','空域1个：高邮市区-三垛半径800m真高100m以下','2026-09-24至09-24',ST.red+'已驳回'+ST.e,'<span class="btn btn-sm" onclick="openDetail(\'gkPlan\',4)">详情</span>'],
+    ['JH-20260922-006','高邮市文旅局','高邮市文旅局','文旅航拍','空域1个：临泽-青山真高150m以下','2026-09-25至09-25',ST.green+'已批复'+ST.e,'<span class="btn btn-sm" onclick="openDetail(\'gkPlan\',5)">详情</span>']
   ]},
   gkFly:{name:'飞行申请',cols:['申请编号','关联计划','申请单位','起降点','架次','飞行日期','状态','操作'],rows:[
     ['GK-20260922-001','JH-20260922-001','高邮市自规局','高邮市区野外起降点','1架','2026-09-22至09-22',ST.blue+'申请待审批'+ST.e,'<span class="btn btn-sm btn-primary" onclick="openApprove(\'gkFly\',0)">审批</span> <span class="btn btn-sm" onclick="openDetail(\'gkFly\',0)">详情</span>'],
@@ -1382,15 +1464,15 @@ var mgmtData={
     ['LS-20260922-006','高邮文旅局','高邮镇','高邮镇-运河','17:00-19:00',ST.yellow+'待受理'+ST.e,'<span class="btn btn-sm btn-primary" onclick="openApprove(\'linshi\',5)">审批</span> <span class="btn btn-sm" onclick="openDetail(\'linshi\',5)">详情</span>']
   ]},
   approval:{name:'审批任务列表',cols:['任务编号','申请类型','申请单位','所属片区','航线','申请时间','当前环节','状态','操作'],rows:[
-    ['AP-20260922-001','已批复管控区域','高邮市自规局','高邮市区','高邮-送桥','09:15','省级审批',ST.blue+'省级审批中'+ST.e,'<span class="btn btn-sm btn-primary" onclick="openApprove(\'approval\',0)">审批</span> <span class="btn btn-sm" onclick="openDetail(\'approval\',0)">详情</span>'],
+    ['AP-20260922-001','非适飞空域','高邮市自规局','高邮市区','高邮-送桥','09:15','省级审批',ST.blue+'省级审批中'+ST.e,'<span class="btn btn-sm btn-primary" onclick="openApprove(\'approval\',0)">审批</span> <span class="btn btn-sm" onclick="openDetail(\'approval\',0)">详情</span>'],
     ['AP-20260922-002','适飞空域','高邮物流公司','送桥镇','送桥-邵伯湖','09:22','区县初审',ST.orange+'区县初审中'+ST.e,'<span class="btn btn-sm btn-primary" onclick="openApprove(\'approval\',1)">审批</span> <span class="btn btn-sm" onclick="openDetail(\'approval\',1)">详情</span>'],
     ['AP-20260922-003','临时空域','高邮水利局巡查组','送桥镇','送桥-邵伯湖','09:35','区县受理',ST.yellow+'待受理'+ST.e,'<span class="btn btn-sm btn-primary" onclick="openApprove(\'approval\',2)">审批</span> <span class="btn btn-sm" onclick="openDetail(\'approval\',2)">详情</span>'],
-    ['AP-20260922-004','已批复管控区域','高邮市水利局','高邮市区','高邮-运河','08:50','已完成',ST.green+'已结束'+ST.e,'<span class="btn btn-sm" onclick="openDetail(\'approval\',3)">详情</span>'],
-    ['AP-20260922-005','已批复管控区域','高邮供电局','界首镇','界首-临泽','08:30','市级审批',ST.blue+'市级审批中'+ST.e,'<span class="btn btn-sm btn-primary" onclick="openApprove(\'approval\',4)">审批</span> <span class="btn btn-sm" onclick="openDetail(\'approval\',4)">详情</span>'],
+    ['AP-20260922-004','非适飞空域','高邮市水利局','高邮市区','高邮-运河','08:50','已完成',ST.green+'已结束'+ST.e,'<span class="btn btn-sm" onclick="openDetail(\'approval\',3)">详情</span>'],
+    ['AP-20260922-005','非适飞空域','高邮供电局','界首镇','界首-临泽','08:30','市级审批',ST.blue+'市级审批中'+ST.e,'<span class="btn btn-sm btn-primary" onclick="openApprove(\'approval\',4)">审批</span> <span class="btn btn-sm" onclick="openDetail(\'approval\',4)">详情</span>'],
     ['AP-20260922-006','适飞空域','高邮市城管局','三垛镇','三垛-高邮镇','08:15','已完成',ST.red+'已驳回'+ST.e,'<span class="btn btn-sm" onclick="openDetail(\'approval\',5)">详情</span>'],
-    ['AP-20260922-007','已批复管控区域','高邮海事局','高邮镇','高邮镇-运河','08:05','省级审批',ST.blue+'省级审批中'+ST.e,'<span class="btn btn-sm btn-primary" onclick="openApprove(\'approval\',6)">审批</span> <span class="btn btn-sm" onclick="openDetail(\'approval\',6)">详情</span>'],
+    ['AP-20260922-007','非适飞空域','高邮海事局','高邮镇','高邮镇-运河','08:05','省级审批',ST.blue+'省级审批中'+ST.e,'<span class="btn btn-sm btn-primary" onclick="openApprove(\'approval\',6)">审批</span> <span class="btn btn-sm" onclick="openDetail(\'approval\',6)">详情</span>'],
     ['AP-20260922-008','临时空域','高邮文旅局','临泽镇','临泽-青山','07:50','区县初审',ST.orange+'区县初审中'+ST.e,'<span class="btn btn-sm btn-primary" onclick="openApprove(\'approval\',7)">审批</span> <span class="btn btn-sm" onclick="openDetail(\'approval\',7)">详情</span>'],
-    ['AP-20260922-009','已批复管控区域','高邮农服中心','三垛镇','三垛-送桥','07:30','已完成',ST.green+'已结束'+ST.e,'<span class="btn btn-sm" onclick="openDetail(\'approval\',8)">详情</span>'],
+    ['AP-20260922-009','非适飞空域','高邮农服中心','三垛镇','三垛-送桥','07:30','已完成',ST.green+'已结束'+ST.e,'<span class="btn btn-sm" onclick="openDetail(\'approval\',8)">详情</span>'],
     ['AP-20260922-010','适飞空域','高邮海事局','高邮镇','高邮-三河','07:10','区县受理',ST.yellow+'待受理'+ST.e,'<span class="btn btn-sm btn-primary" onclick="openApprove(\'approval\',9)">审批</span> <span class="btn btn-sm" onclick="openDetail(\'approval\',9)">详情</span>']
   ]},
   operator:{name:'操作员信息台账',cols:['操作员','证件号','所属单位','资质','状态','操作'],rows:[
@@ -1479,7 +1561,7 @@ var mgmtData={
   ]},
   flowconf:{name:'审批流配置',cols:['流程名称','环节数','当前状态','操作'],rows:[
     ['县市省三级审批','6环节','启用中','<span class="btn btn-sm btn-primary" onclick="openApprove(\'flowconf\',0)">配置</span>'],
-    ['已批复管控区域审批','4环节','启用中','<span class="btn btn-sm btn-primary" onclick="openApprove(\'flowconf\',1)">配置</span>'],
+    ['非适飞空域审批','4环节','启用中','<span class="btn btn-sm btn-primary" onclick="openApprove(\'flowconf\',1)">配置</span>'],
     ['临时空域审批','3环节','启用中','<span class="btn btn-sm btn-primary" onclick="openApprove(\'flowconf\',2)">配置</span>'],
     ['高邮自规局专项审批','5环节','启用中','<span class="btn btn-sm btn-primary" onclick="openApprove(\'flowconf\',3)">配置</span>']
   ]},
@@ -1545,7 +1627,7 @@ function renderMgmtList(key){
   document.getElementById('mgmtContent').innerHTML=html;
 }
 
-// ============ 已批复管控区申请：一飞四报 ============
+// ============ 非适飞空域申请：一飞四报 ============
 // 各标签页审批进度节点流与当前节点映射（map 值=进行中节点序号，字符串 rN=在第N节点驳回）
 var GK_PROG={
   gkPlan:{nodes:['计划申报','区县初审','市级审批','省级审批','计划批复'],map:{'待审批':1,'已批复':5,'已驳回':'r2'}},
@@ -1562,7 +1644,7 @@ function switchGkTab(k,el){
   renderGkTabBody();
 }
 function renderGkView(){
-  var html='<div class="m-card"><div class="mgmt-toolbar"><div class="mt-title"><span class="m-dot"></span>已批复管控区申请 · 一飞四报</div>'+
+  var html='<div class="m-card"><div class="mgmt-toolbar"><div class="mt-title"><span class="m-dot"></span>非适飞空域申请 · 一飞四报</div>'+
     '<span class="btn btn-primary" onclick="openAddForm(\'feishifei\')">新增</span></div>';
   html+='<div class="gk-tabs">';
   GK_TABS.forEach(function(t,i){
@@ -1690,7 +1772,7 @@ function buildExtraInfo(appId){
 function openApprove(key,idx){
   var d=mgmtData[key];if(!d)return;
   var r=d.rows[idx];
-  var titleMap={shifei:'适飞空域审批',feishifei:'已批复管控区审批',linshi:'临时空域审批',approval:'审批任务审批',qualify:'资质核验',register:'注册信息采集',violate:'违规处理',airreg:'注册初审',yearcheck:'年检处理',flowconf:'审批流配置',report:'数据上报',gkPlan:'计划申请审批',gkFly:'飞行申请审批',gkTakeoff:'起飞通知确认',gkArchive:'信息归档审核'};
+  var titleMap={shifei:'适飞空域审批',feishifei:'非适飞空域审批',linshi:'临时空域审批',approval:'审批任务审批',qualify:'资质核验',register:'注册信息采集',violate:'违规处理',airreg:'注册初审',yearcheck:'年检处理',flowconf:'审批流配置',report:'数据上报',gkPlan:'计划申请审批',gkFly:'飞行申请审批',gkTakeoff:'起飞通知确认',gkArchive:'信息归档审核'};
   document.getElementById('apmTitle').textContent=titleMap[key]||'审批操作';
   var body='<div class="apm-f">';
   if(key==='feishifei'||key==='shifei'||key==='linshi'){
@@ -1926,6 +2008,67 @@ function filterDev(el,type){
 
 // ============ 初始化新面板 ============
 renderBizMgmt();
+
+// ============ PC端申请（企业/个人） ============
+var applyTab='enterprise';
+function switchApplyTab(tab,el){
+  applyTab=tab;
+  if(el){el.parentElement.querySelectorAll('.at').forEach(function(t){t.classList.remove('active')});el.classList.add('active');}
+  buildApplyForm();
+}
+function buildApplyForm(){
+  var card=document.getElementById('applyFormCard');
+  if(!card)return;
+  var isEnt=applyTab==='enterprise';
+  card.querySelector('.afc-h').innerHTML='<span class="m-dot"></span>'+(isEnt?'企业用户注册与飞行申请':'个人用户注册与飞行申请');
+  var body=document.getElementById('applyFormBody');
+  var h='<div class="apm-form">';
+  // 注册信息
+  h+='<div class="afc-sec">'+(isEnt?'企业注册信息':'个人注册信息')+'</div>';
+  if(isEnt){
+    h+='<div class="ff"><label>企业名称</label><input type="text" placeholder="请输入企业全称"></div>';
+    h+='<div class="ff"><label>统一社会信用代码</label><input type="text" placeholder="18位信用代码"></div>';
+    h+='<div class="ff"><label>营业执照编号</label><input type="text" placeholder="营业执照编号"></div>';
+    h+='<div class="ff"><label>法定代表人</label><input type="text" placeholder="法人姓名"></div>';
+    h+='<div class="ff"><label>联系人</label><input type="text" placeholder="企业联系人"></div>';
+    h+='<div class="ff"><label>联系电话</label><input type="text" placeholder="手机号码"></div>';
+  }else{
+    h+='<div class="ff"><label>姓名</label><input type="text" placeholder="请输入真实姓名"></div>';
+    h+='<div class="ff"><label>身份证号</label><input type="text" placeholder="18位身份证号"></div>';
+    h+='<div class="ff"><label>操控员执照号</label><input type="text" placeholder="CAAC执照编号"></div>';
+    h+='<div class="ff"><label>联系电话</label><input type="text" placeholder="手机号码"></div>';
+  }
+  // 航空器信息
+  h+='<div class="afc-sec">航空器信息</div>';
+  h+='<div class="ff"><label>型号</label><input type="text" placeholder="如：大疆M300"></div>';
+  h+='<div class="ff"><label>机号</label><input type="text" placeholder="如：UAV-021"></div>';
+  h+='<div class="ff"><label>分类</label><select><option value="">请选择</option><option>微型</option><option>轻型</option><option>小型</option><option>中型</option><option>大型</option></select></div>';
+  h+='<div class="ff"><label>数量</label><input type="number" min="1" value="1"></div>';
+  h+='<div class="ff afc-full"><label>识别码（UAS码/SN码）</label><input type="text" placeholder="识别码及运行识别方式"></div>';
+  // 飞行任务信息
+  h+='<div class="afc-sec">飞行任务信息</div>';
+  h+='<div class="ff"><label>飞行日期（起）</label><input type="date"></div>';
+  h+='<div class="ff"><label>飞行日期（止）</label><input type="date"></div>';
+  h+='<div class="ff"><label>任务性质</label><input type="text" placeholder="如：自然资源巡查、航拍测绘"></div>';
+  h+='<div class="ff"><label>通联方式</label><select><option value="">请选择</option><option>空地通信</option><option>机间通信</option><option>全覆盖通信</option><option>空地+机间+全覆盖</option></select></div>';
+  // 起降点与空域
+  h+='<div class="afc-sec">起降点与空域信息</div>';
+  h+='<div class="ff"><label>野外起降点</label><input type="text" placeholder="如：高邮市区野外起降点"></div>';
+  h+='<div class="ff"><label>备降点</label><input type="text" placeholder="如：送桥镇备降点"></div>';
+  h+='<div class="ff afc-full"><label>空域/航线范围及高度</label><textarea rows="3" placeholder="空域或航线（选一种）"></textarea></div>';
+  // 安全声明
+  h+='<div class="afc-sec">安全声明</div>';
+  h+='<div class="ff afc-full"><textarea rows="4" style="width:100%">'+SAFETY_DECL+'</textarea></div>';
+  h+='</div>';
+  body.innerHTML=h;
+}
+function submitApplyForm(){
+  var tips=document.createElement('div');
+  tips.style.cssText='position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:#1f9d55;color:#fff;padding:16px 32px;border-radius:10px;z-index:999;font-size:14px;box-shadow:0 6px 24px rgba(0,0,0,.3)';
+  tips.textContent='申请已提交，请等待审核';
+  document.body.appendChild(tips);
+  setTimeout(function(){tips.remove();},1500);
+}
 
 </script>
 </body>
