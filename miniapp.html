@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
-<title>低空飞行业务管理平台</title>
+<title>低空智控平台</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 :root{--blue:#0082D9;--cyan:#2de2f0;--red:#C8102E;--green:#34d399;--amber:#fbbf24;--purple:#a78bfa;--bg:#f5f7fa;--card:#fff;--text:#1a2b42;--sub:#8aa0bb;--line:#eef2f7;--radius:12px}
@@ -182,6 +182,9 @@ body{font-family:"Microsoft YaHei","PingFang SC",sans-serif;background:#1a1a2e;d
 .fs-row .fs-field{flex:1}
 .fs-btn{width:100%;padding:13px;border:none;border-radius:12px;font-size:15px;font-weight:700;cursor:pointer;background:linear-gradient(135deg,#0082D9,#2de2f0);color:#fff;margin-top:6px}
 .fs-btn:active{transform:scale(.97)}
+.lc-reg-type{display:flex;margin-bottom:16px;border-radius:10px;overflow:hidden;border:1px solid var(--line)}
+.lc-reg-type div{flex:1;text-align:center;padding:9px 0;font-size:13px;color:var(--sub);cursor:pointer;background:#f5f7fa;transition:all .2s}
+.lc-reg-type div.active{background:var(--blue);color:#fff;font-weight:600}
 </style>
 </head>
 <body>
@@ -194,7 +197,7 @@ body{font-family:"Microsoft YaHei","PingFang SC",sans-serif;background:#1a1a2e;d
 <div class="page" id="page-login">
   <div class="login-wrap">
     <div class="login-logo">✈</div>
-    <div class="login-title">低空飞行业务管理平台</div>
+    <div class="login-title">低空智控平台</div>
     <div class="login-sub">移动端业务申请 · 高邮市</div>
     <div class="login-card">
       <div class="lc-tab">
@@ -207,18 +210,44 @@ body{font-family:"Microsoft YaHei","PingFang SC",sans-serif;background:#1a1a2e;d
         <button class="lc-btn" onclick="doLogin()">登 录</button>
       </div>
       <div id="lc-reg" style="display:none">
-        <div class="lc-field"><label>用户名</label><input type="text" id="rg_name" placeholder="请输入姓名"></div>
-        <div class="lc-field"><label>手机号</label><input type="tel" id="rg_phone" placeholder="11位手机号" maxlength="11"></div>
-        <div class="lc-field"><label>验证码</label>
-          <div class="lc-code"><input type="text" id="rg_code" placeholder="6位验证码" maxlength="6"><button onclick="sendCode(this)" id="codeBtn">获取验证码</button></div>
+        <div class="lc-reg-type">
+          <div class="active" onclick="regType('ent',this)">企业注册</div>
+          <div onclick="regType('person',this)">个人注册</div>
         </div>
-        <div class="lc-field"><label>密码</label><input type="password" id="rg_pwd" placeholder="8-20位密码"></div>
-        <div class="lc-field"><label>所属单位</label>
-          <select id="rg_unit" style="width:100%;border:1px solid var(--line);border-radius:10px;padding:12px 14px;font-size:14px;color:var(--text);outline:none;font-family:inherit">
-            <option value="">请选择单位</option><option>高邮市自规局</option><option>高邮水利局</option><option>高邮供电局</option><option>高邮物流公司</option><option>高邮应急局</option><option>高邮文旅局</option><option>高邮农服中心</option><option>高邮海事局</option>
-          </select>
+        <div id="lc-reg-ent">
+          <div class="lc-field"><label>企业名称</label><input type="text" placeholder="请输入企业全称"></div>
+          <div class="lc-field"><label>统一社会信用代码</label><input type="text" placeholder="18位信用代码"></div>
+          <div class="lc-field"><label>营业执照编号</label><input type="text" placeholder="营业执照编号"></div>
+          <div class="lc-field"><label>法定代表人</label><input type="text" placeholder="法人姓名"></div>
+          <div class="lc-field"><label>联系人</label><input type="text" placeholder="企业联系人"></div>
+          <div class="lc-field"><label>手机号</label><input type="tel" id="rg_phone" placeholder="11位手机号" maxlength="11"></div>
+          <div class="lc-field"><label>验证码</label>
+            <div class="lc-code"><input type="text" id="rg_code" placeholder="6位验证码" maxlength="6"><button onclick="sendCode(this)" id="codeBtn">获取验证码</button></div>
+          </div>
+          <div class="lc-field"><label>密码</label><input type="password" id="rg_pwd" placeholder="8-20位密码"></div>
+          <div class="lc-field"><label>所属单位</label>
+            <select id="rg_unit" style="width:100%;border:1px solid var(--line);border-radius:10px;padding:12px 14px;font-size:14px;color:var(--text);outline:none;font-family:inherit">
+              <option value="">请选择单位</option><option>高邮市自规局</option><option>高邮水利局</option><option>高邮供电局</option><option>高邮物流公司</option><option>高邮应急局</option><option>高邮文旅局</option><option>高邮农服中心</option><option>高邮海事局</option>
+            </select>
+          </div>
+          <button class="lc-btn" onclick="doReg()">注 册</button>
         </div>
-        <button class="lc-btn" onclick="doReg()">注 册</button>
+        <div id="lc-reg-person" style="display:none">
+          <div class="lc-field"><label>姓名</label><input type="text" id="rg_name" placeholder="请输入真实姓名"></div>
+          <div class="lc-field"><label>身份证号</label><input type="text" placeholder="18位身份证号"></div>
+          <div class="lc-field"><label>手机号</label><input type="tel" id="rg_phone2" placeholder="11位手机号" maxlength="11"></div>
+          <div class="lc-field"><label>验证码</label>
+            <div class="lc-code"><input type="text" id="rg_code2" placeholder="6位验证码" maxlength="6"><button onclick="sendCode(this)" id="codeBtn2">获取验证码</button></div>
+          </div>
+          <div class="lc-field"><label>密码</label><input type="password" id="rg_pwd2" placeholder="8-20位密码"></div>
+          <div class="lc-field"><label>所属单位</label>
+            <select id="rg_unit2" style="width:100%;border:1px solid var(--line);border-radius:10px;padding:12px 14px;font-size:14px;color:var(--text);outline:none;font-family:inherit">
+              <option value="">请选择单位</option><option>高邮市自规局</option><option>高邮水利局</option><option>高邮供电局</option><option>高邮物流公司</option><option>高邮航拍队</option><option>高邮应急局</option><option>高邮文旅局</option><option>高邮农服中心</option><option>高邮海事局</option>
+            </select>
+          </div>
+          <div class="lc-field"><label>操控员执照号</label><input type="text" placeholder="如：UA-2026-0012"></div>
+          <button class="lc-btn" onclick="doReg()">注 册</button>
+        </div>
       </div>
       <div class="lc-hint">登录/注册即代表同意《用户服务协议》</div>
     </div>
@@ -232,7 +261,7 @@ body{font-family:"Microsoft YaHei","PingFang SC",sans-serif;background:#1a1a2e;d
       <div class="avatar" id="home_avatar">张</div>
       <div><div class="uname" id="home_uname">张明</div><div class="urole" id="home_urole">高邮市自规局 · 操作员</div></div>
     </div>
-    <div class="h-title">低空飞行业务管理平台</div>
+    <div class="h-title">低空智控平台</div>
     <div class="home-stats">
       <div class="hs-card"><div class="hs-val" id="hs_as">3</div><div class="hs-label">空域申请</div></div>
       <div class="hs-card"><div class="hs-val" id="hs_ac">2</div><div class="hs-label">飞行器</div></div>
@@ -395,6 +424,14 @@ function navTo(id){showPage(id);document.querySelectorAll('.tb-item').forEach(fu
 function goBack(){showPage(prevPage||'home');document.querySelectorAll('.tb-item').forEach(function(t,i){t.classList.toggle('active',['home','airspace','aircraft','pilot','mine'].indexOf(prevPage||'home')===i)})}
 
 // ========== 登录/注册 ==========
+var regTypeKey='ent';
+function regType(t,el){
+  regTypeKey=t;
+  el.parentElement.querySelectorAll('div').forEach(function(d){d.classList.remove('active')});
+  el.classList.add('active');
+  document.getElementById('lc-reg-ent').style.display=t==='ent'?'block':'none';
+  document.getElementById('lc-reg-person').style.display=t==='person'?'block':'none';
+}
 function lcTab(t){
   document.querySelectorAll('.lc-tab div').forEach(function(d){d.classList.remove('active')});
   event.target.classList.add('active');
