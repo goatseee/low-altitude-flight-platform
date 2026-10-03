@@ -169,21 +169,6 @@ table.m-table{width:100%;border-collapse:collapse;font-size:13px;min-width:600px
 .dev-chip .dc-nums b i{font-style:normal;font-size:13px;font-weight:800;color:#2de2f0}
 .dev-chip .dc-nums b.sus i{color:#fbbf24}
 .dev-chip .dc-nums b small{font-size:8.5px;color:#8aa4c8;font-weight:400;line-height:1.2}
-/* PC端申请入口按钮 */
-.nav .nav-apply-btn{background:linear-gradient(135deg,#2de2f0,#0082D9);color:#fff!important;font-weight:700;box-shadow:0 0 12px rgba(45,226,240,.5)}
-.nav .nav-apply-btn:hover{box-shadow:0 0 18px rgba(45,226,240,.8)}
-/* 一飞四报标签页（非适飞空域申请） */
-.gk-tabs{display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap}
-.gk-tabs .gt{padding:8px 18px;border-radius:8px;cursor:pointer;font-size:13.5px;font-weight:600;color:#5a7aa6;background:#f2f7fd;border:1px solid #d8e4f2;transition:all .2s}
-.gk-tabs .gt:hover{color:#0082D9;border-color:#b3d7f8}
-.gk-tabs .gt.active{background:#0082D9;color:#fff;border-color:#0082D9;box-shadow:0 4px 12px rgba(0,130,217,.25)}
-.gk-tabs .gt .gt-badge{display:inline-block;margin-left:6px;padding:0 7px;border-radius:9px;font-size:11px;font-weight:700;background:#e3eefb;color:#0082D9;line-height:18px}
-.gk-tabs .gt.active .gt-badge{background:rgba(255,255,255,.28);color:#fff}
-.gk-filter{display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap;align-items:center}
-.gk-filter .gf-label{font-size:12.5px;color:#7a94b8}
-.gk-filter .gf{padding:4px 12px;border-radius:14px;font-size:12px;cursor:pointer;color:#5a7aa6;background:#f2f7fd;border:1px solid #d8e4f2;transition:all .2s}
-.gk-filter .gf:hover{color:#0082D9;border-color:#b3d7f8}
-.gk-filter .gf.active{background:#e3f0fd;color:#0082D9;border-color:#b3d7f8;font-weight:700}
 /* PC端申请页 */
 .apply-hero{background:linear-gradient(120deg,#0a2a5e,#14539a 55%,#1c6fc2);color:#fff;padding:40px 36px;text-align:center}
 .apply-hero h1{font-size:30px;font-weight:800;letter-spacing:2px}
@@ -217,7 +202,6 @@ table.m-table{width:100%;border-collapse:collapse;font-size:13px;min-width:600px
     <a data-page="flight" onclick="goPage('flight')">综合应用</a>
     <a data-page="security" onclick="goPage('security')">安全监管</a>
     <a data-page="analysis" onclick="goPage('analysis')">事件统管</a>
-    <a data-page="apply" onclick="goPage('apply')" class="nav-apply-btn">PC端申请</a>
   </div>
   <div class="clock" id="clock">2026-09-22 12:00:00</div>
 </div>
@@ -1101,20 +1085,33 @@ table.m-table{width:100%;border-collapse:collapse;font-size:13px;min-width:600px
 <div class="mgmt-page">
   <div class="apply-hero">
     <h1>低空智控平台 · 飞行申请</h1>
-    <div class="sub">企业 / 个人用户在线申请空域飞行</div>
+    <div class="sub">企业 / 个人用户在线注册与飞行申请</div>
     <div class="apply-tabs">
-      <div class="at active" onclick="switchApplyTab('enterprise',this)">企业申请</div>
-      <div class="at" onclick="switchApplyTab('personal',this)">个人申请</div>
+      <div class="at active" onclick="switchApplyTab('enterprise',this)">企业端</div>
+      <div class="at" onclick="switchApplyTab('personal',this)">个人端</div>
     </div>
   </div>
-  <div class="apply-form-card" id="applyFormCard">
-    <div class="afc-h"><span class="m-dot"></span>企业用户注册与飞行申请</div>
-    <div class="afc-b">
-      <div class="apm-form" id="applyFormBody"></div>
+  <div style="max-width:760px;margin:28px auto;display:grid;grid-template-columns:340px 1fr;gap:20px">
+    <!-- 左：注册/登录区 -->
+    <div class="apply-form-card" id="applyRegCard">
+      <div class="afc-h"><span class="m-dot"></span><span id="applyRegTitle">企业用户注册</span></div>
+      <div class="afc-b">
+        <div class="apm-form" id="applyRegBody"></div>
+      </div>
+      <div class="afc-f">
+        <span class="btn btn-primary" style="width:100%" onclick="submitApplyReg()" id="applyRegBtn">注册</span>
+      </div>
     </div>
-    <div class="afc-f">
-      <span class="btn" onclick="goPage('dash')">返回首页</span>
-      <span class="btn btn-primary" onclick="submitApplyForm()">提交申请</span>
+    <!-- 右：空域申请表单区 -->
+    <div class="apply-form-card" id="applyFormCard">
+      <div class="afc-h"><span class="m-dot"></span>空域飞行申请</div>
+      <div class="afc-b">
+        <div class="apm-form" id="applyFormBody"></div>
+      </div>
+      <div class="afc-f">
+        <span class="btn" onclick="goPage('dash')">返回</span>
+        <span class="btn btn-primary" onclick="submitApplyForm()">提交申请</span>
+      </div>
     </div>
   </div>
 </div>
@@ -2009,56 +2006,76 @@ function filterDev(el,type){
 // ============ 初始化新面板 ============
 renderBizMgmt();
 
-// ============ PC端申请（企业/个人） ============
+// ============ PC端申请（企业/个人双端切换） ============
 var applyTab='enterprise';
 function switchApplyTab(tab,el){
   applyTab=tab;
   if(el){el.parentElement.querySelectorAll('.at').forEach(function(t){t.classList.remove('active')});el.classList.add('active');}
-  buildApplyForm();
+  buildApplyReg();
 }
-function buildApplyForm(){
-  var card=document.getElementById('applyFormCard');
-  if(!card)return;
+function buildApplyReg(){
   var isEnt=applyTab==='enterprise';
-  card.querySelector('.afc-h').innerHTML='<span class="m-dot"></span>'+(isEnt?'企业用户注册与飞行申请':'个人用户注册与飞行申请');
-  var body=document.getElementById('applyFormBody');
+  var title=document.getElementById('applyRegTitle');
+  var btn=document.getElementById('applyRegBtn');
+  if(title)title.textContent=isEnt?'企业用户注册':'个人用户注册';
+  if(btn)btn.textContent=isEnt?'注册':'注册';
+  var body=document.getElementById('applyRegBody');
+  if(!body)return;
   var h='<div class="apm-form">';
-  // 注册信息
-  h+='<div class="afc-sec">'+(isEnt?'企业注册信息':'个人注册信息')+'</div>';
   if(isEnt){
     h+='<div class="ff"><label>企业名称</label><input type="text" placeholder="请输入企业全称"></div>';
     h+='<div class="ff"><label>统一社会信用代码</label><input type="text" placeholder="18位信用代码"></div>';
     h+='<div class="ff"><label>营业执照编号</label><input type="text" placeholder="营业执照编号"></div>';
     h+='<div class="ff"><label>法定代表人</label><input type="text" placeholder="法人姓名"></div>';
     h+='<div class="ff"><label>联系人</label><input type="text" placeholder="企业联系人"></div>';
-    h+='<div class="ff"><label>联系电话</label><input type="text" placeholder="手机号码"></div>';
+    h+='<div class="ff"><label>联系电话</label><input type="tel" placeholder="11位手机号" maxlength="11"></div>';
+    h+='<div class="ff"><label>密码</label><input type="password" placeholder="8-20位密码"></div>';
+    h+='<div class="ff"><label>所属单位</label><select><option value="">请选择单位</option><option>高邮市自规局</option><option>高邮水利局</option><option>高邮供电局</option><option>高邮物流公司</option><option>高邮应急局</option><option>高邮文旅局</option><option>高邮农服中心</option><option>高邮海事局</option></select></div>';
   }else{
     h+='<div class="ff"><label>姓名</label><input type="text" placeholder="请输入真实姓名"></div>';
     h+='<div class="ff"><label>身份证号</label><input type="text" placeholder="18位身份证号"></div>';
-    h+='<div class="ff"><label>操控员执照号</label><input type="text" placeholder="CAAC执照编号"></div>';
-    h+='<div class="ff"><label>联系电话</label><input type="text" placeholder="手机号码"></div>';
+    h+='<div class="ff"><label>联系电话</label><input type="tel" placeholder="11位手机号" maxlength="11"></div>';
+    h+='<div class="ff"><label>验证码</label><div style="display:flex;gap:8px"><input type="text" placeholder="6位验证码" maxlength="6" style="flex:1"><button onclick="sendApplyCode(this)" style="white-space:nowrap;padding:0 14px;border:1px solid #0082D9;border-radius:8px;background:transparent;color:#0082D9;font-size:12px;cursor:pointer">获取验证码</button></div></div>';
+    h+='<div class="ff"><label>密码</label><input type="password" placeholder="8-20位密码"></div>';
+    h+='<div class="ff"><label>所属单位</label><select><option value="">请选择单位</option><option>高邮市自规局</option><option>高邮水利局</option><option>高邮供电局</option><option>高邮物流公司</option><option>高邮航拍队</option><option>高邮应急局</option><option>高邮文旅局</option><option>高邮农服中心</option><option>高邮海事局</option></select></div>';
+    h+='<div class="ff"><label>操控员执照号</label><input type="text" placeholder="如：UA-2026-0012"></div>';
   }
-  // 航空器信息
-  h+='<div class="afc-sec">航空器信息</div>';
-  h+='<div class="ff"><label>型号</label><input type="text" placeholder="如：大疆M300"></div>';
-  h+='<div class="ff"><label>机号</label><input type="text" placeholder="如：UAV-021"></div>';
-  h+='<div class="ff"><label>分类</label><select><option value="">请选择</option><option>微型</option><option>轻型</option><option>小型</option><option>中型</option><option>大型</option></select></div>';
-  h+='<div class="ff"><label>数量</label><input type="number" min="1" value="1"></div>';
-  h+='<div class="ff afc-full"><label>识别码（UAS码/SN码）</label><input type="text" placeholder="识别码及运行识别方式"></div>';
-  // 飞行任务信息
-  h+='<div class="afc-sec">飞行任务信息</div>';
-  h+='<div class="ff"><label>飞行日期（起）</label><input type="date"></div>';
-  h+='<div class="ff"><label>飞行日期（止）</label><input type="date"></div>';
-  h+='<div class="ff"><label>任务性质</label><input type="text" placeholder="如：自然资源巡查、航拍测绘"></div>';
-  h+='<div class="ff"><label>通联方式</label><select><option value="">请选择</option><option>空地通信</option><option>机间通信</option><option>全覆盖通信</option><option>空地+机间+全覆盖</option></select></div>';
-  // 起降点与空域
-  h+='<div class="afc-sec">起降点与空域信息</div>';
-  h+='<div class="ff"><label>野外起降点</label><input type="text" placeholder="如：高邮市区野外起降点"></div>';
-  h+='<div class="ff"><label>备降点</label><input type="text" placeholder="如：送桥镇备降点"></div>';
-  h+='<div class="ff afc-full"><label>空域/航线范围及高度</label><textarea rows="3" placeholder="空域或航线（选一种）"></textarea></div>';
-  // 安全声明
-  h+='<div class="afc-sec">安全声明</div>';
-  h+='<div class="ff afc-full"><textarea rows="4" style="width:100%">'+SAFETY_DECL+'</textarea></div>';
+  h+='</div>';
+  body.innerHTML=h;
+}
+var applyCodeCount=0;
+function sendApplyCode(btn){
+  if(applyCodeCount>0)return;
+  applyCodeCount=60;btn.disabled=true;btn.style.opacity=.5;
+  var timer=setInterval(function(){applyCodeCount--;btn.textContent=applyCodeCount+'s';if(applyCodeCount<=0){clearInterval(timer);btn.disabled=false;btn.style.opacity='1';btn.textContent='获取验证码'}},1000);
+}
+function submitApplyReg(){
+  var tips=document.createElement('div');
+  tips.style.cssText='position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:#1f9d55;color:#fff;padding:16px 32px;border-radius:10px;z-index:999;font-size:14px;box-shadow:0 6px 24px rgba(0,0,0,.3)';
+  tips.textContent='注册成功，请登录';
+  document.body.appendChild(tips);
+  setTimeout(function(){tips.remove();},1500);
+}
+function buildApplyForm(){
+  var body=document.getElementById('applyFormBody');
+  if(!body)return;
+  var h='<div class="apm-form">';
+  // 空域申请表单（按小程序结构）
+  h+='<div class="afc-sec">申请信息</div>';
+  h+='<div class="ff"><label>申请类型</label><select><option>适飞空域</option><option>非适飞空域</option><option>临时空域</option></select></div>';
+  h+='<div class="ff"><label>申请单位</label><select><option>高邮市自规局</option><option>高邮水利局</option><option>高邮供电局</option><option>高邮物流公司</option><option>高邮应急局</option><option>高邮文旅局</option><option>高邮农服中心</option><option>高邮海事局</option></select></div>';
+  h+='<div class="ff"><label>所属片区</label><select><option>高邮市区</option><option>送桥镇</option><option>三垛镇</option><option>高邮镇</option><option>界首镇</option><option>临泽镇</option></select></div>';
+  h+='<div class="ff"><label>申请空域</label><input type="text" placeholder="如：高邮-送桥"></div>';
+  h+='<div class="ff"><label>飞行高度</label><input type="text" placeholder="如：120m"></div>';
+  h+='<div class="ff"><label>飞行时长</label><input type="text" placeholder="如：2.5h"></div>';
+  h+='<div class="ff"><label>任务用途</label><select><option>自然资源巡查</option><option>水利巡查</option><option>电力巡检</option><option>农业植保</option><option>物流配送</option><option>航拍测绘</option><option>应急巡查</option><option>文旅宣传</option><option>环境监测</option><option>城管巡查</option></select></div>';
+  h+='<div class="afc-sec">操作员信息</div>';
+  h+='<div class="ff"><label>操作员姓名</label><input type="text" placeholder="如：张明"></div>';
+  h+='<div class="ff"><label>证件编号</label><input type="text" placeholder="如：UA-2026-0012"></div>';
+  h+='<div class="ff"><label>联系电话</label><input type="tel" placeholder="11位手机号" maxlength="11"></div>';
+  h+='<div class="afc-sec">飞行器信息</div>';
+  h+='<div class="ff"><label>飞行器编号</label><input type="text" placeholder="如：UAV-021"></div>';
+  h+='<div class="ff"><label>机型</label><select><option>大疆 M300</option><option>大疆 M30T</option><option>极飞 V40</option><option>亿航 EH216</option><option>其他机型</option></select></div>';
   h+='</div>';
   body.innerHTML=h;
 }
