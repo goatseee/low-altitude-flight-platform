@@ -169,27 +169,60 @@ table.m-table{width:100%;border-collapse:collapse;font-size:13px;min-width:600px
 .dev-chip .dc-nums b i{font-style:normal;font-size:13px;font-weight:800;color:#2de2f0}
 .dev-chip .dc-nums b.sus i{color:#fbbf24}
 .dev-chip .dc-nums b small{font-size:8.5px;color:#8aa4c8;font-weight:400;line-height:1.2}
-/* PC端申请页 */
-.apply-hero{background:linear-gradient(120deg,#0a2a5e,#14539a 55%,#1c6fc2);color:#fff;padding:40px 36px;text-align:center}
-.apply-hero h1{font-size:30px;font-weight:800;letter-spacing:2px}
-.apply-hero .sub{margin-top:8px;font-size:15px;color:#bfdcff}
-.apply-tabs{display:flex;justify-content:center;gap:0;margin:24px auto 0;max-width:420px;background:rgba(255,255,255,.15);border-radius:12px;padding:4px}
-.apply-tabs .at{flex:1;padding:10px 0;text-align:center;border-radius:10px;font-size:14px;font-weight:600;color:#cfe2f5;cursor:pointer;transition:all .2s}
-.apply-tabs .at.active{background:#fff;color:#0082D9;box-shadow:0 2px 12px rgba(0,0,0,.15)}
-.apply-form-card{max-width:680px;margin:28px auto;background:#fff;border-radius:14px;box-shadow:0 4px 24px rgba(10,42,94,.1);overflow:hidden}
-.apply-form-card .afc-h{padding:16px 28px;border-bottom:1px solid #edf2f9;font-size:16px;font-weight:700;color:#0a2c55;display:flex;align-items:center;gap:8px}
-.apply-form-card .afc-b{padding:24px 28px}
-.apply-form-card .afc-b .ff{display:flex;flex-direction:column;gap:4px}
-.apply-form-card .afc-b label{font-size:12px;color:#8aa0bb}
-.apply-form-card .afc-b input,.apply-form-card .afc-b select,.apply-form-card .afc-b textarea{padding:9px 12px;border:1px solid #d8e4f2;border-radius:8px;font-size:13.5px;color:#23456e;outline:none;font-family:inherit}
-.apply-form-card .afc-b input:focus,.apply-form-card .afc-b select:focus,.apply-form-card .afc-b textarea:focus{border-color:#0082D9}
-.apply-form-card .afc-sec{font-size:14px;font-weight:700;color:#0a2c55;margin:18px 0 6px;padding-left:8px;border-left:4px solid #0082D9;grid-column:1/-1}
-.apply-form-card .afc-full{grid-column:1/-1}
-.apply-form-card .afc-checklist{grid-column:1/-1;display:grid;grid-template-columns:1fr 1fr;gap:6px 14px;padding:12px 14px;background:#f7fafd;border:1px solid #edf2f9;border-radius:8px}
-.apply-form-card .afc-checklist label{display:flex;align-items:flex-start;gap:6px;font-size:12px;color:#3c4d66;cursor:pointer;line-height:1.5}
-.apply-form-card .afc-checklist input[type=checkbox]{width:15px;height:15px;accent-color:#0082D9;flex-shrink:0;margin-top:1px}
-.apply-form-card .afc-f{display:flex;justify-content:flex-end;gap:10px;padding:14px 28px;border-top:1px solid #edf2f9;background:#f8fbfe}
-.apply-form-card .afc-f .btn{padding:8px 28px;font-size:13.5px}
+/* PC端申请系统 */
+.apc-login-view{min-height:100vh;display:flex;align-items:center;justify-content:center;background:linear-gradient(180deg,#0a1f3c 0%,#103258 40%,#eef3fa 100%);padding-top:52px}
+.apc-login-card{width:430px;background:#fff;border-radius:18px;padding:36px 34px;box-shadow:0 12px 48px rgba(10,31,60,.18)}
+.apc-logo{width:64px;height:64px;border-radius:18px;background:linear-gradient(135deg,#0082D9,#2de2f0);display:flex;align-items:center;justify-content:center;font-size:32px;margin:0 auto 14px;box-shadow:0 4px 20px rgba(0,130,217,.3)}
+.apc-login-title{text-align:center;font-size:22px;font-weight:800;color:#0a2c55}
+.apc-login-sub{text-align:center;font-size:12px;color:#8aa0bb;margin:6px 0 24px}
+.apc-ltab{display:flex;border-bottom:2px solid #eef2f7;margin-bottom:20px}
+.apc-ltab div{flex:1;text-align:center;padding:11px 0;font-size:14px;color:#8aa0bb;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-2px}
+.apc-ltab div.active{color:#0082D9;border-bottom-color:#0082D9;font-weight:600}
+.apc-regtype{display:flex;margin-bottom:16px;border-radius:10px;overflow:hidden;border:1px solid #d8e4f2}
+.apc-regtype div{flex:1;text-align:center;padding:9px 0;font-size:13px;color:#8aa0bb;cursor:pointer;background:#f5f7fa;transition:all .2s}
+.apc-regtype div.active{background:#0082D9;color:#fff;font-weight:600}
+.apc-login-card .apm-form .ff input,.apc-login-card .apm-form .ff select{width:100%;box-sizing:border-box}
+.apc-main-view{min-height:100vh;padding-top:52px;background:#eef3fa}
+.apc-topbar{background:linear-gradient(120deg,#0a2a5e,#14539a);color:#fff;padding:14px 28px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px}
+.apc-topbar .at-title{font-size:17px;font-weight:700;letter-spacing:1px}
+.apc-topbar .at-user{font-size:13px;color:#cfe4ff;display:flex;align-items:center;gap:14px}
+.apc-topbar .at-user .exit{cursor:pointer;color:#fff;background:rgba(255,255,255,.15);padding:5px 14px;border-radius:14px;font-size:12px}
+.apc-topbar .at-user .exit:hover{background:rgba(255,255,255,.28)}
+.apc-body{display:flex;gap:18px;max-width:1400px;margin:18px auto;padding:0 28px;align-items:flex-start}
+.apc-side{width:200px;flex-shrink:0;background:#fff;border-radius:12px;box-shadow:0 2px 10px rgba(10,42,94,.08);border:1px solid #e3eaf3;overflow:hidden;position:sticky;top:70px}
+.apc-nav-item{display:flex;align-items:center;gap:10px;padding:14px 18px;font-size:14px;color:#4a5f7c;cursor:pointer;border-bottom:1px solid #f0f4fa;transition:all .15s}
+.apc-nav-item:last-child{border-bottom:none}
+.apc-nav-item:hover{background:#f2f8ff;color:#0082D9}
+.apc-nav-item.active{background:#e8f3ff;color:#0077d9;font-weight:600;border-left:3px solid #0082D9}
+.apc-nav-item .nv-ico{width:26px;height:26px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:14px}
+.apc-content{flex:1;min-width:0}
+.apc-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:16px}
+.apc-stat{background:#fff;border-radius:12px;padding:20px;text-align:center;box-shadow:0 2px 10px rgba(10,42,94,.08);border:1px solid #e3eaf3;cursor:pointer;transition:all .2s}
+.apc-stat:hover{transform:translateY(-2px);box-shadow:0 6px 18px rgba(10,42,94,.14)}
+.apc-stat .sv{font-size:30px;font-weight:800;color:#0082D9}
+.apc-stat .sl{font-size:13px;color:#8aa0bb;margin-top:4px}
+.apc-grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:16px}
+.apc-func{background:#fff;border-radius:12px;padding:18px 10px;text-align:center;cursor:pointer;box-shadow:0 2px 10px rgba(10,42,94,.08);border:1px solid #e3eaf3;transition:all .2s}
+.apc-func:hover{transform:translateY(-2px);box-shadow:0 6px 18px rgba(10,42,94,.14)}
+.apc-func .fv{font-size:26px}
+.apc-func .fl{font-size:13px;color:#4a5f7c;font-weight:600;margin-top:6px}
+.apc-notice{background:#fff;border-radius:12px;padding:14px 18px;box-shadow:0 2px 10px rgba(10,42,94,.08);border:1px solid #e3eaf3;margin-bottom:16px}
+.apc-notice-item{display:flex;gap:10px;padding:9px 2px;border-bottom:1px dashed #eef2f7;font-size:13px;align-items:flex-start}
+.apc-notice-item:last-child{border-bottom:none}
+.apc-notice-item .nn-text{flex:1;color:#3c4d66}
+.apc-notice-item .nn-date{font-size:11px;color:#8aa0bb;margin-top:2px}
+.apc-tag{font-size:11px;padding:2px 8px;border-radius:4px;font-weight:600;flex-shrink:0;margin-top:1px}
+.apc-tag.red{background:#fdeaea;color:#d63031}
+.apc-tag.blue{background:#e6f2ff;color:#0077d9}
+.apc-tag.green{background:#e8f9ee;color:#1f9d55}
+.apc-list{background:#fff;border-radius:12px;padding:18px 20px;box-shadow:0 2px 10px rgba(10,42,94,.08);border:1px solid #e3eaf3}
+.apc-lhead{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:14px}
+.apc-lhead .lh-title{display:flex;align-items:center;gap:8px;font-size:16px;font-weight:700;color:#0a2c55}
+.apc-tabs{display:flex;gap:6px;flex-wrap:wrap}
+.apc-tabs span{padding:6px 16px;border-radius:14px;font-size:12.5px;color:#3d5a80;background:#f0f5fc;cursor:pointer;border:1px solid #dbe6f3}
+.apc-tabs span.active{background:#0082D9;color:#fff;border-color:#0082D9}
+.apc-prog-bar{height:6px;background:#eef2f7;border-radius:3px;overflow:hidden;min-width:80px}
+.apc-prog-fill{height:100%;background:linear-gradient(90deg,#0082D9,#2de2f0);border-radius:3px}
 </style>
 </head>
 <body>
@@ -1080,41 +1113,76 @@ table.m-table{width:100%;border-collapse:collapse;font-size:13px;min-width:600px
 </div>
 <style>#page-dash{position:relative;background:#060c1d;overflow:hidden;height:100vh}</style>
 
-<!-- ============ PC端申请 ============ -->
+<!-- ============ PC端申请系统 ============ -->
 <div class="page" id="page-apply">
-<div class="mgmt-page">
-  <div class="apply-hero">
-    <h1>低空智控平台 · 飞行申请</h1>
-    <div class="sub">企业 / 个人用户在线注册与飞行申请</div>
-    <div class="apply-tabs">
-      <div class="at active" onclick="switchApplyTab('enterprise',this)">企业端</div>
-      <div class="at" onclick="switchApplyTab('personal',this)">个人端</div>
+  <!-- 登录视图 -->
+  <div class="apc-login-view" id="apcLoginView">
+    <div class="apc-login-card">
+      <div class="apc-logo">✈</div>
+      <div class="apc-login-title">低空智控平台</div>
+      <div class="apc-login-sub">PC端申请系统 · 高邮市</div>
+      <div class="apc-ltab">
+        <div class="active" onclick="apcLTab('login',this)">登录</div>
+        <div onclick="apcLTab('reg',this)">注册</div>
+      </div>
+      <div id="apcLoginForm">
+        <div class="apm-form">
+          <div class="ff"><label>手机号</label><input type="tel" id="apc_lg_phone" placeholder="11位手机号" maxlength="11"></div>
+          <div class="ff"><label>密码</label><input type="password" id="apc_lg_pwd" placeholder="请输入密码"></div>
+        </div>
+        <button class="btn btn-primary" style="width:100%;padding:11px;font-size:15px;margin-top:10px" onclick="apcDoLogin()">登 录</button>
+      </div>
+      <div id="apcRegForm" style="display:none">
+        <div class="apc-regtype">
+          <div class="active" onclick="apcRegType('ent',this)">企业注册</div>
+          <div onclick="apcRegType('person',this)">个人注册</div>
+        </div>
+        <div id="apcRegEnt">
+          <div class="apm-form">
+            <div class="ff"><label>企业名称</label><input type="text" placeholder="请输入企业全称"></div>
+            <div class="ff"><label>统一社会信用代码</label><input type="text" placeholder="18位信用代码"></div>
+            <div class="ff"><label>营业执照编号</label><input type="text" placeholder="营业执照编号"></div>
+            <div class="ff"><label>法定代表人</label><input type="text" placeholder="法人姓名"></div>
+            <div class="ff"><label>联系人</label><input type="text" placeholder="企业联系人"></div>
+            <div class="ff"><label>手机号</label><input type="tel" placeholder="11位手机号" maxlength="11"></div>
+            <div class="ff"><label>验证码</label><div style="display:flex;gap:8px"><input type="text" placeholder="6位验证码" maxlength="6" style="flex:1"><button onclick="apcSendCode(this)" style="white-space:nowrap;padding:0 14px;border:1px solid #0082D9;border-radius:8px;background:transparent;color:#0082D9;font-size:12px;cursor:pointer">获取验证码</button></div></div>
+            <div class="ff"><label>密码</label><input type="password" placeholder="8-20位密码"></div>
+            <div class="ff"><label>所属单位</label><select><option value="">请选择单位</option><option>高邮市自规局</option><option>高邮水利局</option><option>高邮供电局</option><option>高邮物流公司</option><option>高邮应急局</option><option>高邮文旅局</option><option>高邮农服中心</option><option>高邮海事局</option></select></div>
+          </div>
+        </div>
+        <div id="apcRegPerson" style="display:none">
+          <div class="apm-form">
+            <div class="ff"><label>姓名</label><input type="text" placeholder="请输入真实姓名"></div>
+            <div class="ff"><label>身份证号</label><input type="text" placeholder="18位身份证号"></div>
+            <div class="ff"><label>手机号</label><input type="tel" placeholder="11位手机号" maxlength="11"></div>
+            <div class="ff"><label>验证码</label><div style="display:flex;gap:8px"><input type="text" placeholder="6位验证码" maxlength="6" style="flex:1"><button onclick="apcSendCode(this)" style="white-space:nowrap;padding:0 14px;border:1px solid #0082D9;border-radius:8px;background:transparent;color:#0082D9;font-size:12px;cursor:pointer">获取验证码</button></div></div>
+            <div class="ff"><label>密码</label><input type="password" placeholder="8-20位密码"></div>
+            <div class="ff"><label>所属单位</label><select><option value="">请选择单位</option><option>高邮市自规局</option><option>高邮水利局</option><option>高邮供电局</option><option>高邮物流公司</option><option>高邮航拍队</option><option>高邮应急局</option><option>高邮文旅局</option><option>高邮农服中心</option><option>高邮海事局</option></select></div>
+            <div class="ff"><label>操控员执照号</label><input type="text" placeholder="如：UA-2026-0012"></div>
+          </div>
+        </div>
+        <button class="btn btn-primary" style="width:100%;padding:11px;font-size:15px;margin-top:10px" onclick="apcDoReg()">注 册</button>
+      </div>
+      <div style="text-align:center;font-size:11px;color:#8aa0bb;margin-top:14px">登录/注册即代表同意《用户服务协议》</div>
     </div>
   </div>
-  <div style="max-width:760px;margin:28px auto;display:grid;grid-template-columns:340px 1fr;gap:20px">
-    <!-- 左：注册/登录区 -->
-    <div class="apply-form-card" id="applyRegCard">
-      <div class="afc-h"><span class="m-dot"></span><span id="applyRegTitle">企业用户注册</span></div>
-      <div class="afc-b">
-        <div class="apm-form" id="applyRegBody"></div>
-      </div>
-      <div class="afc-f">
-        <span class="btn btn-primary" style="width:100%" onclick="submitApplyReg()" id="applyRegBtn">注册</span>
-      </div>
+  <!-- 主界面视图 -->
+  <div class="apc-main-view" id="apcMainView" style="display:none">
+    <div class="apc-topbar">
+      <div class="at-title">低空智控平台 · PC端申请系统</div>
+      <div class="at-user"><span id="apcUserName">张明 · 高邮市自规局</span><span class="exit" onclick="apcLogout()">退出登录</span></div>
     </div>
-    <!-- 右：空域申请表单区 -->
-    <div class="apply-form-card" id="applyFormCard">
-      <div class="afc-h"><span class="m-dot"></span>空域飞行申请</div>
-      <div class="afc-b">
-        <div class="apm-form" id="applyFormBody"></div>
+    <div class="apc-body">
+      <div class="apc-side" id="apcSideNav">
+        <div class="apc-nav-item active" data-v="home" onclick="apcNav('home',this)"><span class="nv-ico" style="background:#e6f2ff">🏠</span>首页</div>
+        <div class="apc-nav-item" data-v="airspace" onclick="apcNav('airspace',this)"><span class="nv-ico" style="background:#e6f2ff">📋</span>空域申请</div>
+        <div class="apc-nav-item" data-v="aircraft" onclick="apcNav('aircraft',this)"><span class="nv-ico" style="background:#e0fbff">🚁</span>飞行器管理</div>
+        <div class="apc-nav-item" data-v="pilot" onclick="apcNav('pilot',this)"><span class="nv-ico" style="background:#e8f9ee">👤</span>飞手注册</div>
+        <div class="apc-nav-item" data-v="user" onclick="apcNav('user',this)"><span class="nv-ico" style="background:#fff8e6">🔑</span>用户注册</div>
       </div>
-      <div class="afc-f">
-        <span class="btn" onclick="goPage('dash')">返回</span>
-        <span class="btn btn-primary" onclick="submitApplyForm()">提交申请</span>
-      </div>
+      <div class="apc-content" id="apcContent"></div>
     </div>
   </div>
-</div>
 </div>
 
 <script>
@@ -2006,85 +2074,276 @@ function filterDev(el,type){
 // ============ 初始化新面板 ============
 renderBizMgmt();
 
-// ============ PC端申请（企业/个人双端切换） ============
-var applyTab='enterprise';
-function switchApplyTab(tab,el){
-  applyTab=tab;
-  if(el){el.parentElement.querySelectorAll('.at').forEach(function(t){t.classList.remove('active')});el.classList.add('active');}
-  buildApplyReg();
+// ============ PC端申请系统（按小程序内容复刻） ============
+var APC_DATA={
+  airspace:[
+    {id:'SF-20260922-001',type:'适飞空域',unit:'高邮市自规局',area:'高邮市区',airspace:'高邮市区-送桥',height:'120m',duration:'2.5h',purpose:'自然资源巡查',opName:'张明',opLicense:'UA-2026-0012',opPhone:'138****1234',acId:'UAV-021',acModel:'大疆M300',time:'09:15',status:'审批中',
+      steps:[{name:'区县受理',time:'08:30',st:'done'},{name:'区县初审',time:'09:10',st:'done'},{name:'市级审批',time:'10:05',st:'cur'},{name:'省级审批',time:'—',st:'wait'},{name:'审批回传',time:'—',st:'wait'},{name:'区县执行',time:'—',st:'wait'}]},
+    {id:'SF-20260922-002',type:'适飞空域',unit:'高邮物流公司',area:'送桥镇',airspace:'送桥-邵伯湖',height:'100m',duration:'1.5h',purpose:'物流配送',opName:'李伟',opLicense:'UA-2026-0015',opPhone:'138****5678',acId:'UAV-048',acModel:'大疆M30T',time:'09:22',status:'审批中',
+      steps:[{name:'区县受理',time:'09:00',st:'done'},{name:'区县初审',time:'09:30',st:'cur'},{name:'市级审批',time:'—',st:'wait'},{name:'省级审批',time:'—',st:'wait'},{name:'审批回传',time:'—',st:'wait'},{name:'区县执行',time:'—',st:'wait'}]},
+    {id:'NF-20260922-003',type:'非适飞空域',unit:'高邮供电局',area:'界首镇',airspace:'界首-临泽',height:'120m',duration:'2.5h',purpose:'电力巡检',opName:'赵磊',opLicense:'UA-2026-0033',opPhone:'139****7890',acId:'UAV-052',acModel:'亿航EH216',time:'08:30',status:'审批中',
+      steps:[{name:'区县受理',time:'07:50',st:'done'},{name:'区县初审',time:'08:10',st:'done'},{name:'市级审批',time:'08:30',st:'done'},{name:'省级审批',time:'10:00',st:'cur'},{name:'审批回传',time:'—',st:'wait'},{name:'区县执行',time:'—',st:'wait'}]},
+    {id:'SF-20260922-003',type:'适飞空域',unit:'高邮航拍队',area:'三垛镇',airspace:'三垛-高邮镇',height:'150m',duration:'1h',purpose:'航拍测绘',opName:'孙超',opLicense:'UA-2026-0041',opPhone:'139****3456',acId:'UAV-061',acModel:'大疆M300',time:'10:00',status:'已通过',
+      steps:[{name:'区县受理',time:'09:20',st:'done'},{name:'区县初审',time:'09:40',st:'done'},{name:'市级审批',time:'10:00',st:'done'},{name:'省级审批',time:'10:30',st:'done'},{name:'审批回传',time:'10:45',st:'done'},{name:'区县执行',time:'11:00',st:'done'}]},
+    {id:'LS-20260922-001',type:'临时空域',unit:'高邮物流公司',area:'高邮市区',airspace:'高邮市区-高邮镇',height:'120m',duration:'2h',purpose:'物流配送',opName:'李伟',opLicense:'UA-2026-0015',opPhone:'138****5678',acId:'UAV-048',acModel:'大疆M30T',time:'14:00',status:'待受理',
+      steps:[{name:'区县受理',time:'14:05',st:'cur'},{name:'区县初审',time:'—',st:'wait'},{name:'市级审批',time:'—',st:'wait'},{name:'省级审批',time:'—',st:'wait'},{name:'审批回传',time:'—',st:'wait'},{name:'区县执行',time:'—',st:'wait'}]},
+    {id:'NF-20260922-005',type:'非适飞空域',unit:'高邮海事局',area:'高邮镇',airspace:'高邮镇-运河',height:'80m',duration:'1.5h',purpose:'海事巡查',opName:'周强',opLicense:'UA-2026-0045',opPhone:'137****2345',acId:'UAV-065',acModel:'极飞V40',time:'10:15',status:'已通过',
+      steps:[{name:'区县受理',time:'09:30',st:'done'},{name:'区县初审',time:'09:50',st:'done'},{name:'市级审批',time:'10:15',st:'done'},{name:'省级审批',time:'10:40',st:'done'},{name:'审批回传',time:'10:55',st:'done'},{name:'区县执行',time:'11:20',st:'done'}]}
+  ],
+  aircraft:[
+    {id:'AC-021',acId:'UAV-021',model:'大疆M300',unit:'高邮市自规局',serial:'DJI-M300-08821',airworthy:'适航',expire:'2026-12-01',regTime:'2026-03-12',weight:'3.5kg',maxHeight:'500m',status:'适航',steps:[]},
+    {id:'AC-048',acId:'UAV-048',model:'大疆M30T',unit:'高邮物流公司',serial:'DJI-M30T-12048',airworthy:'适航',expire:'2026-09-30',regTime:'2026-04-18',weight:'2.8kg',maxHeight:'450m',status:'适航',steps:[]},
+    {id:'AC-061',acId:'UAV-061',model:'大疆M300',unit:'高邮航拍队',serial:'DJI-M300-09061',airworthy:'年检逾期',expire:'2026-06-30',regTime:'2026-06-15',weight:'3.5kg',maxHeight:'500m',status:'年检逾期',steps:[]},
+    {id:'AC-065',acId:'UAV-065',model:'极飞V40',unit:'高邮应急局',serial:'XA-V40-0065',airworthy:'适航',expire:'2027-01-10',regTime:'2026-07-01',weight:'2.2kg',maxHeight:'300m',status:'适航',steps:[]},
+    {id:'AC-070',acId:'UAV-070',model:'大疆M300',unit:'高邮农服中心',serial:'DJI-M300-10070',airworthy:'待检',expire:'2026-11-05',regTime:'2026-08-08',weight:'3.5kg',maxHeight:'500m',status:'待检',steps:[]}
+  ],
+  pilot:[
+    {id:'QT-20260922-001',name:'刘洋',idCard:'3210****1234',phone:'138****1111',unit:'高邮市自规局',license:'CAAC-III',licNo:'UA-2026-0099',verifyType:'首次取证',time:'09:00',status:'待初审',
+      steps:[{name:'提交申请',time:'09:00',st:'done'},{name:'资质初审',time:'—',st:'cur'},{name:'证件核验',time:'—',st:'wait'},{name:'审核通过',time:'—',st:'wait'}]},
+    {id:'QT-20260922-002',name:'陈晨',idCard:'3210****5678',phone:'138****2222',unit:'高邮水利局',license:'CAAC-IV',licNo:'UA-2026-0102',verifyType:'执照复审',time:'09:30',status:'核验中',
+      steps:[{name:'提交申请',time:'09:30',st:'done'},{name:'资质初审',time:'10:00',st:'done'},{name:'证件核验',time:'10:30',st:'cur'},{name:'审核通过',time:'—',st:'wait'}]},
+    {id:'QT-20260922-003',name:'周强',idCard:'3210****9012',phone:'137****2345',unit:'高邮应急局',license:'CAAC-V',licNo:'UA-2026-0045',verifyType:'增驾机型',time:'10:00',status:'已通过',
+      steps:[{name:'提交申请',time:'10:00',st:'done'},{name:'资质初审',time:'10:20',st:'done'},{name:'证件核验',time:'10:45',st:'done'},{name:'审核通过',time:'11:00',st:'done'}]},
+    {id:'QT-20260922-004',name:'吴迪',idCard:'3210****3456',phone:'137****6789',unit:'高邮文旅局',license:'CAAC-III',licNo:'UA-2026-0052',verifyType:'首次申请',time:'10:20',status:'待初审',
+      steps:[{name:'提交申请',time:'10:20',st:'done'},{name:'资质初审',time:'—',st:'cur'},{name:'证件核验',time:'—',st:'wait'},{name:'审核通过',time:'—',st:'wait'}]}
+  ],
+  user:[
+    {id:'UR-001',name:'郑华',phone:'139****7890',unit:'高邮农服中心',role:'操作员',area:'高邮市区',time:'09:10',status:'待审核',
+      steps:[{name:'提交注册',time:'09:10',st:'done'},{name:'管理员审核',time:'—',st:'cur'},{name:'账号激活',time:'—',st:'wait'}]},
+    {id:'UR-002',name:'冯军',phone:'137****3456',unit:'高邮海事局',role:'审批员',area:'市级',time:'09:45',status:'已通过',
+      steps:[{name:'提交注册',time:'09:45',st:'done'},{name:'管理员审核',time:'10:00',st:'done'},{name:'账号激活',time:'10:05',st:'done'}]},
+    {id:'UR-003',name:'周敏',phone:'137****0222',unit:'高邮文旅局',role:'操作员',area:'高邮镇',time:'10:30',status:'待审核',
+      steps:[{name:'提交注册',time:'10:30',st:'done'},{name:'管理员审核',time:'—',st:'cur'},{name:'账号激活',time:'—',st:'wait'}]}
+  ]
+};
+var APC_NOTICES=[
+  {tag:'red',text:'关于高邮市区9月25日临时管制空域的通告',date:'2026-09-24'},
+  {tag:'blue',text:'县市省三级审批流程已上线，请通过PC端提交申请',date:'2026-09-23'},
+  {tag:'green',text:'低空智控平台正式运行',date:'2026-09-22'},
+  {tag:'blue',text:'关于开展2026年度飞行器年检工作的通知',date:'2026-09-20'}
+];
+var APC_ST={};
+APC_ST['审批中']='stb-orange';APC_ST['已通过']='stb-green';APC_ST['待受理']='stb-blue';APC_ST['待审核']='stb-orange';APC_ST['核验中']='stb-orange';APC_ST['待初审']='stb-orange';APC_ST['适航']='stb-green';APC_ST['待检']='stb-orange';APC_ST['年检逾期']='stb-red';
+var APC_TABS={airspace:['all','审批中','已通过','待受理'],aircraft:['all','适航','待检','年检逾期'],pilot:['all','待初审','核验中','已通过'],user:['all','待审核','已通过']};
+var APC_COLS={
+  airspace:['申请编号','申请类型','申请单位','申请空域','飞行高度','任务用途','状态','操作'],
+  aircraft:['登记编号','飞行器编号','机型','所属单位','年检到期','状态','操作'],
+  pilot:['申请编号','姓名','所属单位','证件类型','核验类型','状态','操作'],
+  user:['注册编号','用户名','手机号','所属单位','申请角色','状态','操作']
+};
+var apcFilter={airspace:'all',aircraft:'all',pilot:'all',user:'all'};
+
+function apcLTab(t,el){
+  el.parentElement.querySelectorAll('div').forEach(function(d){d.classList.remove('active')});
+  el.classList.add('active');
+  document.getElementById('apcLoginForm').style.display=t==='login'?'block':'none';
+  document.getElementById('apcRegForm').style.display=t==='reg'?'block':'none';
 }
-function buildApplyReg(){
-  var isEnt=applyTab==='enterprise';
-  var title=document.getElementById('applyRegTitle');
-  var btn=document.getElementById('applyRegBtn');
-  if(title)title.textContent=isEnt?'企业用户注册':'个人用户注册';
-  if(btn)btn.textContent=isEnt?'注册':'注册';
-  var body=document.getElementById('applyRegBody');
-  if(!body)return;
-  var h='<div class="apm-form">';
-  if(isEnt){
-    h+='<div class="ff"><label>企业名称</label><input type="text" placeholder="请输入企业全称"></div>';
-    h+='<div class="ff"><label>统一社会信用代码</label><input type="text" placeholder="18位信用代码"></div>';
-    h+='<div class="ff"><label>营业执照编号</label><input type="text" placeholder="营业执照编号"></div>';
-    h+='<div class="ff"><label>法定代表人</label><input type="text" placeholder="法人姓名"></div>';
-    h+='<div class="ff"><label>联系人</label><input type="text" placeholder="企业联系人"></div>';
-    h+='<div class="ff"><label>联系电话</label><input type="tel" placeholder="11位手机号" maxlength="11"></div>';
-    h+='<div class="ff"><label>密码</label><input type="password" placeholder="8-20位密码"></div>';
-    h+='<div class="ff"><label>所属单位</label><select><option value="">请选择单位</option><option>高邮市自规局</option><option>高邮水利局</option><option>高邮供电局</option><option>高邮物流公司</option><option>高邮应急局</option><option>高邮文旅局</option><option>高邮农服中心</option><option>高邮海事局</option></select></div>';
+function apcRegType(t,el){
+  el.parentElement.querySelectorAll('div').forEach(function(d){d.classList.remove('active')});
+  el.classList.add('active');
+  document.getElementById('apcRegEnt').style.display=t==='ent'?'block':'none';
+  document.getElementById('apcRegPerson').style.display=t==='person'?'block':'none';
+}
+var apcCodeCount=0;
+function apcSendCode(btn){
+  if(apcCodeCount>0)return;
+  apcCodeCount=60;btn.disabled=true;btn.style.opacity=.5;
+  var timer=setInterval(function(){apcCodeCount--;btn.textContent=apcCodeCount+'s';if(apcCodeCount<=0){clearInterval(timer);btn.disabled=false;btn.style.opacity='1';btn.textContent='获取验证码'}},1000);
+  apcToast('验证码已发送');
+}
+function apcToast(msg){
+  var tips=document.createElement('div');
+  tips.style.cssText='position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:#0a2a5e;color:#fff;padding:16px 30px;border-radius:10px;z-index:999;font-size:14px;box-shadow:0 6px 24px rgba(0,0,0,.4)';
+  tips.textContent=msg;
+  document.body.appendChild(tips);
+  setTimeout(function(){tips.remove()},1500);
+}
+function apcDoLogin(){
+  apcToast('登录成功');
+  setTimeout(function(){
+    var phone=document.getElementById('apc_lg_phone').value;
+    document.getElementById('apcUserName').textContent=(phone||'张明')+' · 高邮市自规局';
+    document.getElementById('apcLoginView').style.display='none';
+    document.getElementById('apcMainView').style.display='block';
+    apcNav('home');
+  },600);
+}
+function apcDoReg(){
+  apcToast('注册成功，请登录');
+  setTimeout(function(){
+    document.querySelector('#page-apply .apc-ltab div').classList.add('active');
+    document.querySelectorAll('#page-apply .apc-ltab div')[1].classList.remove('active');
+    document.getElementById('apcLoginForm').style.display='block';
+    document.getElementById('apcRegForm').style.display='none';
+  },1000);
+}
+function apcLogout(){
+  document.getElementById('apcMainView').style.display='none';
+  document.getElementById('apcLoginView').style.display='flex';
+}
+function apcNav(view,el){
+  var side=document.getElementById('apcSideNav');
+  side.querySelectorAll('.apc-nav-item').forEach(function(n){n.classList.remove('active')});
+  var target=el||side.querySelector('[data-v="'+view+'"]');
+  if(target)target.classList.add('active');
+  var c=document.getElementById('apcContent');
+  if(view==='home'){c.innerHTML=apcHomeHtml();return}
+  c.innerHTML=apcListHtml(view);
+}
+function apcHomeHtml(){
+  var h='<div class="apc-stats">';
+  h+='<div class="apc-stat" onclick="apcNav(\'airspace\')"><div class="sv">'+APC_DATA.airspace.length+'</div><div class="sl">空域申请</div></div>';
+  h+='<div class="apc-stat" onclick="apcNav(\'aircraft\')"><div class="sv">'+APC_DATA.aircraft.length+'</div><div class="sl">飞行器</div></div>';
+  h+='<div class="apc-stat" onclick="apcNav(\'pilot\')"><div class="sv">'+APC_DATA.pilot.length+'</div><div class="sl">飞手注册</div></div>';
+  h+='</div>';
+  h+='<div class="apc-grid4">';
+  h+='<div class="apc-func" onclick="apcNav(\'airspace\')"><div class="fv">📋</div><div class="fl">空域申请</div></div>';
+  h+='<div class="apc-func" onclick="apcNav(\'aircraft\')"><div class="fv">🚁</div><div class="fl">飞行器管理</div></div>';
+  h+='<div class="apc-func" onclick="apcNav(\'pilot\')"><div class="fv">👤</div><div class="fl">飞手注册</div></div>';
+  h+='<div class="apc-func" onclick="apcNav(\'user\')"><div class="fv">🔑</div><div class="fl">用户注册</div></div>';
+  h+='</div>';
+  h+='<div class="apc-notice"><div style="font-size:15px;font-weight:700;color:#0a2c55;margin-bottom:6px;display:flex;align-items:center;gap:8px"><span class="m-dot"></span>公共信息</div>';
+  APC_NOTICES.forEach(function(n){
+    h+='<div class="apc-notice-item"><span class="apc-tag '+n.tag+'">'+({'red':'紧急','blue':'通知','green':'公告'}[n.tag]||'通知')+'</span><div class="nn-text">'+n.text+'<div class="nn-date">'+n.date+'</div></div></div>';
+  });
+  h+='</div>';
+  h+='<div class="apc-list"><div class="apc-lhead"><div class="lh-title"><span class="m-dot"></span>近期申请</div></div>';
+  h+='<div class="m-table-wrap"><table class="m-table"><thead><tr><th>申请编号</th><th>申请类型</th><th>申请单位</th><th>航线/空域</th><th>审批进度</th><th>状态</th><th>操作</th></tr></thead><tbody>';
+  APC_DATA.airspace.slice(0,3).forEach(function(r){
+    var done=0;r.steps.forEach(function(s){if(s.st==='done')done++});
+    var pct=Math.round(done/r.steps.length*100);
+    var sc=APC_ST[r.status]||'stb-gray';
+    h+='<tr><td>'+r.id+'</td><td>'+r.type+'</td><td>'+r.unit+'</td><td>'+r.airspace+'</td><td><div style="display:flex;align-items:center;gap:8px"><div class="apc-prog-bar" style="flex:1"><div class="apc-prog-fill" style="width:'+pct+'%"></div></div><span style="font-size:11px;color:#8aa0bb;white-space:nowrap">'+done+'/'+r.steps.length+'</span></div></td><td><span class="st-badge '+sc+'">'+r.status+'</span></td><td><span class="btn btn-sm" onclick="apcOpenDetail(\'airspace\',\''+r.id+'\')">详情</span></td></tr>';
+  });
+  h+='</tbody></table></div></div>';
+  return h;
+}
+function apcListHtml(type){
+  var tabs=APC_TABS[type];
+  var h='<div class="apc-list"><div class="apc-lhead"><div class="lh-title"><span class="m-dot"></span>'+({'airspace':'空域申请','aircraft':'飞行器管理','pilot':'飞手注册','user':'用户注册'}[type])+'</div>';
+  h+='<span class="btn btn-sm btn-primary" onclick="apcOpenForm(\''+type+'\')">+ 新增</span></div>';
+  h+='<div class="apc-tabs">';
+  tabs.forEach(function(t,i){
+    h+='<span'+(i===0?' class="active"':'')+' onclick="apcListFilter(\''+type+'\',\''+t+'\',this)">'+(t==='all'?'全部':t)+'</span>';
+  });
+  h+='</div><div id="apcListBody"></div></div>';
+  return h;
+}
+function apcListFilter(type,f,el){
+  apcFilter[type]=f;
+  el.parentElement.querySelectorAll('span').forEach(function(s){s.classList.remove('active')});
+  el.classList.add('active');
+  apcRenderRows(type);
+}
+function apcRenderRows(type){
+  var f=apcFilter[type];
+  var data=f==='all'?APC_DATA[type]:APC_DATA[type].filter(function(r){return r.status===f});
+  var cols=APC_COLS[type];
+  var h='<div class="m-table-wrap"><table class="m-table"><thead><tr>';
+  cols.forEach(function(c){h+='<th>'+c+'</th>'});
+  h+='</tr></thead><tbody>';
+  if(data.length===0){h+='<tr><td colspan="'+cols.length+'" style="text-align:center;padding:36px;color:#8aa0bb">暂无数据</td></tr>'}
+  data.forEach(function(r){
+    h+='<tr>';
+    if(type==='airspace'){h+='<td>'+r.id+'</td><td>'+r.type+'</td><td>'+r.unit+'</td><td>'+r.airspace+'</td><td>'+r.height+'</td><td>'+r.purpose+'</td><td><span class="st-badge '+(APC_ST[r.status]||'stb-gray')+'">'+r.status+'</span></td>'}
+    else if(type==='aircraft'){h+='<td>'+r.id+'</td><td>'+r.acId+'</td><td>'+r.model+'</td><td>'+r.unit+'</td><td>'+r.expire+'</td><td><span class="st-badge '+(APC_ST[r.status]||'stb-gray')+'">'+r.status+'</span></td>'}
+    else if(type==='pilot'){h+='<td>'+r.id+'</td><td>'+r.name+'</td><td>'+r.unit+'</td><td>'+r.license+'</td><td>'+r.verifyType+'</td><td><span class="st-badge '+(APC_ST[r.status]||'stb-gray')+'">'+r.status+'</span></td>'}
+    else if(type==='user'){h+='<td>'+r.id+'</td><td>'+r.name+'</td><td>'+r.phone+'</td><td>'+r.unit+'</td><td>'+r.role+'</td><td><span class="st-badge '+(APC_ST[r.status]||'stb-gray')+'">'+r.status+'</span></td>'}
+    h+='<td><span class="btn btn-sm" onclick="apcOpenDetail(\''+type+'\',\''+r.id+'\')">详情</span></td></tr>';
+  });
+  h+='</tbody></table></div>';
+  document.getElementById('apcListBody').innerHTML=h;
+}
+function apcStepsHtml(steps){
+  var h='<div class="ap-progress">';
+  steps.forEach(function(s,i){
+    if(i>0)h+='<div class="ap-link '+(s.st==='wait'?'':'done')+'"></div>';
+    var txt=s.st==='done'?'已完成':(s.st==='cur'?'进行中':'待办理');
+    h+='<div class="ap-node '+s.st+'"><div class="ap-dot"></div><div class="ap-name">'+s.name+'</div><div class="ap-time">'+s.time+'</div><div class="ap-state"><span class="ap-st '+s.st+'">'+txt+'</span></div></div>';
+  });
+  return h+'</div>';
+}
+function apcOpenDetail(type,id){
+  var r=APC_DATA[type].find(function(x){return x.id===id});if(!r)return;
+  var titles={airspace:'空域申请详情',aircraft:'飞行器详情',pilot:'飞手注册详情',user:'用户注册详情'};
+  document.getElementById('apmTitle').textContent=titles[type]||'详情';
+  var secs=[];
+  if(type==='airspace'){
+    secs.push({title:'申请信息',items:[['申请编号',r.id],['申请类型',r.type],['申请单位',r.unit],['所属片区',r.area],['申请空域',r.airspace],['飞行高度',r.height],['飞行时长',r.duration],['任务用途',r.purpose],['申请时间',r.time],['当前状态',r.status]]});
+    secs.push({title:'操作员信息',items:[['操作员姓名',r.opName],['证件编号',r.opLicense],['联系电话',r.opPhone]]});
+    secs.push({title:'飞行器信息',items:[['飞行器编号',r.acId],['机型',r.acModel],['适航状态','适航']]});
+  }else if(type==='aircraft'){
+    secs.push({title:'飞行器信息',items:[['登记编号',r.id],['飞行器编号',r.acId],['机型',r.model],['序列号',r.serial],['所属单位',r.unit],['登记时间',r.regTime]]});
+    secs.push({title:'适航与年检',items:[['适航状态',r.airworthy],['年检到期',r.expire]]});
+    secs.push({title:'技术参数',items:[['起飞重量',r.weight],['最大高度',r.maxHeight]]});
+  }else if(type==='pilot'){
+    secs.push({title:'基本信息',items:[['申请编号',r.id],['姓名',r.name],['身份证号',r.idCard],['联系电话',r.phone],['所属单位',r.unit]]});
+    secs.push({title:'资质信息',items:[['证件类型',r.license],['证件编号',r.licNo],['核验类型',r.verifyType],['提交时间',r.time]]});
   }else{
-    h+='<div class="ff"><label>姓名</label><input type="text" placeholder="请输入真实姓名"></div>';
-    h+='<div class="ff"><label>身份证号</label><input type="text" placeholder="18位身份证号"></div>';
-    h+='<div class="ff"><label>联系电话</label><input type="tel" placeholder="11位手机号" maxlength="11"></div>';
-    h+='<div class="ff"><label>验证码</label><div style="display:flex;gap:8px"><input type="text" placeholder="6位验证码" maxlength="6" style="flex:1"><button onclick="sendApplyCode(this)" style="white-space:nowrap;padding:0 14px;border:1px solid #0082D9;border-radius:8px;background:transparent;color:#0082D9;font-size:12px;cursor:pointer">获取验证码</button></div></div>';
-    h+='<div class="ff"><label>密码</label><input type="password" placeholder="8-20位密码"></div>';
-    h+='<div class="ff"><label>所属单位</label><select><option value="">请选择单位</option><option>高邮市自规局</option><option>高邮水利局</option><option>高邮供电局</option><option>高邮物流公司</option><option>高邮航拍队</option><option>高邮应急局</option><option>高邮文旅局</option><option>高邮农服中心</option><option>高邮海事局</option></select></div>';
-    h+='<div class="ff"><label>操控员执照号</label><input type="text" placeholder="如：UA-2026-0012"></div>';
+    secs.push({title:'注册信息',items:[['注册编号',r.id],['用户名',r.name],['手机号',r.phone],['所属单位',r.unit],['申请角色',r.role],['所属片区',r.area],['提交时间',r.time]]});
   }
-  h+='</div>';
-  body.innerHTML=h;
+  var body='';
+  secs.forEach(function(sec){
+    body+='<div class="apm-sec">'+sec.title+'</div><div class="detail-grid">';
+    sec.items.forEach(function(it){body+='<div class="dg"><span class="dg-label">'+it[0]+'</span><span class="dg-val">'+it[1]+'</span></div>'});
+    body+='</div>';
+  });
+  if(r.steps.length>0){
+    body+='<div class="apm-sec">审批进度</div>'+apcStepsHtml(r.steps);
+  }
+  document.getElementById('apmBody').innerHTML=body;
+  document.getElementById('apmFoot').innerHTML='<span class="btn" onclick="closeApm()">关闭</span>';
+  document.getElementById('apmMask').classList.add('show');
 }
-var applyCodeCount=0;
-function sendApplyCode(btn){
-  if(applyCodeCount>0)return;
-  applyCodeCount=60;btn.disabled=true;btn.style.opacity=.5;
-  var timer=setInterval(function(){applyCodeCount--;btn.textContent=applyCodeCount+'s';if(applyCodeCount<=0){clearInterval(timer);btn.disabled=false;btn.style.opacity='1';btn.textContent='获取验证码'}},1000);
-}
-function submitApplyReg(){
-  var tips=document.createElement('div');
-  tips.style.cssText='position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:#1f9d55;color:#fff;padding:16px 32px;border-radius:10px;z-index:999;font-size:14px;box-shadow:0 6px 24px rgba(0,0,0,.3)';
-  tips.textContent='注册成功，请登录';
-  document.body.appendChild(tips);
-  setTimeout(function(){tips.remove();},1500);
-}
-function buildApplyForm(){
-  var body=document.getElementById('applyFormBody');
-  if(!body)return;
+var APC_FORMS={
+  airspace:{title:'空域飞行申请',rows:[
+    [{l:'申请类型',t:'select',o:['适飞空域','非适飞空域','临时空域']},{l:'申请单位',t:'select',o:['高邮市自规局','高邮水利局','高邮供电局','高邮物流公司','高邮应急局','高邮文旅局','高邮农服中心','高邮海事局']}],
+    [{l:'所属片区',t:'select',o:['高邮市区','送桥镇','三垛镇','高邮镇','界首镇','临泽镇']},{l:'申请空域',t:'text',p:'如：高邮-送桥'}],
+    [{l:'飞行高度',t:'text',p:'如：120m'},{l:'飞行时长',t:'text',p:'如：2.5h'}],
+    [{l:'任务用途',t:'select',o:['自然资源巡查','水利巡查','电力巡检','农业植保','物流配送','航拍测绘','应急巡查','文旅宣传','环境监测','城管巡查']}],
+    [{l:'操作员姓名',t:'text',p:'如：张明'},{l:'证件编号',t:'text',p:'如：UA-2026-0012'}],
+    [{l:'飞行器编号',t:'text',p:'如：UAV-021'},{l:'机型',t:'select',o:['大疆 M300','大疆 M30T','极飞 V40','亿航 EH216','其他机型']}]
+  ]},
+  aircraft:{title:'飞行器注册',rows:[
+    [{l:'飞行器编号',t:'text',p:'如：UAV-071'},{l:'机型',t:'select',o:['大疆 M300','大疆 M30T','极飞 V40','亿航 EH216','其他机型']}],
+    [{l:'序列号',t:'text',p:'设备序列号'},{l:'所属单位',t:'select',o:['高邮市自规局','高邮水利局','高邮供电局','高邮物流公司','高邮应急局','高邮文旅局','高邮农服中心','高邮海事局']}],
+    [{l:'适航状态',t:'select',o:['适航','待检','不适航']},{l:'年检到期',t:'date'}],
+    [{l:'起飞重量',t:'text',p:'如：3.5kg'},{l:'最大高度',t:'text',p:'如：500m'}]
+  ]},
+  pilot:{title:'飞手注册',rows:[
+    [{l:'姓名',t:'text',p:'真实姓名'},{l:'身份证号',t:'text',p:'18位身份证号'}],
+    [{l:'联系电话',t:'tel',p:'手机号码'},{l:'所属单位',t:'select',o:['高邮市自规局','高邮水利局','高邮供电局','高邮物流公司','高邮航拍队','高邮应急局','高邮文旅局','高邮农服中心','高邮海事局']}],
+    [{l:'证件类型',t:'select',o:['CAAC-III','CAAC-IV','CAAC-V']},{l:'证件编号',t:'text',p:'如：UA-2026-0012'}],
+    [{l:'核验类型',t:'select',o:['首次取证','执照复审','增驾机型','首次申请']}]
+  ]},
+  user:{title:'用户注册',rows:[
+    [{l:'用户名',t:'text',p:'4-20位字符'},{l:'手机号',t:'tel',p:'11位手机号'}],
+    [{l:'密码',t:'password',p:'8-20位'},{l:'确认密码',t:'password',p:'再次输入'}],
+    [{l:'所属单位',t:'select',o:['高邮市指挥中心','高邮市自规局','高邮水利局','高邮供电局','高邮物流公司','高邮航拍队','高邮应急局','高邮文旅局','高邮农服中心','高邮海事局','高邮环保局']}],
+    [{l:'申请角色',t:'select',o:['管理员','审批员','操作员']},{l:'所属片区',t:'select',o:['高邮市区','送桥镇','三垛镇','高邮镇','界首镇','临泽镇','市级','省级']}]
+  ]}
+};
+function apcOpenForm(type){
+  var f=APC_FORMS[type];if(!f)return;
+  document.getElementById('apmTitle').textContent=f.title;
   var h='<div class="apm-form">';
-  // 空域申请表单（按小程序结构）
-  h+='<div class="afc-sec">申请信息</div>';
-  h+='<div class="ff"><label>申请类型</label><select><option>适飞空域</option><option>非适飞空域</option><option>临时空域</option></select></div>';
-  h+='<div class="ff"><label>申请单位</label><select><option>高邮市自规局</option><option>高邮水利局</option><option>高邮供电局</option><option>高邮物流公司</option><option>高邮应急局</option><option>高邮文旅局</option><option>高邮农服中心</option><option>高邮海事局</option></select></div>';
-  h+='<div class="ff"><label>所属片区</label><select><option>高邮市区</option><option>送桥镇</option><option>三垛镇</option><option>高邮镇</option><option>界首镇</option><option>临泽镇</option></select></div>';
-  h+='<div class="ff"><label>申请空域</label><input type="text" placeholder="如：高邮-送桥"></div>';
-  h+='<div class="ff"><label>飞行高度</label><input type="text" placeholder="如：120m"></div>';
-  h+='<div class="ff"><label>飞行时长</label><input type="text" placeholder="如：2.5h"></div>';
-  h+='<div class="ff"><label>任务用途</label><select><option>自然资源巡查</option><option>水利巡查</option><option>电力巡检</option><option>农业植保</option><option>物流配送</option><option>航拍测绘</option><option>应急巡查</option><option>文旅宣传</option><option>环境监测</option><option>城管巡查</option></select></div>';
-  h+='<div class="afc-sec">操作员信息</div>';
-  h+='<div class="ff"><label>操作员姓名</label><input type="text" placeholder="如：张明"></div>';
-  h+='<div class="ff"><label>证件编号</label><input type="text" placeholder="如：UA-2026-0012"></div>';
-  h+='<div class="ff"><label>联系电话</label><input type="tel" placeholder="11位手机号" maxlength="11"></div>';
-  h+='<div class="afc-sec">飞行器信息</div>';
-  h+='<div class="ff"><label>飞行器编号</label><input type="text" placeholder="如：UAV-021"></div>';
-  h+='<div class="ff"><label>机型</label><select><option>大疆 M300</option><option>大疆 M30T</option><option>极飞 V40</option><option>亿航 EH216</option><option>其他机型</option></select></div>';
+  f.rows.forEach(function(row){
+    row.forEach(function(fd){
+      h+='<div class="ff"><label>'+fd.l+' <span style="color:#d63031">*</span></label>';
+      if(fd.t==='select'){h+='<select>';fd.o.forEach(function(o){h+='<option>'+o+'</option>'});h+='</select>'}
+      else{h+='<input type="'+fd.t+'" placeholder="'+(fd.p||'')+'">'}
+      h+='</div>';
+    });
+  });
   h+='</div>';
-  body.innerHTML=h;
+  document.getElementById('apmBody').innerHTML=h;
+  document.getElementById('apmFoot').innerHTML='<span class="btn" onclick="closeApm()">取消</span><span class="btn btn-primary" onclick="apcSubmitForm(\''+type+'\')">提交申请</span>';
+  document.getElementById('apmMask').classList.add('show');
 }
-function submitApplyForm(){
-  var tips=document.createElement('div');
-  tips.style.cssText='position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:#1f9d55;color:#fff;padding:16px 32px;border-radius:10px;z-index:999;font-size:14px;box-shadow:0 6px 24px rgba(0,0,0,.3)';
-  tips.textContent='申请已提交，请等待审核';
-  document.body.appendChild(tips);
-  setTimeout(function(){tips.remove();},1500);
+function apcSubmitForm(type){
+  apcToast('提交成功，等待审核');
+  closeApm();
 }
 
 </script>
