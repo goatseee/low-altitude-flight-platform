@@ -791,6 +791,13 @@ table.m-table{width:100%;border-collapse:collapse;font-size:13px;min-width:600px
               </div>
             </div>
             <div class="fn-group open">
+              <div class="fn-group-header" onclick="toggleFnGroup(this)"><span class="fn-gicon" style="background:#1abc9c">企</span>企业管理<span class="fn-garrow">▶</span></div>
+              <div class="fn-items">
+                <div class="fn-item" onclick="selectMgmt(this,'entAccount')">企业账号管理<span class="fn-badge hot">3</span></div>
+                <div class="fn-item" onclick="selectMgmt(this,'entQual')">资质信息管理<span class="fn-badge">2</span></div>
+              </div>
+            </div>
+            <div class="fn-group open">
               <div class="fn-group-header" onclick="toggleFnGroup(this)"><span class="fn-gicon" style="background:#2ecc71">操</span>操作员管理<span class="fn-garrow">▶</span></div>
               <div class="fn-items">
                 <div class="fn-item" onclick="selectMgmt(this,'operator')">操作员信息台账</div>
@@ -1540,6 +1547,22 @@ var mgmtData={
     ['BT-0913','态势+告警','09-13 20:00',ST.green+'已上报'+ST.e,'<span class="btn btn-sm" onclick="openDetail(\'report\',1)">详情</span>'],
     ['BT-0914','全量数据','09-14 20:00',ST.yellow+'待上报'+ST.e,'<span class="btn btn-sm btn-primary" onclick="openApprove(\'report\',2)">上报</span>'],
     ['BT-0915','飞行任务+审批','09-15 20:00',ST.green+'已上报'+ST.e,'<span class="btn btn-sm" onclick="openDetail(\'report\',3)">详情</span>']
+  ]},
+  entAccount:{name:'企业账号管理',cols:['账号编号','账号类型','注册主体','联系人','手机号','所属单位','注册时间','状态','操作'],rows:[
+    ['EN-20260920-001','企业','高邮市智飞科技有限公司','王建国','138****1111','高邮市高新区','2026-09-20',ST.yellow+'待审核'+ST.e,'<span class="btn btn-sm btn-primary" onclick="openApprove(\'entAccount\',0)">审核</span> <span class="btn btn-sm" onclick="openDetail(\'entAccount\',0)">详情</span>'],
+    ['EN-20260921-002','企业','高邮市云翔测绘有限公司','李思思','139****2222','高邮市高新区','2026-09-21',ST.green+'已通过'+ST.e,'<span class="btn btn-sm" onclick="openDetail(\'entAccount\',1)">详情</span>'],
+    ['EN-20260922-003','个人','张明','张明','138****1234','高邮市自规局','2026-09-22',ST.green+'已通过'+ST.e,'<span class="btn btn-sm" onclick="openDetail(\'entAccount\',2)">详情</span>'],
+    ['EN-20260923-004','个人','刘洋','刘洋','138****1111','高邮市自规局','2026-09-23',ST.yellow+'待审核'+ST.e,'<span class="btn btn-sm btn-primary" onclick="openApprove(\'entAccount\',3)">审核</span> <span class="btn btn-sm" onclick="openDetail(\'entAccount\',3)">详情</span>'],
+    ['EN-20260924-005','企业','高邮送桥电力工程有限公司','陈工','137****3333','高邮供电局','2026-09-24',ST.red+'已驳回'+ST.e,'<span class="btn btn-sm" onclick="openDetail(\'entAccount\',4)">详情</span>'],
+    ['EN-20260925-006','个人','周强','周强','137****2345','高邮应急局','2026-09-25',ST.yellow+'待审核'+ST.e,'<span class="btn btn-sm btn-primary" onclick="openApprove(\'entAccount\',5)">审核</span> <span class="btn btn-sm" onclick="openDetail(\'entAccount\',5)">详情</span>']
+  ]},
+  entQual:{name:'资质信息管理',cols:['资质编号','注册主体','账号类型','资质名称','证照编号','有效期至','资质状态','操作'],rows:[
+    ['ZZ-20260920-001','高邮市智飞科技有限公司','企业','营业执照','91321084MA1XXXXX0A','2028-09-20',ST.yellow+'待核验'+ST.e,'<span class="btn btn-sm btn-primary" onclick="openApprove(\'entQual\',0)">核验</span> <span class="btn btn-sm" onclick="openDetail(\'entQual\',0)">详情</span>'],
+    ['ZZ-20260921-002','高邮市云翔测绘有限公司','企业','营业执照','91321084MA1YYYYY1B','2027-06-30',ST.green+'有效'+ST.e,'<span class="btn btn-sm" onclick="openDetail(\'entQual\',1)">详情</span>'],
+    ['ZZ-20260922-003','高邮市云翔测绘有限公司','企业','民用无人驾驶航空器运营合格证','UM-2026-0088','2027-09-21',ST.green+'有效'+ST.e,'<span class="btn btn-sm" onclick="openDetail(\'entQual\',2)">详情</span>'],
+    ['ZZ-20260922-004','张明','个人','操控员执照','UA-2026-0012','2027-03-12',ST.green+'有效'+ST.e,'<span class="btn btn-sm" onclick="openDetail(\'entQual\',3)">详情</span>'],
+    ['ZZ-20260923-005','刘洋','个人','操控员执照','UA-2026-0099','2026-12-31',ST.yellow+'待核验'+ST.e,'<span class="btn btn-sm btn-primary" onclick="openApprove(\'entQual\',4)">核验</span> <span class="btn btn-sm" onclick="openDetail(\'entQual\',4)">详情</span>'],
+    ['ZZ-20260924-006','高邮送桥电力工程有限公司','企业','营业执照','91321084MA1ZZZZZ2C','2026-08-30',ST.red+'过期'+ST.e,'<span class="btn btn-sm btn-primary" onclick="openApprove(\'entQual\',5)">处理</span> <span class="btn btn-sm" onclick="openDetail(\'entQual\',5)">详情</span>']
   ]}
 };
 
@@ -1713,7 +1736,7 @@ function buildExtraInfo(appId){
 function openApprove(key,idx){
   var d=mgmtData[key];if(!d)return;
   var r=d.rows[idx];
-  var titleMap={shifei:'适飞空域审批',feishifei:'非适飞空域审批',linshi:'临时空域审批',approval:'审批任务审批',qualify:'资质核验',register:'注册信息采集',violate:'违规处理',airreg:'注册初审',yearcheck:'年检处理',flowconf:'审批流配置',report:'数据上报',gkPlan:'计划申请审批',gkFly:'飞行申请审批',gkTakeoff:'起飞通知确认',gkArchive:'信息归档审核'};
+  var titleMap={shifei:'适飞空域审批',feishifei:'非适飞空域审批',linshi:'临时空域审批',approval:'审批任务审批',qualify:'资质核验',register:'注册信息采集',violate:'违规处理',airreg:'注册初审',yearcheck:'年检处理',flowconf:'审批流配置',report:'数据上报',entAccount:'账号审核',entQual:'资质核验',gkPlan:'计划申请审批',gkFly:'飞行申请审批',gkTakeoff:'起飞通知确认',gkArchive:'信息归档审核'};
   document.getElementById('apmTitle').textContent=titleMap[key]||'审批操作';
   var body='<div class="apm-f">';
   if(key==='feishifei'||key==='shifei'||key==='linshi'){
