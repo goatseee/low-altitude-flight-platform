@@ -21,8 +21,8 @@ body{font-family:"Microsoft YaHei","PingFang SC",sans-serif;background:#1a1a2e;d
 @keyframes slideIn{from{opacity:0;transform:translateX(12px)}to{opacity:1;transform:translateX(0)}}
 
 /* === 顶部状态栏 === */
-.statusbar{height:44px;background:linear-gradient(135deg,#0a1f3c,#103258);display:flex;align-items:center;justify-content:center;color:#e8f1fb;font-size:14px;font-weight:600;position:sticky;top:0;z-index:50}
-.statusbar .back{position:absolute;left:16px;font-size:18px;cursor:pointer;color:#8aa0bb}
+.statusbar{height:58px;background:linear-gradient(135deg,#0a1f3c,#103258);display:flex;align-items:flex-end;justify-content:center;color:#e8f1fb;font-size:14px;font-weight:600;position:sticky;top:0;z-index:50;padding-bottom:8px}
+.statusbar .back{position:absolute;left:16px;bottom:12px;font-size:18px;cursor:pointer;color:#8aa0bb}
 
 /* === 登录/注册页 === */
 #page-login{background:linear-gradient(180deg,#0a1f3c 0%,#103258 40%,#f5f7fa 100%);min-height:100%}
@@ -92,7 +92,7 @@ body{font-family:"Microsoft YaHei","PingFang SC",sans-serif;background:#1a1a2e;d
 .list-header{background:linear-gradient(135deg,#0a1f3c,#103258);padding:16px 18px;color:#e8f1fb}
 .list-header h2{font-size:17px;font-weight:700}
 .list-header .sub{font-size:11px;color:#6b87a8;margin-top:2px}
-.list-tabs{display:flex;background:var(--card);border-bottom:1px solid var(--line);position:sticky;top:44px;z-index:40}
+.list-tabs{display:flex;background:var(--card);border-bottom:1px solid var(--line);position:sticky;top:58px;z-index:40}
 .list-tab{flex:1;padding:11px 0;text-align:center;font-size:12.5px;color:var(--sub);cursor:pointer;border-bottom:2.5px solid transparent}
 .list-tab.active{color:var(--blue);border-bottom-color:var(--blue);font-weight:600}
 
@@ -124,7 +124,7 @@ body{font-family:"Microsoft YaHei","PingFang SC",sans-serif;background:#1a1a2e;d
 .dl-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px 12px}
 .dl-item{display:flex;align-items:center;gap:6px;font-size:12.5px}
 .dl-item .dl-label{color:var(--sub);flex-shrink:0}
-.dl-item .dl-val{color:var(--text);font-weight:600}
+.dl-item .dl-val{color:var(--text);font-weight:600;flex:1;min-width:0;word-break:break-all}
 
 /* 进度时间线 */
 .timeline{padding:4px 0 0 4px}
@@ -185,6 +185,37 @@ body{font-family:"Microsoft YaHei","PingFang SC",sans-serif;background:#1a1a2e;d
 .lc-reg-type{display:flex;margin-bottom:16px;border-radius:10px;overflow:hidden;border:1px solid var(--line)}
 .lc-reg-type div{flex:1;text-align:center;padding:9px 0;font-size:13px;color:var(--sub);cursor:pointer;background:#f5f7fa;transition:all .2s}
 .lc-reg-type div.active{background:var(--blue);color:#fff;font-weight:600}
+
+/* === 我的（个人中心） === */
+.mine-body{padding:12px 14px 78px}
+.mine-head{background:linear-gradient(135deg,#0a1f3c,#103258);border-radius:14px;padding:20px 16px;display:flex;align-items:center;gap:12px;margin-bottom:12px}
+.mine-ava{width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,#0082D9,#2de2f0);display:flex;align-items:center;justify-content:center;font-size:24px;color:#fff;flex-shrink:0}
+.mine-uname{color:#e8f1fb;font-size:16px;font-weight:700}
+.mine-urole{color:#6b87a8;font-size:11px;margin-top:3px}
+.mine-tags{margin-top:7px;display:flex;gap:6px}
+.mine-tag{font-size:10px;padding:2px 8px;border-radius:4px;font-weight:600}
+.mine-tag.type{background:rgba(0,130,217,.3);color:#7cc4ff}
+.mine-tag.ok{background:rgba(31,157,85,.3);color:#5ee39a}
+.mine-stats{display:flex;gap:10px;margin-bottom:12px}
+.mine-stat{flex:1;background:var(--card);border-radius:12px;padding:12px 6px;text-align:center;cursor:pointer;box-shadow:0 1px 6px rgba(10,31,60,.04)}
+.mine-stat:active{transform:scale(.96)}
+.mine-stat .ms-val{font-size:20px;font-weight:800;color:var(--blue)}
+.mine-stat .ms-label{font-size:11px;color:var(--sub);margin-top:2px}
+.mine-list{background:var(--card);border-radius:14px;margin-bottom:12px;overflow:hidden}
+.mine-li{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border-bottom:1px solid var(--line);cursor:pointer;font-size:13.5px;color:var(--text)}
+.mine-li:last-child{border-bottom:none}
+.mine-li:active{background:#f0f4fa}
+.mine-li .ml-left{display:flex;align-items:center}
+.mine-li .ml-ico{width:30px;height:30px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:15px;margin-right:11px}
+.mine-li .ml-arrow{color:#ccd;font-size:14px}
+.mine-li.danger .ml-name{color:var(--red)}
+.mine-li.danger .ml-ico{background:#fdeaea!important}
+.qual-row{display:flex;align-items:center;justify-content:space-between;padding:11px 0;border-bottom:1px solid var(--line)}
+.qual-row:last-child{border-bottom:none}
+.qual-left{flex:1;min-width:0}
+.qual-name{font-size:13px;font-weight:600;color:var(--text)}
+.qual-sub{font-size:11px;color:var(--sub);margin-top:2px}
+.qual-right{display:flex;align-items:center;gap:8px;margin-left:10px}
 </style>
 </head>
 <body>
@@ -205,6 +236,10 @@ body{font-family:"Microsoft YaHei","PingFang SC",sans-serif;background:#1a1a2e;d
         <div onclick="lcTab('reg')">注册</div>
       </div>
       <div id="lc-login">
+        <div class="lc-reg-type" style="margin-bottom:14px">
+          <div class="active" onclick="loginType('person',this)">个人用户</div>
+          <div onclick="loginType('ent',this)">企业用户</div>
+        </div>
         <div class="lc-field"><label>手机号</label><input type="tel" id="lg_phone" placeholder="11位手机号" maxlength="11"></div>
         <div class="lc-field"><label>密码</label><input type="password" id="lg_pwd" placeholder="请输入密码"></div>
         <button class="lc-btn" onclick="doLogin()">登 录</button>
@@ -340,6 +375,12 @@ body{font-family:"Microsoft YaHei","PingFang SC",sans-serif;background:#1a1a2e;d
   <div class="detail-body" id="detail-body"></div>
 </div>
 
+<!-- ============ 我的（个人中心） ============ -->
+<div class="page" id="page-mine">
+  <div class="statusbar">我的</div>
+  <div class="mine-body" id="mineBody"></div>
+</div>
+
 <!-- ============ 底部导航 ============ -->
 <div class="tabbar" id="tabbar" style="display:none">
   <div class="tb-item active" onclick="navTab('home')"><div class="tb-icon">🏠</div><div class="tb-label">首页</div></div>
@@ -416,15 +457,25 @@ function showPage(id){
   document.getElementById('tabbar').style.display=(id==='login'||id==='detail')?'none':'flex';
 }
 function navTab(id){
-  if(id==='mine'){toast('个人中心开发中','info');return}
+  if(id==='mine'){
+    showPage('mine');renderMine();
+    document.querySelectorAll('.tb-item').forEach(function(t,i){t.classList.toggle('active',i===4)});
+    return;
+  }
   showPage(id);
+  if(applyData[id])renderList(id);
   document.querySelectorAll('.tb-item').forEach(function(t,i){t.classList.toggle('active',['home','airspace','aircraft','pilot','mine'].indexOf(id)===i)});
 }
-function navTo(id){showPage(id);document.querySelectorAll('.tb-item').forEach(function(t,i){t.classList.toggle('active',['home','airspace','aircraft','pilot','mine'].indexOf(id)===i)})}
+function navTo(id){showPage(id);if(applyData[id])renderList(id);document.querySelectorAll('.tb-item').forEach(function(t,i){t.classList.toggle('active',['home','airspace','aircraft','pilot','mine'].indexOf(id)===i)})}
 function goBack(){showPage(prevPage||'home');document.querySelectorAll('.tb-item').forEach(function(t,i){t.classList.toggle('active',['home','airspace','aircraft','pilot','mine'].indexOf(prevPage||'home')===i)})}
 
 // ========== 登录/注册 ==========
-var regTypeKey='ent';
+var regTypeKey='ent',loginTypeKey='person';
+function loginType(t,el){
+  loginTypeKey=t;
+  el.parentElement.querySelectorAll('div').forEach(function(d){d.classList.remove('active')});
+  el.classList.add('active');
+}
 function regType(t,el){
   regTypeKey=t;
   el.parentElement.querySelectorAll('div').forEach(function(d){d.classList.remove('active')});
@@ -446,17 +497,69 @@ function sendCode(btn){
   toast('验证码已发送','info');
 }
 function doLogin(){
-  toast('登录成功','success');
-  setTimeout(function(){
+  if(loginTypeKey==='ent'){
+    document.getElementById('home_uname').textContent='高邮市云翔测绘有限公司';
+    document.getElementById('home_urole').textContent='企业认证用户 · 已认证';
+    document.getElementById('home_avatar').textContent='云';
+  }else{
     var phone=document.getElementById('lg_phone').value;
     document.getElementById('home_uname').textContent=phone||'张明';
     document.getElementById('home_urole').textContent='高邮市自规局 · 操作员';
+    document.getElementById('home_avatar').textContent='张';
+  }
+  toast('登录成功','success');
+  setTimeout(function(){
     renderHome();navTab('home');
   },800);
 }
 function doReg(){
   toast('注册成功，请登录','success');
   setTimeout(function(){lcTab('login');document.querySelector('.lc-tab div').classList.add('active');document.querySelectorAll('.lc-tab div')[1].classList.remove('active');document.getElementById('lc-login').style.display='block';document.getElementById('lc-reg').style.display='none'},1200);
+}
+
+// ========== 我的（个人中心） ==========
+var MINE_DATA={
+  person:{
+    uname:'张明',ava:'张',role:'高邮市自规局 · 操作员',tag:'个人用户',okTag:'已通过',
+    info:[['姓名','张明'],['性别','男'],['身份证号','3210****0021'],['手机号','138****1234'],['操控员执照号','UA-2026-0012'],['执照类型','CAAC-III'],['所属单位','高邮市自规局'],['注册时间','2026-09-22']]
+  },
+  ent:{
+    uname:'高邮市云翔测绘有限公司',ava:'云',role:'企业认证用户 · 测绘服务',tag:'企业用户',okTag:'已认证',
+    info:[['企业名称','高邮市云翔测绘有限公司'],['统一社会信用代码','91321084MA1YYYYY1B'],['营业执照编号','91321084MA1YYYYY1B'],['法定代表人','周云'],['联系人','李思思'],['联系电话','139****2222'],['注册地址','高邮市高新区智慧大厦8层'],['所属行业','测绘服务'],['注册时间','2026-09-21']],
+    quals:[
+      ['营业执照','91321084MA1YYYYY1B','有效期至 2027-06-30','st-green','有效'],
+      ['民用无人驾驶航空器运营合格证','UM-2026-0088','有效期至 2027-09-21','st-green','有效']
+    ]
+  }
+};
+function renderMine(){
+  var u=MINE_DATA[loginTypeKey]||MINE_DATA.person;
+  var h='<div class="mine-head"><div class="mine-ava">'+u.ava+'</div><div><div class="mine-uname">'+u.uname+'</div><div class="mine-urole">'+u.role+'</div><div class="mine-tags"><span class="mine-tag type">'+u.tag+'</span><span class="mine-tag ok">'+u.okTag+'</span></div></div></div>';
+  h+='<div class="mine-stats">';
+  h+='<div class="mine-stat" onclick="navTab(\'airspace\')"><div class="ms-val">'+applyData.airspace.length+'</div><div class="ms-label">空域申请</div></div>';
+  h+='<div class="mine-stat" onclick="navTab(\'aircraft\')"><div class="ms-val">'+applyData.aircraft.length+'</div><div class="ms-label">飞行器</div></div>';
+  h+='<div class="mine-stat" onclick="navTab(\'pilot\')"><div class="ms-val">'+applyData.pilot.length+'</div><div class="ms-label">飞手注册</div></div>';
+  h+='</div>';
+  h+='<div class="dl-card"><h3>'+(loginTypeKey==='ent'?'企业认证资料':'个人信息')+'</h3><div class="dl-grid"'+(loginTypeKey==='ent'?' style="grid-template-columns:1fr"':'')+'>';
+  u.info.forEach(function(g){h+='<div class="dl-item"><span class="dl-label">'+g[0]+'</span><span class="dl-val">'+g[1]+'</span></div>'});
+  h+='</div></div>';
+  if(loginTypeKey==='ent'){
+    h+='<div class="dl-card"><h3>资质证照</h3>';
+    u.quals.forEach(function(q){
+      h+='<div class="qual-row"><div class="qual-left"><div class="qual-name">'+q[0]+'</div><div class="qual-sub">'+q[1]+' · '+q[2]+'</div></div><div class="qual-right"><span class="li-status '+q[3]+'">'+q[4]+'</span></div></div>';
+    });
+    h+='</div>';
+  }
+  h+='<div class="mine-list">';
+  h+='<div class="mine-li" onclick="toast(\'暂无新消息\',\'info\')"><div class="ml-left"><div class="ml-ico" style="background:#e6f2ff">🔔</div><span class="ml-name">消息通知</span></div><span class="ml-arrow">›</span></div>';
+  h+='<div class="mine-li" onclick="toast(\'请输入原密码与新密码\',\'info\')"><div class="ml-left"><div class="ml-ico" style="background:#fff8e6">🔒</div><span class="ml-name">修改密码</span></div><span class="ml-arrow">›</span></div>';
+  h+='<div class="mine-li" onclick="toast(\'低空智控平台 v1.0\',\'info\')"><div class="ml-left"><div class="ml-ico" style="background:#e8f9ee">ℹ️</div><span class="ml-name">关于平台</span></div><span class="ml-arrow">›</span></div>';
+  h+='<div class="mine-li danger" onclick="doLogout()"><div class="ml-left"><div class="ml-ico" style="background:#fdeaea">⏻</div><span class="ml-name">退出登录</span></div><span class="ml-arrow">›</span></div>';
+  h+='</div>';
+  document.getElementById('mineBody').innerHTML=h;
+}
+function doLogout(){
+  showPage('login');
 }
 
 // ========== 首页渲染 ==========
